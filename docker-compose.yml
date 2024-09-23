@@ -8,21 +8,17 @@ services:
       - .:/usr/src/app
     depends_on:
       - db
-    environment:
-      MYSQL_HOST: db
-      MYSQL_USER: root
-      MYSQL_PASSWORD: rootpassword
-      MYSQL_DATABASE: mi_base_de_datos
+    env_file:
+      - .env
 
   db:
     image: mysql:8
-    environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: mi_base_de_datos
     ports:
       - '3306:3306'
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    env_file:
+      - .env
 
 volumes:
   db-data:
