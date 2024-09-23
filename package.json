@@ -1,16 +1,25 @@
 {
   "name": "artplace",
   "version": "1.0.0",
-  "description": "Desarrollo de aplicacion web para una tienda de obras de arte",
-  "main": "index.js",
+  "description": "Una aplicación web en Node.js con Express y MySQL",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "wait-on tcp:db:3306 && node app.js",
+    "dev": "wait-on tcp:db:3306 && nodemon app.js"
   },
-  "keywords": [],
+  "keywords": [
+    "nodejs",
+    "express",
+    "mysql"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.21.0"
+    "express": "^4.18.2",
+    "mysql2": "^3.3.0",
+    "wait-on": "^8.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
   }
 }
