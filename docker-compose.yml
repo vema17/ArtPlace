@@ -3,7 +3,7 @@ services:
   app:
     build: .
     ports:
-      - '3000:3000'
+      - '5000:5000'
     volumes:
       - .:/usr/src/app
     depends_on:
@@ -22,7 +22,6 @@ services:
     ports:
       - '3306:3306'
     volumes:
-      - db-data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
 volumes:
