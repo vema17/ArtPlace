@@ -13,5 +13,6 @@ router.delete('/usuarios/:id', userController.deleteUser);   // Eliminar un usua
 router.post('/register', userController.createUser);
 router.post('/login', userController.loginUser);
 
+router.post('/change-password/:id', userController.changePassword);
 
 module.exports = router;

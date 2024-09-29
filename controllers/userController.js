@@ -120,3 +120,52 @@ exports.loginUser = (req, res) => {
       res.status(200).json({ id: user.id, nombre: user.nombre, email: user.email });
   });
 };
+
+// Ruta para cambiar la contraseña
+exports.changePassword = async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+  const { id } = req.params;
+  // Verificar si las contraseñas fueron proporcionadas
+  if (!currentPassword || !newPassword) {
+      return res.status(400).json({ message: "Debes proporcionar ambas contraseñas." });
+  }
+
+  try {
+      // Consultar la contraseña actual del usuario en la base de datos
+      db.query('SELECT contrasena FROM usuarios WHERE id = ?', [id], async (err, results) => {
+          if (err) {
+              console.error(err);
+              return res.status(500).json({ message: "Error en la base de datos." });
+          }
+
+          if (results.length === 0) {
+              return res.status(404).json({ message: "Usuario no encontrado." });
+          }
+
+          const user = results[0];
+
+          // Comparar la contraseña actual con la almacenada
+          const isMatch = await bcrypt.compare(currentPassword, user.contrasena);
+
+          if (!isMatch) {
+              return res.status(400).json({ message: "La contraseña actual es incorrecta." });
+          }
+
+          // Hashear la nueva contraseña
+          const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+          // Actualizar la contraseña en la base de datos
+          db.query('UPDATE usuarios SET contrasena = ? WHERE id = ?', [hashedPassword, id], (err, results) => {
+              if (err) {
+                  console.error(err);
+                  return res.status(500).json({ message: "Error al actualizar la contraseña." });
+              }
+
+              return res.status(200).json({ message: "Contraseña cambiada con éxito." });
+          });
+      });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Error al procesar la solicitud." });
+  }
+};

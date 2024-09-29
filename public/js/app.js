@@ -69,24 +69,55 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // Agregar eventos a los formularios (si es necesario)
-    document.getElementById("editProfileForm").addEventListener("submit", function(event) {
-        event.preventDefault();
+    document.getElementById("editProfileForm").addEventListener("submit", function(e) {
+        e.preventDefault();
         // Aquí puedes agregar la lógica para enviar los cambios al servidor usando AJAX
         alert("Perfil actualizado");
         $('#editProfileModal').modal('hide');
     });
 
-    document.getElementById("changeAddressForm").addEventListener("submit", function(event) {
-        event.preventDefault();
+    document.getElementById("changeAddressForm").addEventListener("submit", function(e) {
+        e.preventDefault();
         // Aquí puedes agregar la lógica para enviar los cambios al servidor usando AJAX
         alert("Dirección actualizada");
         $('#changeAddressModal').modal('hide');
     });
 
-    document.getElementById("changePasswordForm").addEventListener("submit", function(event) {
-        event.preventDefault();
+    document.getElementById("changePasswordForm").addEventListener("submit", function(e) {
+        e.preventDefault();
         // Aquí puedes agregar la lógica para cambiar la contraseña
-        alert("Contraseña cambiada");
+        // Obtener valores de los campos
+        const currentPassword = document.getElementById("currentPassword").value;
+        const newPassword = document.getElementById("newPassword").value;
+
+        // Validar que los campos no estén vacíos
+        if (!currentPassword || !newPassword) {
+            alert("Por favor, rellena ambos campos.");
+            return;
+        }
+
+        // Enviar la solicitud AJAX al servidor
+        fetch('api/users/change-password/:id', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({currentPassword, newPassword}),
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al cambiar la contraseña');
+            }
+            return response.json();
+        })
+        .then(data => {
+            alert(data.message);
+            $('#changePasswordModal').modal('hide');
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            alert("Hubo un problema al cambiar la contraseña.");
+        });
         $('#changePasswordModal').modal('hide');
     });
 });
