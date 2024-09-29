@@ -47,4 +47,49 @@ if (createAccountForm) {
     });
 }
 
+document.addEventListener("DOMContentLoaded", function() {
+    // Seleccionar los botones
+    const editProfileButton = document.getElementById("editProfile");
+    const changeAddressButton = document.getElementById("changeAddress");
+    const changePasswordButton = document.getElementById("changePassword");
+
+    // Mostrar el modal para editar perfil
+    editProfileButton.addEventListener("click", function() {
+        $('#editProfileModal').modal('show');
+    });
+
+    // Mostrar el modal para cambiar dirección
+    changeAddressButton.addEventListener("click", function() {
+        $('#changeAddressModal').modal('show');
+    });
+
+    // Mostrar el modal para cambiar contraseña
+    changePasswordButton.addEventListener("click", function() {
+        $('#changePasswordModal').modal('show');
+    });
+
+    // Agregar eventos a los formularios (si es necesario)
+    document.getElementById("editProfileForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        // Aquí puedes agregar la lógica para enviar los cambios al servidor usando AJAX
+        alert("Perfil actualizado");
+        $('#editProfileModal').modal('hide');
+    });
+
+    document.getElementById("changeAddressForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        // Aquí puedes agregar la lógica para enviar los cambios al servidor usando AJAX
+        alert("Dirección actualizada");
+        $('#changeAddressModal').modal('hide');
+    });
+
+    document.getElementById("changePasswordForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        // Aquí puedes agregar la lógica para cambiar la contraseña
+        alert("Contraseña cambiada");
+        $('#changePasswordModal').modal('hide');
+    });
+});
+
+
 

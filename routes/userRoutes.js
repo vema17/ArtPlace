@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
 
+
 // Definir las rutas para el CRUD
 router.get('/usuarios', userController.getAllUsers);         // Obtener todos los usuarios
 //router.post('/usuarios', userController.createUser);         // Crear un nuevo usuario
@@ -11,5 +12,6 @@ router.delete('/usuarios/:id', userController.deleteUser);   // Eliminar un usua
 
 router.post('/register', userController.createUser);
 router.post('/login', userController.loginUser);
+
 
 module.exports = router;
