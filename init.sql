@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
 CREATE TABLE IF NOT EXISTS perfil (
     id_perfil INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT NOT NULL,
+    nombre_usuario VARCHAR (255) NOT NULL UNIQUE,
     biografia TEXT,
     foto_perfil VARCHAR(255),
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id) ON DELETE CASCADE

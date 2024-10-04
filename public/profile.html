@@ -12,9 +12,11 @@
         <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png" alt="Foto de Perfil" class="img-fluid rounded-circle" id="profileImage">
         
         <h3>Opciones:</h3>
-        <button class="btn btn-warning" id="editProfile">Editar Perfil</button>
-        <button class="btn btn-info" id="changeAddress">Cambiar Dirección</button>
+        <button class="btn btn-warning" id="editProfile" data-toggle="modal" data-target="#editProfileModal">Editar Perfil</button>
+        <button class="btn btn-info" id="changeAddress" data-toggle="modal" data-target="#changeAddressModal">Cambiar Dirección</button>
         <button class="btn btn-danger" id="changePassword" data-toggle="modal" data-target="#changePasswordModal">Cambiar Contraseña</button>
+        <!-- Botón para crear perfil -->
+        <button class="btn btn-success" id="createProfileBtn" onclick="window.location.href='/createProfile.html'">Crear Perfil</button>
     </div>
 
     <!-- Modal para Editar Perfil -->
@@ -114,37 +116,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <script>
-        // Obtener el ID del usuario de la URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const userId = urlParams.get('id');
-
-        // Verificar si se obtuvo el ID
-        if (userId) {
-            // Hacer una solicitud al backend para obtener información del usuario
-            fetch(`/api/users/${userId}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Error al obtener información del usuario');
-                    }
-                    return response.json();
-                })
-                .then(userData => {
-                    // Rellenar el contenido del perfil
-                    document.getElementById('usernameDisplay').textContent = userData.nombre;
-                    document.getElementById('username').value = userData.nombre; // Rellenar el campo en el modal
-                    document.getElementById('bio').value = userData.bio || ''; // Suponiendo que también tienes un campo bio
-                    // Aquí puedes agregar más campos según la información disponible
-                })
-                .catch(error => {
-                    console.error(error);
-                    alert('Error al cargar la información del usuario');
-                });
-        } else {
-            alert('ID de usuario no encontrado');
-        }
-    </script>
-
-    <script src="js/app.js"></script>
+    <script src="js/profile.js"></script>
 </body>
 </html>

@@ -1,6 +1,46 @@
 const bcrypt = require('bcrypt');
 const db = require('../config/db');
 const jwt = require('jsonwebtoken'); // Para generar el token JWT
+const { uploadProfileImage } = require('../middleware/upload'); // Importa middleware para la carga de imágenes
+
+// Iniciar sesión
+exports.loginUser = (req, res) => {
+  const { email, contrasena } = req.body;
+
+  db.query('SELECT * FROM usuarios WHERE email = ?', [email], (err, results) => {
+    if (err || results.length === 0) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+
+    const user = results[0];
+    const passwordIsValid = bcrypt.compareSync(contrasena, user.contrasena);
+
+    if (!passwordIsValid) {
+      return res.status(401).json({ auth: false, token: null, message: 'Contraseña incorrecta' });
+    }
+
+    // Generar el token JWT
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+      expiresIn: 86400 // 24 horas
+    });
+
+    // Enviar el token como cookie
+    res.cookie('token', token, {
+      httpOnly: true, // No accesible desde JavaScript del cliente
+      secure: process.env.NODE_ENV === 'production', // Solo se envía por HTTPS en producción
+      sameSite:'strict',
+      maxAge: 86400 * 1000 // 24 horas en milisegundos
+    });
+
+    // También puedes devolver datos adicionales como el nombre y el correo electrónico
+    res.status(200).json({ auth: true, id: user.id, nombre: user.nombre, email: user.email });
+  });
+};
+
+exports.logoutUser = (req, res) => {
+  res.clearCookie('token'); // Eliminar la cookie del token
+  res.status(200).json({ message: 'Sesión cerrada correctamente' });
+};
 
 // Obtener todos los usuarios
 exports.getAllUsers = (req, res) => {
@@ -117,20 +157,54 @@ exports.getUserProfile = (req, res) => {
 };
 
 // Crear un perfil para un usuario
-exports.createUserProfile = (req, res) => {
-  const { id } = req.params;
-  const { biografia, foto_perfil } = req.body;
+exports.createUserProfile = async (req, res) => {
+  try {
+      const { id } = req.params; // ID del usuario desde la URL
+      const { nombre_usuario, bio, address, socialMedia, contacts } = req.body;
 
-  db.query(
-      'INSERT INTO perfil (id_usuario, biografia, foto_perfil) VALUES (?, ?, ?)',
-      [id, biografia, foto_perfil],
-      (err, results) => {
-          if (err) {
-              return res.status(500).json({ error: 'Error al crear perfil' });
-          }
-          res.status(201).json({ id_perfil: results.insertId, biografia, foto_perfil });
+      // Manejo de la imagen de perfil
+      let profileImage = null;
+      if (req.file) {
+          profileImage = req.file.path; // Suponiendo que utilizas multer para manejar la carga de archivos
       }
-  );
+
+      // Crear perfil en la base de datos
+      const [result] = await db.query(
+          `INSERT INTO perfil (id_usuario, nombre_usuario, biografia, foto_perfil)
+           VALUES (?, ?, ?, ?)`,
+          [id, nombre_usuario, bio, profileImage]
+      );
+
+      // Crear dirección del usuario
+      await db.query(
+          `INSERT INTO direccion_de_usuario (id_usuario, calle, numero, ciudad, estado, codigo_postal, pais)
+           VALUES (?, ?, ?, ?, ?, ?, ?)`,
+          [id, address.street, address.number, address.city, address.state, address.postalCode, address.country]
+      );
+
+      // Crear entradas para redes sociales
+      for (const url of socialMedia) {
+          await db.query(
+              `INSERT INTO RRSS (URL_RRSS, id_usuario, Nombre_RRSS)
+               VALUES (?, ?, ?)`,
+              [url, id, url] // Aquí puedes modificar el nombre de la red social si es necesario
+          );
+      }
+
+      // Crear entradas para contactos
+      for (const phone of contacts) {
+          await db.query(
+              `INSERT INTO Contactos (Telefono, ID_usuario)
+               VALUES (?, ?)`,
+              [phone, id]
+          );
+      }
+
+      return res.status(201).json({ message: 'Perfil creado con éxito' });
+  } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: 'Error al crear el perfil' });
+  }
 };
 
 // Actualizar un perfil de usuario
@@ -197,31 +271,7 @@ exports.updateUserAddress = (req, res) => {
   );
 };
 
-// Iniciar sesión
-exports.loginUser = (req, res) => {
-  const { email, contrasena } = req.body;
 
-  db.query('SELECT * FROM usuarios WHERE email = ?', [email], (err, results) => {
-    if (err || results.length === 0) {
-      return res.status(404).json({ error: 'Usuario no encontrado' });
-    }
-
-    const user = results[0];
-    const passwordIsValid = bcrypt.compareSync(contrasena, user.contrasena);
-    
-    if (!passwordIsValid) {
-      return res.status(401).json({ auth: false, token: null, message: 'Contraseña incorrecta' });
-    }
-
-    // Generar el token JWT
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-      expiresIn: 86400 // 24 horas
-    });
-
-    // Devolver el token junto con la información del usuario
-    res.status(200).json({ auth: true, token: token, id: user.id, nombre: user.nombre, email: user.email });
-  });
-};
 
 // Obtener redes sociales de un usuario
 exports.getUserRRSS = (req, res) => {
@@ -298,5 +348,32 @@ exports.deleteUserContact = (req, res) => {
           return res.status(500).json({ error: 'Error al eliminar contacto' });
       }
       res.status(204).send();
+  });
+};
+
+exports.changePassword = (req, res) => {
+  const userId = req.user.id; // El ID del usuario está disponible a través de la verificación del token
+  const { currentPassword, newPassword } = req.body;
+
+  db.query('SELECT * FROM usuarios WHERE id = ?', [userId], (err, results) => {
+      if (err || results.length === 0) {
+          return res.status(404).json({ error: 'Usuario no encontrado' });
+      }
+
+      const user = results[0];
+      const passwordIsValid = bcrypt.compareSync(currentPassword, user.contrasena);
+
+      if (!passwordIsValid) {
+          return res.status(401).json({ message: 'Contraseña actual incorrecta' });
+      }
+
+      const hashedNewPassword = bcrypt.hashSync(newPassword, 8); // Hasheando la nueva contraseña
+
+      db.query('UPDATE usuarios SET contrasena = ? WHERE id = ?', [hashedNewPassword, userId], (err) => {
+          if (err) {
+              return res.status(500).json({ error: 'Error al actualizar la contraseña' });
+          }
+          res.status(200).json({ message: 'Contraseña actualizada con éxito' });
+      });
   });
 };
