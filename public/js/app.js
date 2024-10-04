@@ -1,4 +1,5 @@
 const loginForm = document.getElementById('loginForm');
+
 if (loginForm) {
     loginForm.addEventListener('submit', function (e) {
         e.preventDefault(); // Evita el envío del formulario por defecto
@@ -12,12 +13,19 @@ if (loginForm) {
             body: JSON.stringify({ email, contrasena })
         }).then(response => {
             if (response.ok) {
-                // Redirigir a perfil
-                alert('Inicio de sesión exitoso');
-                window.location.href = 'profile.html'; 
+                return response.json(); // Procesar la respuesta como JSON
             } else {
-                alert('Error al iniciar sesión');
+                throw new Error('Error al iniciar sesión'); // Lanzar error si no es ok
             }
+        }).then(data => {
+            // Guardar el token en localStorage
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('userId', data.id); // Guardar el ID del usuario en localStorage
+
+            // Redirigir a perfil con el ID del usuario
+            window.location.href = `profile.html?id=${data.id}`; // Cambiar aquí para incluir el ID
+        }).catch(error => {
+            alert(error.message); // Mostrar mensaje de error
         });
     });
 }

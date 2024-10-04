@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const db = require('../config/db');
+const jwt = require('jsonwebtoken'); // Para generar el token JWT
 
 // Obtener todos los usuarios
 exports.getAllUsers = (req, res) => {
@@ -50,43 +51,43 @@ exports.getUserById = (req, res) => {
   });
 };
 
+
 // Actualizar un usuario por ID
 exports.updateUser = (req, res) => {
   const { id } = req.params;
   const { nombre, apellido, email, contrasena } = req.body;
 
-  if (contrasena) {
-    // Hashear la nueva contraseña si se provee
-    const saltRounds = 10;
-    bcrypt.hash(contrasena, saltRounds, (err, hashedPassword) => {
-      if (err) {
-        return res.status(500).json({ error: 'Error al hashear la contraseña' });
-      }
+  const updates = [nombre, apellido, email];
+  let query = 'UPDATE usuarios SET nombre = ?, apellido = ?, email = ?';
 
-      // Actualizar el usuario con la nueva contraseña
-      db.query(
-        'UPDATE usuarios SET nombre = ?, apellido = ?, email = ?, contrasena = ? WHERE id = ?',
-        [nombre, apellido, email, hashedPassword, id],
-        (err, results) => {
+  if (contrasena) {
+      const saltRounds = 10;
+      bcrypt.hash(contrasena, saltRounds, (err, hashedPassword) => {
           if (err) {
-            return res.status(500).json({ error: 'Error al actualizar usuario' });
+              return res.status(500).json({ error: 'Error al hashear la contraseña' });
+          }
+          updates.push(hashedPassword);
+          query += ', contrasena = ?';
+          updates.push(id);
+          query += ' WHERE id = ?';
+
+          db.query(query, updates, (err, results) => {
+              if (err) {
+                  return res.status(500).json({ error: 'Error al actualizar usuario' });
+              }
+              res.json({ id, nombre, apellido, email });
+          });
+      });
+  } else {
+      updates.push(id);
+      query += ' WHERE id = ?';
+
+      db.query(query, updates, (err, results) => {
+          if (err) {
+              return res.status(500).json({ error: 'Error al actualizar usuario' });
           }
           res.json({ id, nombre, apellido, email });
-        }
-      );
-    });
-  } else {
-    // Actualizar usuario sin modificar la contraseña
-    db.query(
-      'UPDATE usuarios SET nombre = ?, apellido = ?, email = ? WHERE id = ?',
-      [nombre, apellido, email, id],
-      (err, results) => {
-        if (err) {
-          return res.status(500).json({ error: 'Error al actualizar usuario' });
-        }
-        res.json({ id, nombre, apellido, email });
-      }
-    );
+      });
   }
 };
 
@@ -101,71 +102,201 @@ exports.deleteUser = (req, res) => {
   });
 };
 
+// Obtener el perfil de un usuario
+exports.getUserProfile = (req, res) => {
+  const { id } = req.params;
+  db.query('SELECT * FROM perfil WHERE id_usuario = ?', [id], (err, results) => {
+      if (err) {
+          return res.status(500).json({ error: 'Error al obtener perfil' });
+      }
+      if (results.length === 0) {
+          return res.status(404).json({ error: 'Perfil no encontrado' });
+      }
+      res.json(results[0]);
+  });
+};
+
+// Crear un perfil para un usuario
+exports.createUserProfile = (req, res) => {
+  const { id } = req.params;
+  const { biografia, foto_perfil } = req.body;
+
+  db.query(
+      'INSERT INTO perfil (id_usuario, biografia, foto_perfil) VALUES (?, ?, ?)',
+      [id, biografia, foto_perfil],
+      (err, results) => {
+          if (err) {
+              return res.status(500).json({ error: 'Error al crear perfil' });
+          }
+          res.status(201).json({ id_perfil: results.insertId, biografia, foto_perfil });
+      }
+  );
+};
+
+// Actualizar un perfil de usuario
+exports.updateUserProfile = (req, res) => {
+  const { id } = req.params;
+  const { biografia, foto_perfil } = req.body;
+
+  db.query(
+      'UPDATE perfil SET biografia = ?, foto_perfil = ? WHERE id_usuario = ?',
+      [biografia, foto_perfil, id],
+      (err, results) => {
+          if (err) {
+              return res.status(500).json({ error: 'Error al actualizar perfil' });
+          }
+          res.json({ id_usuario: id, biografia, foto_perfil });
+      }
+  );
+};
+
+// Obtener dirección de un usuario
+exports.getUserAddress = (req, res) => {
+  const { id } = req.params;
+  db.query('SELECT * FROM direccion_de_usuario WHERE id_usuario = ?', [id], (err, results) => {
+      if (err) {
+          return res.status(500).json({ error: 'Error al obtener dirección' });
+      }
+      if (results.length === 0) {
+          return res.status(404).json({ error: 'Dirección no encontrada' });
+      }
+      res.json(results[0]);
+  });
+};
+
+// Crear dirección para un usuario
+exports.createUserAddress = (req, res) => {
+  const { id } = req.params;
+  const { calle, numero, ciudad, estado, codigo_postal, pais } = req.body;
+
+  db.query(
+      'INSERT INTO direccion_de_usuario (id_usuario, calle, numero, ciudad, estado, codigo_postal, pais) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      [id, calle, numero, ciudad, estado, codigo_postal, pais],
+      (err, results) => {
+          if (err) {
+              return res.status(500).json({ error: 'Error al crear dirección' });
+          }
+          res.status(201).json({ id_calle: results.insertId, calle, numero, ciudad, estado, codigo_postal, pais });
+      }
+  );
+};
+// Actualizar dirección de usuario
+exports.updateUserAddress = (req, res) => {
+  const { id } = req.params;
+  const { calle, numero, ciudad, estado, codigo_postal, pais } = req.body;
+
+  db.query(
+      'UPDATE direccion_de_usuario SET calle = ?, numero = ?, ciudad = ?, estado = ?, codigo_postal = ?, pais = ? WHERE id_usuario = ?',
+      [calle, numero, ciudad, estado, codigo_postal, pais, id],
+      (err, results) => {
+          if (err) {
+              return res.status(500).json({ error: 'Error al actualizar dirección' });
+          }
+          res.json({ id_usuario: id, calle, numero, ciudad, estado, codigo_postal, pais });
+      }
+  );
+};
+
 // Iniciar sesión
 exports.loginUser = (req, res) => {
   const { email, contrasena } = req.body;
 
   db.query('SELECT * FROM usuarios WHERE email = ?', [email], (err, results) => {
-      if (err || results.length === 0) {
-          return res.status(404).json({ error: 'Usuario no encontrado' });
-      }
+    if (err || results.length === 0) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
 
-      const user = results[0];
-      const passwordIsValid = bcrypt.compareSync(contrasena, user.contrasena);
-      
-      if (!passwordIsValid) {
-          return res.status(401).json({ auth: false, token: null, message: 'Contraseña incorrecta' });
-      }
+    const user = results[0];
+    const passwordIsValid = bcrypt.compareSync(contrasena, user.contrasena);
+    
+    if (!passwordIsValid) {
+      return res.status(401).json({ auth: false, token: null, message: 'Contraseña incorrecta' });
+    }
 
-      res.status(200).json({ id: user.id, nombre: user.nombre, email: user.email });
+    // Generar el token JWT
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+      expiresIn: 86400 // 24 horas
+    });
+
+    // Devolver el token junto con la información del usuario
+    res.status(200).json({ auth: true, token: token, id: user.id, nombre: user.nombre, email: user.email });
   });
 };
 
-// Ruta para cambiar la contraseña
-exports.changePassword = async (req, res) => {
-  const { currentPassword, newPassword } = req.body;
+// Obtener redes sociales de un usuario
+exports.getUserRRSS = (req, res) => {
   const { id } = req.params;
-  // Verificar si las contraseñas fueron proporcionadas
-  if (!currentPassword || !newPassword) {
-      return res.status(400).json({ message: "Debes proporcionar ambas contraseñas." });
-  }
+  db.query('SELECT * FROM RRSS WHERE id_usuario = ?', [id], (err, results) => {
+      if (err) {
+          return res.status(500).json({ error: 'Error al obtener redes sociales' });
+      }
+      res.json(results);
+  });
+};
 
-  try {
-      // Consultar la contraseña actual del usuario en la base de datos
-      db.query('SELECT contrasena FROM usuarios WHERE id = ?', [id], async (err, results) => {
+// Añadir red social para un usuario
+exports.addUserRRSS = (req, res) => {
+  const { id } = req.params;
+  const { URL_RRSS, Nombre_RRSS } = req.body;
+
+  db.query(
+      'INSERT INTO RRSS (URL_RRSS, id_usuario, Nombre_RRSS) VALUES (?, ?, ?)',
+      [URL_RRSS, id, Nombre_RRSS],
+      (err, results) => {
           if (err) {
-              console.error(err);
-              return res.status(500).json({ message: "Error en la base de datos." });
+              return res.status(500).json({ error: 'Error al añadir red social' });
           }
+          res.status(201).json({ URL_RRSS, id_usuario: id, Nombre_RRSS });
+      }
+  );
+};
 
-          if (results.length === 0) {
-              return res.status(404).json({ message: "Usuario no encontrado." });
+// Eliminar red social de un usuario
+exports.deleteUserRRSS = (req, res) => {
+  const { id, url } = req.params;
+  db.query('DELETE FROM RRSS WHERE URL_RRSS = ? AND id_usuario = ?', [url, id], (err, results) => {
+      if (err) {
+          return res.status(500).json({ error: 'Error al eliminar red social' });
+      }
+      res.status(204).send();
+  });
+};
+
+// Obtener contactos de un usuario
+exports.getUserContacts = (req, res) => {
+  const { id } = req.params;
+  db.query('SELECT * FROM Contactos WHERE ID_usuario = ?', [id], (err, results) => {
+      if (err) {
+          return res.status(500).json({ error: 'Error al obtener contactos' });
+      }
+      res.json(results);
+  });
+};
+
+// Añadir contacto para un usuario
+exports.addUserContact = (req, res) => {
+  const { id } = req.params;
+  const { Telefono } = req.body;
+
+  db.query(
+      'INSERT INTO Contactos (Telefono, ID_usuario) VALUES (?, ?)',
+      [Telefono, id],
+      (err, results) => {
+          if (err) {
+              return res.status(500).json({ error: 'Error al añadir contacto' });
           }
+          res.status(201).json({ Telefono, ID_usuario: id });
+      }
+  );
+};
 
-          const user = results[0];
-
-          // Comparar la contraseña actual con la almacenada
-          const isMatch = await bcrypt.compare(currentPassword, user.contrasena);
-
-          if (!isMatch) {
-              return res.status(400).json({ message: "La contraseña actual es incorrecta." });
-          }
-
-          // Hashear la nueva contraseña
-          const hashedPassword = await bcrypt.hash(newPassword, 10);
-
-          // Actualizar la contraseña en la base de datos
-          db.query('UPDATE usuarios SET contrasena = ? WHERE id = ?', [hashedPassword, id], (err, results) => {
-              if (err) {
-                  console.error(err);
-                  return res.status(500).json({ message: "Error al actualizar la contraseña." });
-              }
-
-              return res.status(200).json({ message: "Contraseña cambiada con éxito." });
-          });
-      });
-  } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Error al procesar la solicitud." });
-  }
+// Eliminar contacto de un usuario
+exports.deleteUserContact = (req, res) => {
+  const { id, telefono } = req.params;
+  db.query('DELETE FROM Contactos WHERE Telefono = ? AND ID_usuario = ?', [telefono, id], (err, results) => {
+      if (err) {
+          return res.status(500).json({ error: 'Error al eliminar contacto' });
+      }
+      res.status(204).send();
+  });
 };

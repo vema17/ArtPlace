@@ -29,3 +29,16 @@ CREATE TABLE IF NOT EXISTS direccion_de_usuario (
     pais VARCHAR(100),
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS RRSS (
+    URL_RRSS VARCHAR(255) PRIMARY KEY,
+    id_usuario INT NOT NULL,
+    Nombre_RRSS VARCHAR(100),
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS Contactos (
+    Telefono VARCHAR(20) PRIMARY KEY,
+    ID_usuario INT NOT NULL,
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id) ON DELETE CASCADE
+);
