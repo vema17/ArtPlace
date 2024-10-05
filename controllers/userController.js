@@ -255,19 +255,23 @@ function insertContacts(contacts, userId, res) {
 
 // Actualizar un perfil de usuario
 exports.updateUserProfile = (req, res) => {
-  const { id } = req.params;
-  const { biografia, foto_perfil } = req.body;
+  const id = req.user.id;
+  const { nombre_usuario, bio } = req.body;
+  let profileImage = req.file ? `uploads/${req.file.filename}` : null;
 
-  db.query(
-      'UPDATE perfil SET biografia = ?, foto_perfil = ? WHERE id_usuario = ?',
-      [biografia, foto_perfil, id],
-      (err, results) => {
-          if (err) {
-              return res.status(500).json({ error: 'Error al actualizar perfil' });
-          }
-          res.json({ id_usuario: id, biografia, foto_perfil });
-      }
-  );
+  const updateQuery = `
+    UPDATE perfil 
+    SET nombre_usuario = ?, biografia = ?, foto_perfil = COALESCE(?, foto_perfil)
+    WHERE id_usuario = ?
+  `;
+
+  db.query(updateQuery, [nombre_usuario, bio, profileImage, id], (err, results) => {
+    if (err) {
+      console.error('Error en la consulta SQL:', err); // Agrega un log para depurar errores en la base de datos
+      return res.status(500).json({ error: 'Error al actualizar el perfil' });
+    }
+    res.json({ id_usuario: id, nombre_usuario, bio, profileImage });
+  });
 };
 
 // Obtener dirección de un usuario
@@ -286,7 +290,7 @@ exports.getUserAddress = (req, res) => {
 
 // Crear dirección para un usuario
 exports.createUserAddress = (req, res) => {
-  const { id } = req.params;
+  const id = req.user.id;
   const { calle, numero, ciudad, estado, codigo_postal, pais } = req.body;
 
   db.query(
@@ -300,10 +304,11 @@ exports.createUserAddress = (req, res) => {
       }
   );
 };
+
 // Actualizar dirección de usuario
 exports.updateUserAddress = (req, res) => {
-  const { id } = req.params;
-  const { calle, numero, ciudad, estado, codigo_postal} = req.body;
+  const id = req.user.id; // Asegúrate de que el ID del usuario esté presente
+  const { calle, numero, ciudad, estado, codigo_postal } = req.body;
 
   db.query(
       'UPDATE direccion_de_usuario SET calle = ?, numero = ?, ciudad = ?, estado = ?, codigo_postal = ? WHERE id_usuario = ?',
@@ -312,7 +317,7 @@ exports.updateUserAddress = (req, res) => {
           if (err) {
               return res.status(500).json({ error: 'Error al actualizar dirección' });
           }
-          res.json({ id_usuario: id, calle, numero, ciudad, estado, codigo_postal});
+          res.json({ id_usuario: id, calle, numero, ciudad, estado, codigo_postal });
       }
   );
 };

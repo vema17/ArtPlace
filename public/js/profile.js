@@ -1,3 +1,7 @@
+// Obtener el ID del usuario de la URL
+const urlParams = new URLSearchParams(window.location.search);
+const userId = urlParams.get('id');
+
 document.addEventListener("DOMContentLoaded", function() {
     // Seleccionar los botones
     const editProfileButton = document.getElementById("editProfile");
@@ -23,72 +27,74 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById('editProfileForm').addEventListener('submit', function (e) {
         e.preventDefault();
     
-        const nombre_usuario = document.getElementById('nombre_usuario').value;
-        const bio = document.getElementById('bio').value;
-        const profileImageInput = document.getElementById('profileImageInput');
-    
         const formData = new FormData();
-        formData.append('nombre', nombre_usuario);
+        const username = document.getElementById('username').value;
+        const bio = document.getElementById('bio').value;
+        const profileImage = document.getElementById('profileImageInput').files[0];
+    
+        formData.append('nombre_usuario', username);
         formData.append('bio', bio);
-        if (profileImageInput.files[0]) {
-            formData.append('profileImage', profileImageInput.files[0]);
+        if (profileImage) {
+            formData.append('profileImage', profileImage);
         }
     
         fetch(`/api/users/${userId}/perfil`, {
             method: 'PUT',
             headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                'Authorization': `Bearer ${localStorage.getItem('token')}`, // Si estás usando autenticación
             },
-            body: formData
+            body: formData,
         })
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error('Error al editar el perfil');
-            }
-        })
+        .then(response => response.json())
         .then(data => {
-            alert(data.message);
-            $('#editProfileModal').modal('hide'); // Cerrar el modal
-            document.getElementById('usernameDisplay').textContent = nombre_usuario; // Actualizar el nombre en el perfil
+            if (data.error) {
+                throw new Error(data.error);
+            }
+            alert('Perfil actualizado correctamente');
+            $('#editProfileModal').modal('hide'); // Cierra el modal
         })
         .catch(error => {
-            alert(error.message);
+            alert(`Error al actualizar el perfil: ${error.message}`);
         });
     });
     
-
     document.getElementById('changeAddressForm').addEventListener('submit', function (e) {
         e.preventDefault();
     
-        const street = document.getElementById('street').value;
-        const streetNumber = document.getElementById('streetNumber').value;
-        const city = document.getElementById('city').value;
-        const state = document.getElementById('state').value;
-        const postalCode = document.getElementById('postalCode').value;
+        const calle = document.getElementById('street').value;
+        const numero = document.getElementById('streetNumber').value;
+        const ciudad = document.getElementById('city').value;
+        const estado = document.getElementById('state').value;
+        const codigo_postal = document.getElementById('postalCode').value;
     
+        // Verificar si los campos tienen valores
+        if (!calle || !numero || !ciudad || !estado || !codigo_postal) {
+            alert('Por favor, completa todos los campos');
+            return;
+        }
+    
+        // Depurar: Verificar que los datos son correctos
+        console.log({ calle, numero, ciudad, estado, codigo_postal });
+    
+        // Llamada fetch para enviar los datos al servidor
         fetch(`/api/users/${userId}/direccion`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${localStorage.getItem('token')}`,
             },
-            body: JSON.stringify({ street, streetNumber, city, state, postalCode })
+            body: JSON.stringify({ calle, numero, ciudad, estado, codigo_postal })
         })
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error('Error al cambiar la dirección');
-            }
-        })
+        .then(response => response.json())
         .then(data => {
-            alert(data.message);
-            $('#changeAddressModal').modal('hide'); // Cerrar el modal
+            if (data.error) {
+                throw new Error(data.error);
+            }
+            alert('Dirección actualizada correctamente');
+            $('#changeAddressModal').modal('hide');  // Cerrar el modal
         })
         .catch(error => {
-            alert(error.message);
+            alert(`Error al actualizar la dirección: ${error.message}`);
         });
     });
     
@@ -128,9 +134,6 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
-// Obtener el ID del usuario de la URL
-const urlParams = new URLSearchParams(window.location.search);
-const userId = urlParams.get('id');
 
 // Añadir el event listener al botón
 document.getElementById('createProfileBtn').addEventListener('click', function() {

@@ -17,7 +17,7 @@ router.delete('/:id', userController.deleteUser); // Eliminar usuario por ID
 // Rutas para el perfil
 router.get('/:id/perfil', verifyToken, userController.getUserProfile); // Obtener perfil de usuario
 router.post('/:id/perfil', verifyToken, upload, userController.createUserProfile); // Crear perfil para usuario
-router.put('/:id/perfil', verifyToken, userController.updateUserProfile); // Actualizar perfil de usuario
+router.put('/:id/perfil', verifyToken, upload, userController.updateUserProfile); // Actualizar perfil de usuario
 router.put('/:id/change-password', verifyToken, userController.changePassword);
 
 // Rutas para dirección
