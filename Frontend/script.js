@@ -46,7 +46,7 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
     }
   
     if (isValid) {
-      // Aquí puedes añadir la lógica para enviar el formulario
+      // lógica para enviar el formulario
       alert('Formulario de registro válido');
     }
   });
@@ -79,8 +79,21 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
     }
   
     if (isValid) {
-      // Aquí puedes añadir la lógica para iniciar sesión
+      // lógica para iniciar sesión
       alert('Formulario de login válido');
     }
   });
-  
+
+  document.getElementById("cambiarDireccion").addEventListener("click", function() {
+    document.querySelector("h2").textContent = "Cambiar dirección";
+    document.getElementById("direccionForm").style.display = "block";
+});
+
+document.getElementById("editarPerfil").addEventListener("click", function() {
+    
+});
+
+document.getElementById("cambiarContrasena").addEventListener("click", function() {
+    
+});
+

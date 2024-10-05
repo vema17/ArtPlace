@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Información del Usuario</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  
+  <style>
+    
+    /* Estilos para la barra lateral */
+    .sidebar {
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 250px;
+      background-image: url('assets/BG.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-color: rgba(95, 120, 172, 0.39); /* Opcional para darle transparencia */
+      padding-top: 20px;
+    }
+
+    .sidebar .nav-link {
+      font-size: 1.1rem;
+      color: #333;
+    }
+
+    .sidebar .nav-link.active {
+      background-color: #0d6efd;
+      color: white;
+    }
+
+    .sidebar .nav-link:hover {
+      background-color: #e9ecef;
+    }
+
+    /* Espacio para el contenido principal */
+    .content {
+      margin-left: 260px;
+      padding: 20px;
+    }
+
+    /* Estilos para el encabezado */
+    .navbar {
+      width: calc(100% - 260px); /* Avoid overlap with sidebar */
+      margin-left: 260px; /* Align correctly with sidebar */
+    }
+
+    .navbar-dark .nav-link {
+      color: white;
+    }
+
+    .navbar .dropdown-menu {
+      right: 0;
+    }
+     /* Cambia el color de los iconos y el botón */
+     .navbar .fa-shopping-cart {
+      color: rgb(0, 0, 0); /* Color blanco para el icono del carrito */
+      font-size: 1.5rem; /* Ajusta el tamaño del icono */
+    }
+    .navbar .form-control {
+      background-color: #fff; /* Cambia el fondo de la barra de búsqueda si es necesario */
+    }
+     /* Espaciado entre elementos */
+     .d-flex.align-items-center img {
+      margin-left: 15px; /* Espacio entre la imagen de perfil y el buscador */
+    }
+
+    /* Centrar verticalmente el carrito */
+    .navbar .fa-shopping-cart {
+      margin-left: 15px; /* Espacio entre el carrito y el buscador */
+      margin-top: 6px; /* Baja el carrito un poco para que esté centrado */
+    }
+
+    html {
+      position: relative;
+      min-height: 100%;
+    }
+
+    body {
+      margin-bottom: 60px; /* Altura del footer */
+    }
+
+    footer {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 60px; /* Altura del footer */
+      background-color: #f8f9fa; /* Color de fondo claro */
+    }
+
+    .profile-section {
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .profile-section h3 {
+      margin-bottom: 20px;
+    }
+
+    .profile-section img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+    }
+
+    .edit-icon {
+      font-size: 1.5rem;
+      color: #0d6efd;
+      cursor: pointer;
+    }
+
+    .personal-info {
+      list-style: none;
+      padding: 0;
+    }
+
+    .personal-info li {
+      margin-bottom: 10px;
+    }
+    
+    .file-input {
+      display: none;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Barra lateral -->
+  <div class="sidebar d-flex flex-column p-3">
+    <a href="home.html" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+      <img src="assets/ArtPlace.png" alt="Logo" class="bi pe-none me-2" width="200">
+    </a>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+      <li class="nav-item">
+        <a href="profile.html" class="nav-link text-dark">
+          <i class="fas fa-users me-2"></i> Perfil
+        </a>
+      </li>
+      <li>
+        <a href="edtprofile.html" class="nav-link text-dark">
+          <i class="fas fa-chart-bar me-2"></i> Editar Perfil
+        </a>
+      </li>
+      <li>
+        <a href="address.html" class="nav-link text-dark">
+          <i class="fas fa-box me-2"></i> Editar Dirección
+        </a>
+      </li>
+      <li>
+        <a href="password.html" class="nav-link text-dark">
+          <i class="fas fa-cubes me-2"></i>Cambiar Contraseña
+        </a>
+      </li>
+      <li>
+        <a href="home.html" class="nav-link text-dark">
+          <i class="fas fa-home me-2"></i> Catálogo
+        </a>
+      </li>
+    </ul>
+    <hr>
+    <div class="dropdown">
+      <a href="#" class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+        <img src="assets/avt.png" alt="User" width="32" height="32" class="rounded-circle me-2">
+        <strong>Usuario</strong>
+      </a>
+      <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser1">
+        <li><a class="dropdown-item" href="#">Perfil</a></li>
+        <li><a class="dropdown-item" href="#">Ajustes</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" href="index.html">Cerrar sesión</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Contenido principal -->
+  <div class="content">
+    <!-- Barra de navegación superior -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+      <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Publicar</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Comprar</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Nosotros</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Contacto</a>
+            </li>
+          </ul>
+          <form class="d-flex">
+            <input class="form-control me-2" type="search" placeholder="Buscar..." aria-label="Search">
+            <a href="#" class="nav-link"></a>
+            <i class="fas fa-shopping-cart"></i> <!-- Carrito de compras -->
+          </a>
+            <a href="#" class="d-flex align-items-center text-decoration-none">
+              <img src="assets/avt.png" alt="User" width="32" height="32" class="rounded-circle me-2">
+            </a>
+          </form>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Contenido -->
+    <div class="container mt-4">
+      <div class="profile-section">
+        <h3>Información del Usuario</h3>
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="position-relative">
+            <img src="assets/avt.png" alt="Foto de perfil" id="profilePic">
+            
+          </div>
+          <a href="edtprofile.html" class="btn btn-primary">Editar Perfil</a>
+        </div>
+        <hr>
+        <h5>Datos personales</h5>
+        <ul class="personal-info">
+          <li><strong>Nombre:</strong> Jane Doe</li>
+          <li><strong>Correo Electrónico:</strong> jane.doe@example.com</li>
+          <li><strong>UserID:</strong> 123456789</li>
+          <li><strong>Biografía:</strong> Artista visual apasionada por la creación de pinturas abstractas y diseño gráfico.</li>
+        </ul>
+        <hr>
+        <h5>Dirección</h5>
+        <ul class="personal-info">
+          <li><strong>País:</strong> Chile</li>
+          <li><strong>Estado:</strong> Coquimbo</li>
+          <li><strong>Ciudad:</strong> La Serena</li>
+          <li><strong>Código Postal:</strong> 1700000</li>
+          <li><strong>Calle:</strong> Avenida del Mar</li>
+          <li><strong>Número:</strong> 1234</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

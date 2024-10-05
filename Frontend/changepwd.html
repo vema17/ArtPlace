@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfil de Usuario</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container-fluid">
+    
+    <!-- Sección de Bienvenida -->
+    <div class="row justify-content-center mt-4">
+      <div class="col-md-10">
+        <div class="d-flex justify-content-between align-items-center p-3 shadow-sm bg-white rounded welcome-bar">
+          <h2>¡Bienvenido/a de vuelta Jane!</h2>
+          <img src="assets/ArtPlace.png" alt="ArtPlace Logo" class="logo-welcome">
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección de Perfil del Usuario y Formulario de Modificación de Dirección -->
+    <div class="row mt-5 justify-content-center" style="margin-left: -15px;">
+      <!-- Sección de Perfil del Usuario -->
+      <div class="col-md-4">
+        <div class="card p-4 shadow-lg rounded text-center"><p></p>
+          <img src="assets/avt.png" alt="Foto de perfil" class="rounded-circle mb-3" style="width: 150px;"><p></p>
+          <h3>Jane Doe</h3>
+          <p>La Serena - Chile</p> <p></p>
+          <div class="d-grid gap-2">
+            <button class="btn btn-primary" id="editarPerfil" onclick="window.location.href='editprofile.html'">Editar Perfil</button>
+            <button class="btn btn-danger" id="cambiarDireccion" onclick="window.location.href='editaddress.html'">Cambiar Dirección</button>
+            <button class="btn btn-success" id="cambiarDireccion" onclick="window.location.href='changepwd.html'">Cambiar Contraseña</button>
+          </div>
+          
+        </div>
+      </div>
+
+<!-- Sección de Formulario para Cambiar Contraseña -->
+<div class="col-md-6">
+    <div class="card p-4 shadow-lg rounded">
+      <h2 class="text-center">Cambiar Contraseña</h2>
+      <form id="cambiarContrasenaForm">
+        <!-- Contraseña Actual -->
+        <div class="mb-3">
+          <label for="passwordActual" class="form-label">Contraseña Actual</label>
+          <input type="password" class="form-control" id="passwordActual" placeholder="Ingrese su contraseña actual" required>
+        </div>
+  
+        <!-- Nueva Contraseña -->
+        <div class="mb-3">
+          <label for="passwordNueva" class="form-label">Nueva Contraseña</label>
+          <input type="password" class="form-control" id="passwordNueva" placeholder="Ingrese su nueva contraseña" required>
+        </div>
+  
+        <!-- Confirmar Nueva Contraseña -->
+        <div class="mb-3">
+          <label for="confirmarPasswordNueva" class="form-label">Confirmar Nueva Contraseña</label>
+          <input type="password" class="form-control" id="confirmarPasswordNueva" placeholder="Confirme su nueva contraseña" required>
+        </div>
+  
+        <!-- Botón Guardar Cambios con margen superior -->
+        <div class="d-flex justify-content-end mt-3">
+          <button type="submit" class="btn btn-warning">Guardar cambios</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div><p></p>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="script.js"></script>
+</body>
+<!-- Carga de Font Awesome en el <head> -->
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Perfil de Usuario</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+      </head>
+      
+     <!-- Footer con íconos y transparencia corregido -->
+<footer class="text-white text-center text-lg-start mt-5" style="background-color: rgba(155, 77, 255, 0.8);">
+    <div class="container p-4">
+      <!-- Contenido del footer -->
+      <div class="row">
+        <!-- Sección de Información -->
+        <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
+            <img src="assets/ArtPlace.png" alt="ArtPlace Logo" style="max-width: 180px;">
+          <p>
+            Explora nuestra tienda de arte donde artistas de todo el mundo pueden comprar y vender sus creaciones. Nuestra plataforma ofrece un espacio para que los creativos compartan su arte y conecten con compradores interesados.
+          </p>
+        </div>
+  
+        <!-- Sección de Enlaces -->
+        <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+          <h5 class="text-uppercase">Enlaces útiles</h5>
+          <ul class="list-unstyled mb-0">
+            <li>
+              <a href="#!" class="text-white">Inicio</a>
+            </li>
+            <li>
+              <a href="#!" class="text-white">Perfil</a>
+            </li>
+            <li>
+              <a href="#!" class="text-white">Contacto</a>
+            </li>
+            <li>
+              <a href="#!" class="text-white">Ayuda</a>
+            </li>
+          </ul>
+        </div>
+  
+        <!-- Sección de Redes Sociales -->
+        <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+          <h5 class="text-uppercase">Síguenos</h5>
+          <ul class="list-unstyled mb-0">
+            <li>
+              <a href="#!" class="text-white"><i class="fab fa-facebook-f"></i> Facebook</a>
+            </li>
+            <li>
+              <a href="#!" class="text-white"><i class="fab fa-twitter"></i> Twitter</a>
+            </li>
+            <li>
+              <a href="#!" class="text-white"><i class="fab fa-instagram"></i> Instagram</a>
+            </li>
+            <li>
+              <a href="#!" class="text-white"><i class="fab fa-linkedin"></i> LinkedIn</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Copyright -->
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.8);">
+      © 2024 ArtPlace. Todos los derechos reservados.
+    </div>
+  </footer>
+  
+  <!-- Carga de Bootstrap y JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  
+</html>
