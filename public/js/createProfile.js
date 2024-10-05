@@ -46,7 +46,7 @@ document.getElementById('createProfileForm').addEventListener('submit', function
     })
     .then(data => {
         alert(data.message);
-        // Redirigir o actualizar la interfaz de usuario según sea necesario
+        window.location.href = `profile.html?id=${userId}`;
     })
     .catch(error => {
         console.error(error);

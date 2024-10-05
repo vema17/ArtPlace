@@ -23,18 +23,18 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById('editProfileForm').addEventListener('submit', function (e) {
         e.preventDefault();
     
-        const username = document.getElementById('username').value;
+        const nombre_usuario = document.getElementById('nombre_usuario').value;
         const bio = document.getElementById('bio').value;
         const profileImageInput = document.getElementById('profileImageInput');
     
         const formData = new FormData();
-        formData.append('nombre', username);
+        formData.append('nombre', nombre_usuario);
         formData.append('bio', bio);
         if (profileImageInput.files[0]) {
             formData.append('profileImage', profileImageInput.files[0]);
         }
     
-        fetch(`/api/users/${userId}`, {
+        fetch(`/api/users/${userId}/perfil`, {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function() {
         .then(data => {
             alert(data.message);
             $('#editProfileModal').modal('hide'); // Cerrar el modal
-            document.getElementById('usernameDisplay').textContent = username; // Actualizar el nombre en el perfil
+            document.getElementById('usernameDisplay').textContent = nombre_usuario; // Actualizar el nombre en el perfil
         })
         .catch(error => {
             alert(error.message);
@@ -63,17 +63,18 @@ document.addEventListener("DOMContentLoaded", function() {
         e.preventDefault();
     
         const street = document.getElementById('street').value;
+        const streetNumber = document.getElementById('streetNumber').value;
         const city = document.getElementById('city').value;
         const state = document.getElementById('state').value;
         const postalCode = document.getElementById('postalCode').value;
     
-        fetch(`/api/users/${userId}/address`, {
+        fetch(`/api/users/${userId}/direccion`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${localStorage.getItem('token')}`,
             },
-            body: JSON.stringify({ street, city, state, postalCode })
+            body: JSON.stringify({ street, streetNumber, city, state, postalCode })
         })
         .then(response => {
             if (response.ok) {
@@ -130,6 +131,29 @@ document.addEventListener("DOMContentLoaded", function() {
 // Obtener el ID del usuario de la URL
 const urlParams = new URLSearchParams(window.location.search);
 const userId = urlParams.get('id');
+
+// Añadir el event listener al botón
+document.getElementById('createProfileBtn').addEventListener('click', function() {
+    // Redirigir a createProfile.html con el ID como parámetro en la URL
+    window.location.href = `/createProfile.html?id=${userId}`;
+});
+
+// Función para cargar el perfil del usuario
+function loadUserProfile() {
+    fetch(`/api/users/${userId}/perfil`) // Cambia esta URL según tu API
+        .then(response => response.json())
+        .then(data => {
+            // Suponiendo que `data` tiene la estructura que necesitas
+            document.getElementById('profileImage').src = data.profileImage || 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'; // Cambia a la imagen de perfil si existe
+            // Puedes agregar más datos del perfil a la página aquí
+        })
+        .catch(error => {
+            console.error('Error al cargar el perfil:', error);
+        });
+}
+
+// Llamar a la función para cargar el perfil al cargar la página
+window.onload = loadUserProfile;
 
 // Verificar si se obtuvo el ID
 if (userId) {

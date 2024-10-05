@@ -157,55 +157,101 @@ exports.getUserProfile = (req, res) => {
 };
 
 // Crear un perfil para un usuario
-exports.createUserProfile = async (req, res) => {
-  try {
-      const { id } = req.params; // ID del usuario desde la URL
-      const { nombre_usuario, bio, address, socialMedia, contacts } = req.body;
+exports.createUserProfile = (req, res) => {
+  const { id } = req.params;
+  const { nombre_usuario, bio, street, streetNumber, city, state, postalCode, country, socialMedia = [], contacts = [] } = req.body;
 
-      // Manejo de la imagen de perfil
-      let profileImage = null;
-      if (req.file) {
-          profileImage = req.file.path; // Suponiendo que utilizas multer para manejar la carga de archivos
+  let profileImage = null;
+  if (req.file) {
+    profileImage = req.file.path; // Suponiendo que usas multer para manejar la carga de archivos
+  }
+
+  // Crear perfil en la base de datos
+  db.query(
+    `INSERT INTO perfil (id_usuario, nombre_usuario, biografia, foto_perfil)
+     VALUES (?, ?, ?, ?)`,
+    [id, nombre_usuario, bio, profileImage],
+    (error, result) => {
+      if (error) {
+        console.error('Error al crear perfil:', error);
+        return res.status(500).json({ message: 'Error al crear el perfil' });
       }
-
-      // Crear perfil en la base de datos
-      const [result] = await db.query(
-          `INSERT INTO perfil (id_usuario, nombre_usuario, biografia, foto_perfil)
-           VALUES (?, ?, ?, ?)`,
-          [id, nombre_usuario, bio, profileImage]
-      );
 
       // Crear dirección del usuario
-      await db.query(
-          `INSERT INTO direccion_de_usuario (id_usuario, calle, numero, ciudad, estado, codigo_postal, pais)
-           VALUES (?, ?, ?, ?, ?, ?, ?)`,
-          [id, address.street, address.number, address.city, address.state, address.postalCode, address.country]
+      db.query(
+        `INSERT INTO direccion_de_usuario (id_usuario, calle, numero, ciudad, estado, codigo_postal, pais)
+         VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        [id, street, streetNumber, city, state, postalCode, country],
+        (error, result) => {
+          if (error) {
+            console.error('Error al crear dirección:', error);
+            return res.status(500).json({ message: 'Error al crear la dirección' });
+          }
+
+          // Crear entradas para redes sociales
+          if (Array.isArray(socialMedia) && socialMedia.length > 0) {
+            let socialMediaCount = 0;
+            socialMedia.forEach(url => {
+              db.query(
+                `INSERT INTO RRSS (URL_RRSS, id_usuario, Nombre_RRSS)
+                 VALUES (?, ?, ?)`,
+                [url, id, url],
+                (error, result) => {
+                  if (error) {
+                    console.error('Error al insertar redes sociales:', error);
+                    return res.status(500).json({ message: 'Error al insertar redes sociales' });
+                  }
+
+                  // Incrementar el contador y verificar si todas las redes sociales fueron procesadas
+                  socialMediaCount++;
+                  if (socialMediaCount === socialMedia.length) {
+                    // Todas las redes sociales fueron insertadas
+                    insertContacts(contacts, id, res);
+                  }
+                }
+              );
+            });
+          } else {
+            // Si no hay redes sociales, saltar al siguiente paso (contactos)
+            insertContacts(contacts, id, res);
+          }
+        }
       );
-
-      // Crear entradas para redes sociales
-      for (const url of socialMedia) {
-          await db.query(
-              `INSERT INTO RRSS (URL_RRSS, id_usuario, Nombre_RRSS)
-               VALUES (?, ?, ?)`,
-              [url, id, url] // Aquí puedes modificar el nombre de la red social si es necesario
-          );
-      }
-
-      // Crear entradas para contactos
-      for (const phone of contacts) {
-          await db.query(
-              `INSERT INTO Contactos (Telefono, ID_usuario)
-               VALUES (?, ?)`,
-              [phone, id]
-          );
-      }
-
-      return res.status(201).json({ message: 'Perfil creado con éxito' });
-  } catch (error) {
-      console.error(error);
-      return res.status(500).json({ message: 'Error al crear el perfil' });
-  }
+    }
+  );
 };
+
+// Función para insertar contactos
+function insertContacts(contacts, userId, res) {
+  if (Array.isArray(contacts) && contacts.length > 0) {
+    let contactsCount = 0;
+    contacts.forEach(phone => {
+      db.query(
+        `INSERT INTO Contactos (Telefono, ID_usuario)
+         VALUES (?, ?)`,
+        [phone, userId],
+        (error, result) => {
+          if (error) {
+            console.error('Error al insertar contactos:', error);
+            return res.status(500).json({ message: 'Error al insertar contactos' });
+          }
+
+          // Incrementar el contador y verificar si todos los contactos fueron procesados
+          contactsCount++;
+          if (contactsCount === contacts.length) {
+            // Todos los contactos fueron insertados
+            return res.status(201).json({ message: 'Perfil creado con éxito' });
+          }
+        }
+      );
+    });
+  } else {
+    // Si no hay contactos, devolver éxito
+    return res.status(201).json({ message: 'Perfil creado con éxito' });
+  }
+}
+
+
 
 // Actualizar un perfil de usuario
 exports.updateUserProfile = (req, res) => {
@@ -257,16 +303,16 @@ exports.createUserAddress = (req, res) => {
 // Actualizar dirección de usuario
 exports.updateUserAddress = (req, res) => {
   const { id } = req.params;
-  const { calle, numero, ciudad, estado, codigo_postal, pais } = req.body;
+  const { calle, numero, ciudad, estado, codigo_postal} = req.body;
 
   db.query(
-      'UPDATE direccion_de_usuario SET calle = ?, numero = ?, ciudad = ?, estado = ?, codigo_postal = ?, pais = ? WHERE id_usuario = ?',
-      [calle, numero, ciudad, estado, codigo_postal, pais, id],
+      'UPDATE direccion_de_usuario SET calle = ?, numero = ?, ciudad = ?, estado = ?, codigo_postal = ? WHERE id_usuario = ?',
+      [calle, numero, ciudad, estado, codigo_postal, id],
       (err, results) => {
           if (err) {
               return res.status(500).json({ error: 'Error al actualizar dirección' });
           }
-          res.json({ id_usuario: id, calle, numero, ciudad, estado, codigo_postal, pais });
+          res.json({ id_usuario: id, calle, numero, ciudad, estado, codigo_postal});
       }
   );
 };
