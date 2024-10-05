@@ -140,12 +140,10 @@ document.getElementById('createProfileBtn').addEventListener('click', function()
 
 // Función para cargar el perfil del usuario
 function loadUserProfile() {
-    fetch(`/api/users/${userId}/perfil`) // Cambia esta URL según tu API
+    fetch(`/api/users/${userId}/perfil`)
         .then(response => response.json())
         .then(data => {
-            // Suponiendo que `data` tiene la estructura que necesitas
             document.getElementById('profileImage').src = data.profileImage || 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'; // Cambia a la imagen de perfil si existe
-            // Puedes agregar más datos del perfil a la página aquí
         })
         .catch(error => {
             console.error('Error al cargar el perfil:', error);
