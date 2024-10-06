@@ -18,7 +18,7 @@ document.getElementById('createProfileForm').addEventListener('submit', function
     formData.append('nombre_usuario', nombre_usuario);
     formData.append('bio', bio);
     if (profileImageInput) {
-        formData.append('profileImage', profileImageInput);
+        formData.append('profileImageInput', profileImageInput);
     }
     formData.append('street', street);
     formData.append('streetNumber', streetNumber);

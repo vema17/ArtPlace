@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function() {
         formData.append('nombre_usuario', username);
         formData.append('bio', bio);
         if (profileImage) {
-            formData.append('profileImage', profileImage);
+            formData.append('profileImageInput', profileImage);
         }
     
         fetch(`/api/users/${userId}/perfil`, {
@@ -52,6 +52,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
             alert('Perfil actualizado correctamente');
             $('#editProfileModal').modal('hide'); // Cierra el modal
+            window.location.reload(); 
         })
         .catch(error => {
             alert(`Error al actualizar el perfil: ${error.message}`);
@@ -141,21 +142,6 @@ document.getElementById('createProfileBtn').addEventListener('click', function()
     window.location.href = `/createProfile.html?id=${userId}`;
 });
 
-// Función para cargar el perfil del usuario
-function loadUserProfile() {
-    fetch(`/api/users/${userId}/perfil`)
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('profileImage').src = data.profileImage || 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'; // Cambia a la imagen de perfil si existe
-        })
-        .catch(error => {
-            console.error('Error al cargar el perfil:', error);
-        });
-}
-
-// Llamar a la función para cargar el perfil al cargar la página
-window.onload = loadUserProfile;
-
 // Verificar si se obtuvo el ID
 if (userId) {
     // Hacer una solicitud al backend para obtener información del usuario
@@ -180,3 +166,5 @@ if (userId) {
 } else {
     alert('ID de usuario no encontrado');
 }
+
+document.getElementById('profileImage').src = `/uploads/profile_${userId}.jpg`; 

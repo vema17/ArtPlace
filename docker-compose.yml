@@ -5,6 +5,7 @@ services:
     ports:
       - '5000:5000'
     volumes:
+      - ./uploads:/app/uploads 
       - .:/usr/src/app
     depends_on:
       - db

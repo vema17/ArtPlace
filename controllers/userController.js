@@ -163,7 +163,7 @@ exports.createUserProfile = (req, res) => {
 
   let profileImage = null;
   if (req.file) {
-    profileImage = req.file.path; // Suponiendo que usas multer para manejar la carga de archivos
+    profileImage = req.file.filename; // Suponiendo que usas multer para manejar la carga de archivos
   }
 
   // Crear perfil en la base de datos
@@ -428,3 +428,5 @@ exports.changePassword = (req, res) => {
       });
   });
 };
+
+
