@@ -2,9 +2,9 @@ const createAccountForm = document.getElementById('createAccountForm');
 if (createAccountForm) {
     createAccountForm.addEventListener('submit', function (e) {
         e.preventDefault(); // Evita el envío del formulario por defecto
+        const email = document.getElementById('email').value; 
         const nombre = document.getElementById('nombre').value;
         const apellido = document.getElementById('apellido').value;
-        const email = document.getElementById('email').value; 
         const contrasena = document.getElementById('contrasena').value; 
 
         // Lógica para crear una cuenta (enviar datos al backend)
