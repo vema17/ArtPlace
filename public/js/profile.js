@@ -24,11 +24,6 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById('usernameDisplay').textContent = nombreCompleto;
         document.getElementById('emailDisplay').textContent = data.email || '[Correo]';
         document.getElementById('userIdDisplay').textContent = data.id || '[ID]';
-
-        // Actualizar la imagen de perfil si existe
-        if (data.profile_pic) {
-            document.getElementById('profilePic').src = data.profile_pic;
-        }
     })
     .catch(error => {
         alert(`Error al obtener el perfil: ${error.message}`);
@@ -51,6 +46,11 @@ document.addEventListener("DOMContentLoaded", function() {
     })
     .then(data => {
         document.getElementById('bioDisplay').textContent = data.biografia || '[Biografía]';
+        
+        // Actualizar la imagen de perfil si existe
+        if (data.profile_pic) {
+            document.getElementById('profilePic').src = data.foto_perfil;
+        }
     })
     .catch(error => {
         alert(`Error al obtener la biografía: ${error.message}`);

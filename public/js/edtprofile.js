@@ -1,4 +1,4 @@
-document.getElementById('createProfileForm').addEventListener('submit', function(event) {
+document.getElementById('editarPerfilForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
     const nombre_usuario = document.getElementById('nombre_usuario').value;
