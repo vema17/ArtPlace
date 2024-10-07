@@ -1,41 +1,55 @@
-const urlParams = new URLSearchParams(window.location.search);
-const userId = localStorage.getItem('userId'); // Recuperar el ID del usuario de localStorage
+document.getElementById('createProfileForm').addEventListener('submit', function(event) {
+    event.preventDefault();
 
-if (!userId) {
-    alert('No se encontró el ID de usuario');
-    return;
-}
+    const nombre_usuario = document.getElementById('nombre_usuario').value;
+    const bio = document.getElementById('bio').value;
+    const profileImageInput = document.getElementById('profileImageInput').files[0]; // Obtener el archivo
+    const street = document.getElementById('street').value;
+    const streetNumber = document.getElementById('streetNumber').value;
+    const city = document.getElementById('city').value;
+    const state = document.getElementById('state').value;
+    const postalCode = document.getElementById('postalCode').value;
+    const country = document.getElementById('country').value;
+    const socialMedia = document.getElementById('socialMedia').value.split(',').map(url => url.trim()); // Separar URLs de redes sociales
+    const contacts = document.getElementById('contacts').value.split(',').map(phone => phone.trim()); // Separar números de contacto
 
-document.getElementById('editarPerfilForm').addEventListener('submit', function (e) {
-    e.preventDefault();
-    console.log("Formulario enviado");
-    
+    // Crear un objeto FormData para enviar los datos, incluyendo el archivo
     const formData = new FormData();
-    const username = document.getElementById('nombreUsuario').value;
-    const bio = document.getElementById('biografia').value;
-    const profileImage = document.getElementById('fotoPerfil').files[0];
-
-    formData.append('nombre_usuario', username);
+    formData.append('nombre_usuario', nombre_usuario);
     formData.append('bio', bio);
-    if (profileImage) {
-        formData.append('profileImageInput', profileImage);
+    if (profileImageInput) {
+        formData.append('profileImageInput', profileImageInput);
     }
+    formData.append('street', street);
+    formData.append('streetNumber', streetNumber);
+    formData.append('city', city);
+    formData.append('state', state);
+    formData.append('postalCode', postalCode);
+    formData.append('country', country);
+    formData.append('socialMedia', JSON.stringify(socialMedia)); // Enviar redes sociales como JSON
+    formData.append('contacts', JSON.stringify(contacts)); // Enviar contactos como JSON
 
+    // Obtener el ID del usuario desde la URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const userId = localStorage.getItem('userId'); // Recuperar el ID del usuario de localStorage
+
+    // Enviar datos al backend
     fetch(`/api/users/${userId}/perfil`, {
-        method: 'PUT',
-        headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`, // Si estás usando autenticación
-        },
-        body: formData,
+        method: 'POST',
+        body: formData, // Cambiar a FormData
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.error) {
-            throw new Error(data.error);
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error al crear el perfil');
         }
-        alert('Perfil actualizado correctamente');
+        return response.json();
+    })
+    .then(data => {
+        alert(data.message);
+        window.location.href = `profile.html?id=${userId}`;
     })
     .catch(error => {
-        alert(`Error al actualizar el perfil: ${error.message}`);
+        console.error(error);
+        alert('Error al crear el perfil');
     });
 });
