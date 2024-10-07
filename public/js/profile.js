@@ -46,10 +46,11 @@ document.addEventListener("DOMContentLoaded", function() {
     })
     .then(data => {
         document.getElementById('bioDisplay').textContent = data.biografia || '[Biografía]';
-        
+
         // Actualizar la imagen de perfil si existe
-        if (data.profile_pic) {
-            document.getElementById('profilePic').src = data.foto_perfil;
+        if (data.foto_perfil) {
+            document.getElementById('profilePic').src = `/uploads/profile_${userId}.jpg`; 
+            
         }
     })
     .catch(error => {
