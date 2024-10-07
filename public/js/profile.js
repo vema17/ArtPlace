@@ -1,8 +1,8 @@
 // Obtener el ID del usuario de la URL
 const urlParams = new URLSearchParams(window.location.search);
-const userId = urlParams.get('id');
 
 document.addEventListener("DOMContentLoaded", function() {
+    const userId = localStorage.getItem('userId'); // Recuperar el ID del usuario de localStorage
 
     // Hacer la solicitud GET para obtener los datos del perfil
     fetch(`/api/users/${userId}`, {

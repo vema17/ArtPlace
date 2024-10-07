@@ -18,6 +18,7 @@ if (loginForm) {
             }
         }).then(data => {
             alert('Inicio de sesión exitoso');
+            localStorage.setItem('userId', data.id); // Guardar el ID en localStorage
             window.location.href = `profile.html?id=${data.id}`; // Redirigir a perfil con el ID del usuario
         }).catch(error => {
             alert(error.message); // Mostrar mensaje de error

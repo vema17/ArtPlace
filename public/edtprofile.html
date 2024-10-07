@@ -222,28 +222,28 @@
           <input type="file" class="form-control file-input" id="fotoPerfil" onchange="previewProfilePhoto(event)">
         </div>
 
-        <!-- Nombre del Usuario (no editable) -->
+        <!-- Nombre Real (no editable) -->
         <div class="mb-3">
-          <label for="nombre" class="form-label">Nombre</label>
-          <input type="text" class="form-control" id="nombre" value="Jane Doe" disabled>
+          <label for="nombreReal" class="form-label">Nombre Real</label>
+          <input type="text" class="form-control" id="nombreReal" value="Jane Doe" disabled>
         </div>
 
-        <!-- Apellidos del Usuario (no editable) -->
+        <!-- Nombre de Usuario (editable) -->
         <div class="mb-3">
-          <label for="apellidos" class="form-label">Apellidos</label>
-          <input type="text" class="form-control" id="apellidos" value="Doe" disabled>
+          <label for="nombreUsuario" class="form-label">Nombre de Usuario</label>
+          <input type="text" class="form-control" id="nombreUsuario">
         </div>
 
-        <!-- UserID (no editable) -->
+        <!-- Teléfonos (separados por comas) (editable) -->
         <div class="mb-3">
-          <label for="userID" class="form-label">UserID</label>
-          <input type="text" class="form-control" id="userID" value="123456789" disabled>
+          <label for="telefonos" class="form-label">Teléfonos (separados por comas)</label>
+          <input type="text" class="form-control" id="telefonos">
         </div>
 
         <!-- Correo Electrónico (editable) -->
         <div class="mb-3">
           <label for="email" class="form-label">Correo Electrónico</label>
-          <input type="email" class="form-control" id="email" value="jane.doe@example.com">
+          <input type="email" class="form-control" id="email">
         </div>
 
         <!-- Biografía (editable) -->
@@ -277,6 +277,7 @@
     }
   </script>
 
+  <script src="js/edtprofile.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

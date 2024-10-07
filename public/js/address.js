@@ -1,8 +1,8 @@
 // Obtener el ID del usuario de la URL
 const urlParams = new URLSearchParams(window.location.search);
-const userId = urlParams.get('id');
 
 document.addEventListener("DOMContentLoaded", function() {
+    const userId = localStorage.getItem('userId'); // Recuperar el ID del usuario de localStorage
     const form = document.querySelector('form');
 
     form.addEventListener('submit', function (e) {
