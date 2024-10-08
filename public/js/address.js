@@ -65,7 +65,6 @@ document.addEventListener("DOMContentLoaded", function() {
                     throw new Error(data.error);
                 }
                 alert('Dirección actualizada correctamente');
-                // Puedes redirigir o hacer otra acción después de la actualización
             })
             .catch(error => {
                 alert(`Error al actualizar la dirección: ${error.message}`);

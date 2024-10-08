@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const db = require('../config/db');
-const jwt = require('jsonwebtoken'); // Para generar el token JWT
-const { uploadProfileImage } = require('../middleware/upload'); // Importa middleware para la carga de imágenes
+const jwt = require('jsonwebtoken');
+const { uploadProfileImage } = require('../middleware/upload'); 
 
 // Iniciar sesión
 exports.loginUser = (req, res) => {
@@ -32,7 +32,6 @@ exports.loginUser = (req, res) => {
       maxAge: 86400 * 1000 // 24 horas en milisegundos
     });
 
-    // También puedes devolver datos adicionales como el nombre y el correo electrónico
     res.status(200).json({ auth: true, id: user.id, nombre: user.nombre, email: user.email });
   });
 };
@@ -163,7 +162,7 @@ exports.createUserProfile = (req, res) => {
 
   let profileImage = null;
   if (req.file) {
-    profileImage = req.file.filename; // Suponiendo que usas multer para manejar la carga de archivos
+    profileImage = req.file.filename; 
   }
 
   // Crear perfil en la base de datos

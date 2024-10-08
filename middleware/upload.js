@@ -11,7 +11,6 @@ const storage = multer.diskStorage({
     // Verificar si la carpeta 'uploads' existe, si no, crearla
     try {
       if (!fs.existsSync(uploadPath)) {
-        console.log('La carpeta no existe, intentando crearla...');
         fs.mkdirSync(uploadPath, { recursive: true }); // Crear la carpeta si no existe
         console.log(`Carpeta creada en: ${uploadPath}`);
       } else {
@@ -36,4 +35,4 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Exporta el middleware
-module.exports = upload.single('profileImageInput'); // 'profileImage' debe coincidir con el nombre del campo en el formulario
+module.exports = upload.single('profileImageInput'); 
