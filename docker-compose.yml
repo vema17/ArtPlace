@@ -1,7 +1,7 @@
 services:
   app:
     build: 
-      context: ./backend
+      context: .
       dockerfile: dockerfile
     ports:
       - '5000:5000'
@@ -9,21 +9,21 @@ services:
       - ./uploads:/app/uploads 
       - .:/usr/src/app
     depends_on:
-      - mysql
+      - db
       - mongodb   
     env_file:
-      - backend/config/.env
+      - .env
     networks:
       - my-network
 
-  mysql:
-    image: mysql:8.0
+  db:
+    image: mysql:8
     ports:
       - '3306:3306'
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     env_file:
-      - backend/config/.env
+      - .env
     networks:
       - my-network
 
@@ -35,10 +35,10 @@ services:
     volumes:
       - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
     env_file:
-      - backend/config/.env
+      - .env
     networks:
       - my-network
-    
+
 
 volumes:
   db-data:
