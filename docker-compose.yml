@@ -1,36 +1,48 @@
-version: '3'
 services:
   app:
-    build: .
+    build: 
+      context: ./backend
+      dockerfile: dockerfile
     ports:
       - '5000:5000'
     volumes:
       - ./uploads:/app/uploads 
       - .:/usr/src/app
     depends_on:
-      - db
+      - mysql
       - mongodb   
     env_file:
-      - .env
+      - backend/config/.env
+    networks:
+      - my-network
 
-  db:
-    image: mysql:8
+  mysql:
+    image: mysql:8.0
     ports:
       - '3306:3306'
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     env_file:
-      - .env
+      - backend/config/.env
+    networks:
+      - my-network
 
   mongodb:  
-    image: mongodb/mongodb-community-server:latest
+    image: mongo
+    command: mongod --quiet --logpath /dev/null 
     ports:
       - '27017:27017'
     volumes:
       - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
     env_file:
-      - .env
+      - backend/config/.env
+    networks:
+      - my-network
+    
 
 volumes:
   db-data:
   mongo-data:
+
+networks:
+  my-network:
