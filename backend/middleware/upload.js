@@ -6,7 +6,7 @@ const multer = require('multer');
 // Configuración del almacenamiento
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadPath = 'frontend/public/uploads/';
+    const uploadPath = 'uploads/';
 
     // Verificar si la carpeta 'uploads' existe, si no, crearla
     try {
