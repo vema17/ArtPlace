@@ -9,6 +9,7 @@ services:
       - ./user-service/init.sql:/docker-entrypoint-initdb.d/init.sql
     depends_on:
       - mysql 
+      - rabbitmq
     env_file:
       - .env
     networks:
@@ -24,6 +25,7 @@ services:
       - ./product-service/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
     depends_on:
       - mongodb   
+      - rabbitmq
     env_file:
       - .env
     networks:
@@ -45,6 +47,14 @@ services:
       - mongo_data:/data/db
     env_file:
       - .env
+    networks:
+      - my-network
+  
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"       # Puerto para conexiones de aplicaciones
+      - "15672:15672"     # Puerto para el panel de administración
     networks:
       - my-network
 
