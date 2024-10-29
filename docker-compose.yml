@@ -57,6 +57,8 @@ services:
       - "15672:15672"     # Puerto para el panel de administración
     networks:
       - my-network
+    env_file:
+      - .env
 
 volumes:
   mysql_data:
