@@ -1,15 +1,19 @@
 const mongoose = require('mongoose');
 
+
+const MONGO_HOST = process.env.MONGO_HOST || 'mongodb';
+const MONGO_PORT = process.env.MONGO_PORT || '27017';
+const MONGO_DB = process.env.MONGO_DB || 'productdb';
+
+const mongoURI = `mongodb://${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}`;
+
 const connectMongoDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URL, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    });
-    console.log('Conectado a MongoDB');
+    await mongoose.connect(mongoURI);
+    console.log('Conexión exitosa a MongoDB');
   } catch (error) {
-    console.error('Database connection error:', error);
-    process.exit(1);
+    console.error('Error al conectar a MongoDB:', error);
+    process.exit(1); 
   }
 };
 
