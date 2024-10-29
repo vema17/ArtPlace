@@ -8,12 +8,13 @@ services:
     volumes:
       - ./user-service/init.sql:/docker-entrypoint-initdb.d/init.sql
     depends_on:
-      - mysql 
+      - mysql
       - rabbitmq
     env_file:
       - .env
     networks:
       - my-network
+    restart: on-failure
 
   product-service:
     build: 
@@ -24,12 +25,13 @@ services:
     volumes:
       - ./product-service/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
     depends_on:
-      - mongodb   
+      - mongodb
       - rabbitmq
     env_file:
       - .env
     networks:
       - my-network
+    restart: on-failure
 
   mysql:
     image: mysql:8
@@ -59,6 +61,7 @@ services:
       - my-network
     env_file:
       - .env
+    restart: on-failure
 
 volumes:
   mysql_data:
