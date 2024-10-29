@@ -1,14 +1,14 @@
 require('dotenv').config();
 const express = require('express');
-const connectDB = require('./config/database');
-const connectRabbitMQ = require('./config/rabbitmq');
+const connectMongoDB = require('./product-service/src/config/mongodb'); 
+const connectRabbitMQ = require('./product-service/src/config/rabbitmq');
 const productRoutes = require('./routes/productRoutes');
 
 const app = express();
 app.use(express.json());
 
 // Conectar a MongoDB
-connectDB();
+connectMongoDB();
 
 // Configurar las rutas de productos
 app.use('/api/products', productRoutes);

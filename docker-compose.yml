@@ -1,27 +1,38 @@
 services:
-  app:
+  user-service:
     build: 
-      context: .
+      context: ./user-service
       dockerfile: dockerfile
     ports:
       - '5000:5000'
     volumes:
-      - ./uploads:/app/uploads 
-      - .:/usr/src/app
+      - ./user-service/init.sql:/docker-entrypoint-initdb.d/init.sql
     depends_on:
-      - db
+      - mysql 
+    env_file:
+      - .env
+    networks:
+      - my-network
+
+  product-service:
+    build: 
+      context: ./product-service
+      dockerfile: dockerfile
+    ports:
+      - '5001:5001'
+    volumes:
+      - ./product-service/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
+    depends_on:
       - mongodb   
     env_file:
       - .env
     networks:
       - my-network
 
-  db:
+  mysql:
     image: mysql:8
-    ports:
-      - '3306:3306'
     volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - mysql_data:/var/lib/mysql
     env_file:
       - .env
     networks:
@@ -30,19 +41,16 @@ services:
   mongodb:  
     image: mongo
     command: mongod --quiet  
-    ports:
-      - '27017:27017'
     volumes:
-      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
+      - mongo_data:/data/db
     env_file:
       - .env
     networks:
       - my-network
 
-
 volumes:
-  db-data:
-  mongo-data:
+  mysql_data:
+  mongo_data:
 
 networks:
   my-network:
