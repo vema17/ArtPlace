@@ -7,6 +7,7 @@ services:
       - '5000:5000'
     volumes:
       - ./user-service/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./uploads:/app/uploads 
     depends_on:
       - mysql
       - rabbitmq
@@ -14,7 +15,6 @@ services:
       - .env
     networks:
       - my-network
-    restart: on-failure
 
   product-service:
     build: 
@@ -31,7 +31,6 @@ services:
       - .env
     networks:
       - my-network
-    restart: on-failure
 
   mysql:
     image: mysql:8
@@ -61,7 +60,6 @@ services:
       - my-network
     env_file:
       - .env
-    restart: on-failure
 
 volumes:
   mysql_data:

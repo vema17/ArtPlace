@@ -26,4 +26,4 @@ connectRabbitMQ()
 
 // Iniciar el servidor
 const PORT = process.env.PORT || 5001;
-app.listen(PORT, () => console.log(`Product service running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Servicio de productos corriendo en ${PORT}`));
