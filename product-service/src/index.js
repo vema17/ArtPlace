@@ -13,6 +13,10 @@ connectMongoDB();
 // Configurar las rutas de productos
 app.use('/api/products', productRoutes);
 
+app.get('/', (req, res) => {
+    res.send('Servidor en funcionamiento');
+  });
+
 // Conectar a RabbitMQ
 connectRabbitMQ()
     .then(channel => {
