@@ -23,5 +23,5 @@ app.get('/', (req, res) => {
 app.use('/api/users', userRoutes);
 
 app.listen(port, () => {
-  console.log(`Servidor corriendo en http://localhost:${port}`);
+  console.log(`Servicio de usuario corriendo en http://localhost:${port}`);
 });
