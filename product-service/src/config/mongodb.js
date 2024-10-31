@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 
-
 const MONGO_HOST = process.env.MONGO_HOST || 'mongodb';
 const MONGO_PORT = process.env.MONGO_PORT || '27017';
 const MONGO_DB = process.env.MONGO_DB || 'productdb';

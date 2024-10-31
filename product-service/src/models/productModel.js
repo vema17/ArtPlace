@@ -11,10 +11,16 @@ const productSchema = new mongoose.Schema({
   medio: { type: String, required: true },
   fecha_publicacion: { type: Date, required: true },
   descripcion: { type: String, required: true },
+  dimensiones: {
+    altura: { type: Number, required: true },
+    anchura: { type: Number, required: true }
+  },
   puntuacion: { type: Number, required: true },
   imagen: { type: String, required: true },
   precio: { type: Number, required: true },
-  etiquetas: { type: [etiquetaSchema], required: true }
+  etiquetas: { type: [etiquetaSchema], required: true },
+  artista: { type: String, required: true },
+  estado: { type: String, enum: ['disponible', 'vendido'], default: 'disponible' }
 });
 
 const Product = mongoose.model('Product', productSchema);
