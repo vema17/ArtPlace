@@ -1,20 +1,21 @@
 require('dotenv').config();
 const express = require('express');
+const path = require('path');
 const connectMongoDB = require('./config/mongodb'); 
 const connectRabbitMQ = require('./config/rabbitmq');
 const productRoutes = require('./routes/productRoutes');
 
 const app = express();
 app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Conectar a MongoDB
 connectMongoDB();
 
 // Configurar las rutas de productos
 app.use('/api/products', productRoutes);
-
 app.get('/', (req, res) => {
-    res.send('Servidor en funcionamiento');
+    res.sendFile(path.join(__dirname, 'public', 'create_product.html'));
   });
 
 // Conectar a RabbitMQ
