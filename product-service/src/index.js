@@ -15,7 +15,7 @@ connectMongoDB();
 // Configurar las rutas de productos
 app.use('/api/products', productRoutes);
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'create_product.html'));
+    res.sendFile(path.join(__dirname, 'public', 'manager_products.html'));
   });
 
 // Conectar a RabbitMQ
