@@ -40,7 +40,7 @@ function loadProducts() {
 // Función para agregar un nuevo producto
 function addProduct() {
     // Redirigir a la página para agregar un nuevo producto
-    window.location.href = 'create_product.html';
+    window.location.href = '/create_product.html';
 }
 
 // Función para editar un producto
