@@ -1,18 +1,21 @@
-//  probar con docker exec -it <nombre_del_contenedor_mongo> mongo
-// use mis_productos;               
+          
 // show collections;                   
 db = db.getSiblingDB('mis_productos');  
 db.createCollection('productos', {
   validator: {
     $jsonSchema: {
       bsonType: "object",
-      required: ["id_usuario", "medio", "fecha_publicacion", "descripcion", "puntuacion", "imagen", "precio", "etiquetas"],
+      required: ["id_usuario", "nombre_obra", "artista", "fecha_publicacion", "descripcion", "dimensiones", "imagen", "precio", "etiquetas", "estado"],
       properties: {
         id_usuario: {
           bsonType: "int",
           description: "Debe ser un número entero"
         },
-        medio: {
+        nombre_obra: {
+          bsonType: "string",
+          description: "Debe ser una cadena de texto"
+        },
+        artista: {
           bsonType: "string",
           description: "Debe ser una cadena de texto"
         },
@@ -24,17 +27,28 @@ db.createCollection('productos', {
           bsonType: "string",
           description: "Debe ser una cadena de texto"
         },
-        puntuacion: {
-          bsonType: "int",
-          description: "Debe ser un número entero"
+        dimensiones: {
+          bsonType: "object",
+          required: ["altura", "anchura"],
+          properties: {
+            altura: {
+              bsonType: "int",
+              description: "Debe ser un número entero representando la altura"
+            },
+            anchura: {
+              bsonType: "int",
+              description: "Debe ser un número entero representando la anchura"
+            }
+          },
+          description: "Debe ser un objeto que contiene las dimensiones"
         },
         imagen: {
           bsonType: "string",
-          description: "Debe ser una cadena de texto"
+          description: "Debe ser una cadena de texto representando la URL de la imagen"
         },
         precio: {
           bsonType: "int",
-          description: "Debe ser un número entero"
+          description: "Debe ser un número entero representando el precio"
         },
         etiquetas: {
           bsonType: "array",
@@ -57,8 +71,14 @@ db.createCollection('productos', {
             }
           },
           description: "Debe ser un arreglo de objetos con los campos requeridos"
+        },
+        estado: {
+          bsonType: "string",
+          enum: ["disponible", "vendido"],
+          description: "Debe ser una cadena de texto que indique si el producto está disponible o vendido"
         }
       }
     }
   }
 });
+

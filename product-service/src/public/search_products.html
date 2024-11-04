@@ -3,61 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Búsqueda de Productos - Cuadros</title>
+    <title>Catálogo de Productos - Cuadros</title>
     <link rel="stylesheet" href="css/search_products.css">
 </head>
 <body>
 
 <div class="container">
-    <h2>Búsqueda de Cuadros</h2>
+    <h2>Catálogo de Cuadros</h2>
+
+    <!-- Barra de búsqueda con filtros -->
     <form id="searchForm">
-        <!-- Barra de búsqueda -->
-        <label for="query">Palabras clave</label>
-        <input type="text" id="query" name="query" placeholder="Buscar por título o descripción" />
+        <div class="search-bar">
+            <label for="query">Palabras clave</label>
+            <input type="text" id="query" name="query" placeholder="Buscar por título o descripción" />
+        </div>
 
-        <!-- Filtro de categoría -->
-        <label for="categoria">Categoría</label>
-        <select id="categoria" name="categoria">
-            <option value="">Todas</option>
-            <option value="abstracto">Abstracto</option>
-            <option value="paisaje">Paisaje</option>
-            <option value="retrato">Retrato</option>
-            <option value="realismo">Realismo</option>
-            <!-- Agregar más categorías según sea necesario -->
-        </select>
+        <div class="filters">
+            <!-- Filtro de categoría -->
+            <label for="categoria">Categoría</label>
+            <select id="categoria" name="categoria">
+                <option value="">Todas</option>
+                <option value="abstracto">Abstracto</option>
+                <option value="paisaje">Paisaje</option>
+                <option value="retrato">Retrato</option>
+                <option value="realismo">Realismo</option>
+                <!-- Agregar más categorías según sea necesario -->
+            </select>
 
-        <!-- Filtro de precio -->
-        <label for="precioMin">Precio mínimo</label>
-        <input type="number" id="precioMin" name="precioMin" placeholder="0" min="0" />
+            <!-- Filtro de precio -->
+            <label for="precioMin">Precio mínimo</label>
+            <input type="number" id="precioMin" name="precioMin" placeholder="0" min="0" />
 
-        <label for="precioMax">Precio máximo</label>
-        <input type="number" id="precioMax" name="precioMax" placeholder="10000" min="0" />
+            <label for="precioMax">Precio máximo</label>
+            <input type="number" id="precioMax" name="precioMax" placeholder="10000" min="0" />
 
-        <!-- Filtro de artista -->
-        <label for="artista">Artista</label>
-        <input type="text" id="artista" name="artista" placeholder="Nombre del artista" />
+            <!-- Filtro de artista -->
+            <label for="artista">Artista</label>
+            <input type="text" id="artista" name="artista" placeholder="Nombre del artista" />
 
-        <!-- Filtro de técnica -->
-        <label for="tecnica">Técnica</label>
-        <select id="tecnica" name="tecnica">
-            <option value="">Todas</option>
-            <option value="oleo">Óleo</option>
-            <option value="acrilico">Acrílico</option>
-            <option value="acuarela">Acuarela</option>
-            <option value="carboncillo">Carboncillo</option>
-            <!-- Agregar más técnicas según sea necesario -->
-        </select>
+            <!-- Filtro de técnica -->
+            <label for="tecnica">Técnica</label>
+            <select id="tecnica" name="tecnica">
+                <option value="">Todas</option>
+                <option value="oleo">Óleo</option>
+                <option value="acrilico">Acrílico</option>
+                <option value="acuarela">Acuarela</option>
+                <option value="carboncillo">Carboncillo</option>
+                <!-- Agregar más técnicas según sea necesario -->
+            </select>
+        </div>
 
         <!-- Botón de búsqueda -->
         <button type="button" onclick="applyFilters()">Buscar</button>
     </form>
 
+    <!-- Resultados de la búsqueda -->
     <h3>Resultados de la Búsqueda</h3>
     <ul id="searchResults">
         <!-- Los resultados de la búsqueda se mostrarán aquí -->
     </ul>
+
+    <!-- Paginación -->
+    <div class="pagination">
+        <button onclick="previousPage()">Anterior</button>
+        <span id="pageInfo">Página 1 de 10</span>
+        <button onclick="nextPage()">Siguiente</button>
+    </div>
 </div>
 
 <script src="js/search_products.js"></script>
-</body>
+</body> 
 </html>

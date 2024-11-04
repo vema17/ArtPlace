@@ -1,61 +1,70 @@
+/* Estilos Generales */
 body {
     font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
     background-color: #f4f4f4;
     margin: 0;
+    padding: 20px;
 }
+
 .container {
+    max-width: 700px;
+    margin: 0 auto;
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    max-width: 400px;
-    width: 100%;
 }
+
 h2 {
     text-align: center;
+    color: #333;
 }
+
+/* Estilos para las Etiquetas y Campos de Entrada */
 label {
     display: block;
-    margin-top: 10px;
+    margin-top: 15px;
     font-weight: bold;
+    color: #555;
 }
+
 input[type="text"],
 input[type="number"],
 input[type="file"],
-textarea,
-select {
+select,
+textarea {
     width: 100%;
     padding: 10px;
     margin-top: 5px;
     border-radius: 4px;
     border: 1px solid #ccc;
+    font-size: 14px;
 }
+
+textarea {
+    resize: vertical;
+}
+
+/* Estilos para el Botón de Enviar */
 button {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     background-color: #4CAF50;
     color: #fff;
     border: none;
     border-radius: 4px;
-    margin-top: 20px;
-    cursor: pointer;
     font-size: 16px;
+    cursor: pointer;
+    margin-top: 20px;
 }
+
 button:hover {
     background-color: #45a049;
 }
+
+/* Estilos para el Mensaje de Éxito o Error */
 .message {
-    text-align: center;
-    margin-top: 15px;
+    margin-top: 20px;
     font-size: 14px;
-}
-.success {
-    color: green;
-}
-.error {
-    color: red;
+    color: #e74c3c; /* Puedes cambiar el color según el estado del mensaje */
 }

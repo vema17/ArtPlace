@@ -1,15 +1,27 @@
 const Product = require('../models/productModel'); 
 
 // Crear un nuevo producto
-const createProduct = async (req, res) => {
+async function createProduct(req, res) {
   try {
-    const product = new Product(req.body);
-    await product.save();
-    res.status(201).json(product);
+      const { nombre_obra, artista, precio,  } = req.body;
+
+      // Crear el producto en MongoDB
+      const newProduct = new Product({ nombre_obra, artista, precio, ...otherFields });
+      await newProduct.save();
+
+      // Enviar un mensaje a RabbitMQ usando el canal desde app.locals
+      const channel = req.app.locals.channel;
+      const message = JSON.stringify({ action: 'product_created', product: newProduct });
+      
+      channel.publish('marketplace-exchange', 'productToUser', Buffer.from(message));
+      console.log(`Mensaje enviado a RabbitMQ: ${message}`);
+
+      res.status(201).json({ message: 'Producto creado exitosamente', product: newProduct });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+      console.error('Error al crear producto:', error);
+      res.status(500).json({ message: 'Error al crear producto', error });
   }
-};
+}
 
 // Obtener todos los productos
 const getAllProducts = async (req, res) => {

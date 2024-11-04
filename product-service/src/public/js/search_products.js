@@ -1,53 +1,57 @@
-// Simulación de datos de productos (estos datos deberían obtenerse del backend en una aplicación real)
-const products = [
-    { id: 1, nombre: 'Cuadro Abstracto', categoria: 'abstracto', precio: 200, artista: 'Artista 1', tecnica: 'oleo' },
-    { id: 2, nombre: 'Paisaje Natural', categoria: 'paisaje', precio: 500, artista: 'Artista 2', tecnica: 'acrilico' },
-    { id: 3, nombre: 'Retrato', categoria: 'retrato', precio: 300, artista: 'Artista 3', tecnica: 'acuarela' },
-    { id: 4, nombre: 'Cuadro Realista', categoria: 'realismo', precio: 700, artista: 'Artista 4', tecnica: 'carboncillo' }
-];
+let currentPage = 1;
+const resultsPerPage = 10; // Número de resultados por página
 
-// Función para aplicar los filtros de búsqueda
+// Función para aplicar los filtros y mostrar los resultados
 function applyFilters() {
-    const query = document.getElementById('query').value.toLowerCase();
+    const query = document.getElementById('query').value;
     const categoria = document.getElementById('categoria').value;
-    const precioMin = document.getElementById('precioMin').value ? parseFloat(document.getElementById('precioMin').value) : 0;
-    const precioMax = document.getElementById('precioMax').value ? parseFloat(document.getElementById('precioMax').value) : Infinity;
-    const artista = document.getElementById('artista').value.toLowerCase();
+    const precioMin = document.getElementById('precioMin').value;
+    const precioMax = document.getElementById('precioMax').value;
+    const artista = document.getElementById('artista').value;
     const tecnica = document.getElementById('tecnica').value;
 
-    // Filtrar los productos en base a los criterios seleccionados
-    const filteredProducts = products.filter(product => {
-        const matchesQuery = product.nombre.toLowerCase().includes(query) || product.descripcion?.toLowerCase().includes(query);
-        const matchesCategoria = !categoria || product.categoria === categoria;
-        const matchesPrecio = product.precio >= precioMin && product.precio <= precioMax;
-        const matchesArtista = !artista || product.artista.toLowerCase().includes(artista);
-        const matchesTecnica = !tecnica || product.tecnica === tecnica;
+    // Simulación de resultados de búsqueda
+    const searchResults = [
+        { titulo: "Cuadro Abstracto", descripcion: "Un hermoso cuadro abstracto", precio: 500, categoria: "Abstracto", artista: "Artista Ejemplo", tecnica: "Óleo" },
+        // Agregar más ejemplos de cuadros aquí para probar la paginación
+    ];
 
-        return matchesQuery && matchesCategoria && matchesPrecio && matchesArtista && matchesTecnica;
-    });
-
-    displayResults(filteredProducts);
+    displayResults(searchResults);
+    updatePagination(searchResults.length);
 }
 
-// Función para mostrar los resultados de la búsqueda
+// Función para mostrar los resultados en la página actual
 function displayResults(results) {
-    const resultsContainer = document.getElementById('searchResults');
-    resultsContainer.innerHTML = ''; // Limpiar resultados anteriores
+    const searchResultsContainer = document.getElementById('searchResults');
+    searchResultsContainer.innerHTML = "";
 
-    if (results.length === 0) {
-        resultsContainer.innerHTML = '<li>No se encontraron resultados.</li>';
-        return;
-    }
+    // Calcula los resultados que se muestran en la página actual
+    const start = (currentPage - 1) * resultsPerPage;
+    const end = start + resultsPerPage;
+    const paginatedResults = results.slice(start, end);
 
-    results.forEach(product => {
-        const listItem = document.createElement('li');
-        listItem.innerHTML = `
-            <strong>${product.nombre}</strong><br>
-            Categoría: ${product.categoria}<br>
-            Precio: $${product.precio}<br>
-            Artista: ${product.artista}<br>
-            Técnica: ${product.tecnica}
-        `;
-        resultsContainer.appendChild(listItem);
+    // Muestra los resultados en la lista
+    paginatedResults.forEach(result => {
+        const li = document.createElement('li');
+        li.innerHTML = `<h4>${result.titulo}</h4><p>${result.descripcion}</p><p><strong>Precio:</strong> $${result.precio}</p>`;
+        searchResultsContainer.appendChild(li);
     });
+}
+
+// Funciones de Paginación
+function nextPage() {
+    currentPage++;
+    applyFilters();
+}
+
+function previousPage() {
+    if (currentPage > 1) {
+        currentPage--;
+        applyFilters();
+    }
+}
+
+function updatePagination(totalResults) {
+    const totalPages = Math.ceil(totalResults / resultsPerPage);
+    document.getElementById("pageInfo").textContent = `Página ${currentPage} de ${totalPages}`;
 }

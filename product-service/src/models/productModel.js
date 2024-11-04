@@ -10,7 +10,6 @@ const productSchema = new mongoose.Schema({
   id_usuario: { type: Number, required: true },
   nombre_obra: {type: String, required: true},
   artista: { type: String, required: true },
-  medio: { type: String, required: true },
   fecha_publicacion: { type: Date, required: true },
   descripcion: { type: String, required: true },
   dimensiones: {
