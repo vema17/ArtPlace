@@ -49,8 +49,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
         // Actualizar la imagen de perfil si existe
         if (data.foto_perfil) {
-            document.getElementById('profilePic').src = `/uploads/users/profile_${userId}.jpg`; 
-            
+            const ext = data.foto_perfil.split('.').pop();
+            document.getElementById('profilePic').src = `/uploads/users/profile_${userId}.${ext}`; 
         }
     })
     .catch(error => {
