@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         // Actualizar la imagen de perfil si existe
         if (data.foto_perfil) {
-            document.getElementById('profilePic').src = `/uploads/profile_${userId}.jpg`; 
+            document.getElementById('profilePic').src = `/uploads/users/profile_${userId}.jpg`; 
             
         }
     })

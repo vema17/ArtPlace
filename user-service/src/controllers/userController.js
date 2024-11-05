@@ -68,6 +68,7 @@ exports.createUser = (req, res) => {
       [nombre, apellido, email, hashedPassword],
       (err, results) => {
         if (err) {
+          console.error('Error al crear usuario en la base de datos:', err);
           return res.status(500).json({ error: 'Error al crear usuario' });
         }
         res.status(201).json({ id: results.insertId, nombre, apellido, email });

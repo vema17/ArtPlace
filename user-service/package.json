@@ -4,8 +4,8 @@
   "description": "Una aplicación web en Node.js con Express y MySQL",
   "main": "app.js",
   "scripts": {
-    "start": "wait-on tcp:db:3306 && node app.js",
-    "dev": "wait-on tcp:db:3306 && nodemon app.js"
+    "start": "wait-on tcp:mysql:3306 && node src/app.js",
+    "dev": "wait-on tcp:mysql:3306 && nodemon src/app.js"
   },
   "keywords": [
     "nodejs",
