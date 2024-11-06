@@ -13,6 +13,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 connectMongoDB();
 
 // Configurar las rutas de productos
+app.use('/uploads', express.static('/app/uploads'));
 app.use('/api/products', productRoutes);
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'manager_products.html'));
