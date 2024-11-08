@@ -17,7 +17,7 @@ function submitForm() {
     }
 
     // Realizar una solicitud POST para enviar los datos al servidor
-    fetch('/api/agregar', {
+    fetch('/api/products/agregar', {
         method: 'POST',
         body: formData // Enviar el FormData para incluir la imagen
     })

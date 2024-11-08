@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ver Producto</title>
+    <link rel="stylesheet" href="css/view_product.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Detalles del Producto</h2>
+        <div class="product-details">
+            <!-- Imagen del Producto -->
+            <div class="product-image">
+                <img id="product-image" src="" alt="Imagen del Producto">
+            </div>
+            
+            <!-- Información del Producto -->
+            <div class="product-info">
+                <h3 id="product-name"></h3>
+                <p><strong>Categoría:</strong> <span id="product-category"></span></p>
+                <p><strong>Descripción:</strong> <span id="product-description"></span></p>
+                <p><strong>Precio:</strong> $<span id="product-price"></span></p>
+                <p><strong>Puntuación:</strong> <span id="product-rating"></span> estrellas</p>
+                <button id="buy-button">Comprar</button>
+            </div>
+        </div>
+        <div class="message" id="message"></div>
+    </div>
+
+    <script src="js/view_product.js"></script>
+</body>
+</html>
