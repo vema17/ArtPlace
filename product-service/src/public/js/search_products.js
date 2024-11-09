@@ -1,119 +1,99 @@
 let currentPage = 1;
-const resultsPerPage = 10; // Número de productos por página
+const resultsPerPage = 10;
 
-// Función para cargar todos los productos al iniciar la página
 async function loadAllProducts() {
-    currentPage = 1;
     try {
-        console.log("Cargando todos los productos...");
-        const response = await fetch(`/api/products?page=${currentPage}&limit=${resultsPerPage}`);
-        
-        if (!response || !response.ok) throw new Error(`Error de respuesta del servidor: ${response.status}`);
+        const response = await fetch('/api/products/all'); // Ruta para obtener todos los productos
+        if (!response.ok) throw new Error(`Error: ${response.statusText}`);
 
         const data = await response.json();
-        console.log("Datos recibidos:", data);
-
-        if (data && data.products) {
-            displayResults(data.products);
-            updatePagination(data.totalProducts);
-        } else {
-            displayResults([]);
-        }
+        displayResults(data.products); // Muestra todos los productos al inicio
     } catch (error) {
-        console.error("Error al cargar todos los productos:", error);
-        displayResults([]);
+        console.error("Error al cargar los productos:", error);
     }
 }
-
 // Función para aplicar filtros y obtener resultados
 async function applyFilters() {
-    // Recoge los valores de los filtros del DOM
-    const query = document.getElementById('query').value || '';
-    const categoria = document.getElementById('categoria').value || '';
-    const precioMin = document.getElementById('precioMin').value || '';
-    const precioMax = document.getElementById('precioMax').value || '';
-    const artista = document.getElementById('artista').value || '';
-    const tecnica = document.getElementById('tecnica').value || '';
+    const searchQuery = document.getElementById('searchQuery').value || '';
+    const categoria = document.querySelector("input[name='categoria']:checked")?.value || '';
+    const tecnica = document.querySelector("input[name='tecnica']:checked")?.value || '';
+    const estilo = document.querySelector("input[name='estilo']:checked")?.value || '';
+    const precioMin = document.getElementById('precioMin').value || 0;
+    const alturaMin = document.getElementById('alturaMin').value || '';
+    const alturaMax = document.getElementById('alturaMax').value || '';
+    const anchuraMin = document.getElementById('anchuraMin').value || '';
+    const anchuraMax = document.getElementById('anchuraMax').value || '';
 
-    // Construye los parámetros de la URL solo con filtros que tienen valor
-    const url = new URL('/api/products', window.location.origin);
-    url.searchParams.append('page', currentPage);
-    url.searchParams.append('limit', resultsPerPage);
-    if (query) url.searchParams.append('query', query);
-    if (categoria) url.searchParams.append('categoria', categoria);
-    if (precioMin) url.searchParams.append('precioMin', precioMin);
-    if (precioMax) url.searchParams.append('precioMax', precioMax);
-    if (artista) url.searchParams.append('artista', artista);
-    if (tecnica) url.searchParams.append('tecnica', tecnica);
+    // Construcción de la URL de la solicitud
+    let url = `/api/products/filtered?query=${encodeURIComponent(searchQuery)}&priceMin=${precioMin}`;
+    if (categoria) url += `&categoria=${encodeURIComponent(categoria)}`;
+    if (tecnica) url += `&tecnica=${encodeURIComponent(tecnica)}`;
+    if (estilo) url += `&estilo=${encodeURIComponent(estilo)}`;
+    if (alturaMin) url += `&alturaMin=${encodeURIComponent(alturaMin)}`;
+    if (alturaMax) url += `&alturaMax=${encodeURIComponent(alturaMax)}`;
+    if (anchuraMin) url += `&anchuraMin=${encodeURIComponent(anchuraMin)}`;
+    if (anchuraMax) url += `&anchuraMax=${encodeURIComponent(anchuraMax)}`;
 
     try {
-        console.log("Aplicando filtros con URL:", url.toString());
         const response = await fetch(url);
-
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        if (!response.ok) throw new Error(`Error: ${response.statusText}`);
 
         const data = await response.json();
-        console.log("Datos recibidos con filtros:", data);
-
-        if (data && data.products) {
-            displayResults(data.products);
-            updatePagination(data.totalProducts);
-        } else {
-            displayResults([]);
-        }
+        displayResults(data.products);
+        updatePagination(data.totalProducts);
     } catch (error) {
-        console.error("Error al obtener los productos:", error);
-        displayResults([]);
+        console.error("Error al aplicar filtros:", error);
     }
 }
 
-
-// Función para mostrar los resultados en formato de cuadrícula
-function displayResults(results) {
+// Función para mostrar los productos en la página
+function displayResults(products) {
     const searchResultsContainer = document.getElementById('searchResults');
-    searchResultsContainer.innerHTML = "";
+    searchResultsContainer.innerHTML = '';
 
-    if (results.length === 0) {
-        searchResultsContainer.innerHTML = "<li>No se encontraron productos.</li>";
+    if (products.length === 0) {
+        searchResultsContainer.innerHTML = "<p>No se encontraron productos.</p>";
         return;
     }
 
-    results.forEach(result => {
-        const li = document.createElement('li');
-        li.classList.add("product-item");
+    products.forEach(product => {
+        const productCard = document.createElement('div');
+        productCard.classList.add('product-item');
 
-        li.innerHTML = `
-            <img src="${result.imagen}" alt="${result.nombre_obra}" class="product-image">
-            <div class="product-details">
-                <h4>${result.nombre_obra}</h4>
-                <p><strong>Artista:</strong> ${result.artista}</p>
-                <p><strong>Precio:</strong> $${result.precio}</p>
-                <p><strong>Dimensiones:</strong> ${result.dimensiones.altura} cm x ${result.dimensiones.anchura} cm</p>
-                <button onclick="window.location.href='/product/${result._id}'" class="view-button">Ver Detalles</button>
-            </div>
+        productCard.innerHTML = `
+            <img src="${product.imagen}" alt="${product.nombre_obra}">
+            <h4>${product.nombre_obra}</h4>
+            <p><strong>Artista:</strong> ${product.artista}</p>
+            <p><strong>Precio:</strong> $${product.precio}</p>
+            <button class="view-button" onclick="window.location.href='/product/${product._id}'">Ver Detalles</button>
         `;
-        searchResultsContainer.appendChild(li);
+
+        searchResultsContainer.appendChild(productCard);
     });
 }
 
-// Función para actualizar la información de paginación
+// Actualizar la paginación
 function updatePagination(totalResults) {
     const totalPages = Math.ceil(totalResults / resultsPerPage);
     document.getElementById("pageInfo").textContent = `Página ${currentPage} de ${totalPages}`;
 
-    document.querySelector(".pagination button:nth-child(1)").disabled = currentPage === 1;
-    document.querySelector(".pagination button:nth-child(3)").disabled = currentPage === totalPages;
+    document.getElementById("prevPage").disabled = currentPage === 1;
+    document.getElementById("nextPage").disabled = currentPage === totalPages;
 }
 
-// Funciones para manejar la paginación
-function nextPage() {
-    currentPage++;
-    applyFilters();
-}
-
-function previousPage() {
+// Función para la página anterior
+function prevPage() {
     if (currentPage > 1) {
         currentPage--;
         applyFilters();
     }
 }
+
+// Función para la página siguiente
+function nextPage() {
+    currentPage++;
+    applyFilters();
+}
+
+// Cargar productos iniciales
+window.onload = applyFilters;

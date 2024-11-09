@@ -6,68 +6,93 @@
     <title>Catálogo de Productos - Cuadros</title>
     <link rel="stylesheet" href="css/search_products.css">
 </head>
-<body onload="loadAllProducts()">
+<body>
 
-<div class="container">
-    <h2>Catálogo de Cuadros</h2>
+    <div class="container">
+        <!-- Barra lateral de filtros -->
+        <aside class="sidebar">
+            <h3>Filtros</h3>
 
-    <!-- Barra de búsqueda con filtros -->
-    <form id="searchForm" onsubmit="event.preventDefault(); applyFilters();">
-        <div class="search-bar">
-            <label for="query">Palabras clave</label>
-            <input type="text" id="query" name="query" placeholder="Buscar por título o descripción" />
-        </div>
+            <!-- Barra de búsqueda -->
+            <div class="filter-group">
+                <h4>Buscar</h4>
+                <input type="text" id="searchQuery" name="searchQuery" placeholder="Buscar por título o descripción" oninput="applyFilters()">
+            </div>
+    
+            <!-- Categoría -->
+            <div class="filter-group">
+                <h4>Categoría</h4>
+                <label><input type="radio" name="categoria" value="" checked> Todas las Categorías</label>
+                <label><input type="radio" name="categoria" value="Abstraccion"> Abstracción</label>
+                <label><input type="radio" name="categoria" value="Paisajismo"> Paisajismo</label>
+                <label><input type="radio" name="categoria" value="Naturaleza"> Naturaleza</label>
+                <label><input type="radio" name="categoria" value="Retrato"> Retrato</label>
+                <!-- Agrega más categorías según sea necesario -->
+            </div>
+    
+            <!-- Técnica -->
+            <div class="filter-group">
+                <h4>Técnica</h4>
+                <label><input type="radio" name="tecnica" value="" checked> Todas las Técnicas</label>
+                <label><input type="radio" name="tecnica" value="Oleo"> Óleo</label>
+                <label><input type="radio" name="tecnica" value="Acrilico"> Acrílico</label>
+                <label><input type="radio" name="tecnica" value="Acuarela"> Acuarela</label>
+                <label><input type="radio" name="tecnica" value="Carboncillo"> Carboncillo</label>
+                <!-- Agrega más técnicas según sea necesario -->
+            </div>
+    
+            <!-- Estilo -->
+            <div class="filter-group">
+                <h4>Estilo</h4>
+                <label><input type="radio" name="estilo" value="" checked> Todos los Estilos</label>
+                <label><input type="radio" name="estilo" value="Abstracto"> Abstracto</label>
+                <label><input type="radio" name="estilo" value="Figurativo"> Figurativo</label>
+                <label><input type="radio" name="estilo" value="Realismo"> Realismo</label>
+                <label><input type="radio" name="estilo" value="Surrealismo"> Surrealismo</label>
+                <!-- Agrega más estilos según sea necesario -->
+            </div>
+    
+            <!-- Precio -->
+            <div class="filter-group">
+                <h4>Precio</h4>
+                <input type="range" id="precioMin" name="precioMin" min="0" max="5000" step="50" oninput="document.getElementById('precioMinVal').innerText = this.value">
+                <span id="precioMinVal">0</span> USD
+            </div>
+    
+            <!-- Tamaño de la pintura -->
+            <div class="filter-group">
+                <h4>Tamaño de la Pintura (cm)</h4>
+                <label>Altura:</label>
+                <input type="number" id="alturaMin" name="alturaMin" placeholder="Mín" min="0">
+                <input type="number" id="alturaMax" name="alturaMax" placeholder="Máx" min="0">
+                <label>Anchura:</label>
+                <input type="number" id="anchuraMin" name="anchuraMin" placeholder="Mín" min="0">
+                <input type="number" id="anchuraMax" name="anchuraMax" placeholder="Máx" min="0">
+            </div>
+        </aside>
+    
+        <!-- Contenido principal -->
+        <main class="main-content">
+            <!-- Barra de opciones -->
+            <div class="options-bar">
+                <h2>Pinturas Originales A La Venta</h2>
+                <p>Compra una pintura en venta de talentos internacionales de todo el mundo. Elija entre una variedad de estilos...</p>
+                <button class="save-search">Guardar búsqueda</button>
+            </div>
+    
+            <!-- Cuadrícula de productos -->
+            <section class="product-grid" id="searchResults">
+                <!-- Los productos se cargarán dinámicamente aquí -->
+            </section>
 
-        <div class="filters">
-            <!-- Filtro de categoría -->
-            <label for="categoria">Categoría</label>
-            <select id="categoria" name="categoria">
-                <option value="">Todas</option>
-                <option value="Abstracto">Abstracto</option>
-                <option value="Paisaje">Paisaje</option>
-                <option value="Retrato">Retrato</option>
-                <option value="Realismo">Realismo</option>
-            </select>
-
-            <!-- Filtro de precio -->
-            <label for="precioMin">Precio mínimo</label>
-            <input type="number" id="precioMin" name="precioMin" placeholder="0" min="0" />
-
-            <label for="precioMax">Precio máximo</label>
-            <input type="number" id="precioMax" name="precioMax" placeholder="10000" min="0" />
-
-            <!-- Filtro de artista -->
-            <label for="artista">Artista</label>
-            <input type="text" id="artista" name="artista" placeholder="Nombre del artista" />
-
-            <!-- Filtro de técnica -->
-            <label for="tecnica">Técnica</label>
-            <select id="tecnica" name="tecnica">
-                <option value="">Todas</option>
-                <option value="Óleo">Óleo</option>
-                <option value="Acrílico">Acrílico</option>
-                <option value="Acuarela">Acuarela</option>
-                <option value="Carboncillo">Carboncillo</option>
-            </select>
-        </div>
-
-        <!-- Botón de búsqueda -->
-        <button type="button" onclick="applyFilters()">Buscar</button>
-    </form>
-
-    <!-- Resultados de la búsqueda -->
-    <h3>Resultados de la Búsqueda</h3>
-    <ul id="searchResults">
-        <!-- Los resultados de la búsqueda se mostrarán aquí -->
-    </ul>
-
-    <!-- Paginación -->
-    <div class="pagination">
-        <button onclick="previousPage()">Anterior</button>
-        <span id="pageInfo">Página 1 de 10</span>
-        <button onclick="nextPage()">Siguiente</button>
+            <!-- Paginación -->
+            <div class="pagination">
+                <button id="prevPage" onclick="prevPage()" disabled>Anterior</button>
+                <span id="pageInfo">Página 1</span>
+                <button id="nextPage" onclick="nextPage()">Siguiente</button>
+            </div>
+        </main>
     </div>
-</div>
 
 <script src="js/search_products.js"></script>
 </body>
