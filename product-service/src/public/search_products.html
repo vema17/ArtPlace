@@ -6,13 +6,13 @@
     <title>Catálogo de Productos - Cuadros</title>
     <link rel="stylesheet" href="css/search_products.css">
 </head>
-<body>
+<body onload="loadAllProducts()">
 
 <div class="container">
     <h2>Catálogo de Cuadros</h2>
 
     <!-- Barra de búsqueda con filtros -->
-    <form id="searchForm">
+    <form id="searchForm" onsubmit="event.preventDefault(); applyFilters();">
         <div class="search-bar">
             <label for="query">Palabras clave</label>
             <input type="text" id="query" name="query" placeholder="Buscar por título o descripción" />
@@ -23,11 +23,10 @@
             <label for="categoria">Categoría</label>
             <select id="categoria" name="categoria">
                 <option value="">Todas</option>
-                <option value="abstracto">Abstracto</option>
-                <option value="paisaje">Paisaje</option>
-                <option value="retrato">Retrato</option>
-                <option value="realismo">Realismo</option>
-                <!-- Agregar más categorías según sea necesario -->
+                <option value="Abstracto">Abstracto</option>
+                <option value="Paisaje">Paisaje</option>
+                <option value="Retrato">Retrato</option>
+                <option value="Realismo">Realismo</option>
             </select>
 
             <!-- Filtro de precio -->
@@ -45,11 +44,10 @@
             <label for="tecnica">Técnica</label>
             <select id="tecnica" name="tecnica">
                 <option value="">Todas</option>
-                <option value="oleo">Óleo</option>
-                <option value="acrilico">Acrílico</option>
-                <option value="acuarela">Acuarela</option>
-                <option value="carboncillo">Carboncillo</option>
-                <!-- Agregar más técnicas según sea necesario -->
+                <option value="Óleo">Óleo</option>
+                <option value="Acrílico">Acrílico</option>
+                <option value="Acuarela">Acuarela</option>
+                <option value="Carboncillo">Carboncillo</option>
             </select>
         </div>
 
@@ -72,5 +70,5 @@
 </div>
 
 <script src="js/search_products.js"></script>
-</body> 
+</body>
 </html>

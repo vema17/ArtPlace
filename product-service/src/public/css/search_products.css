@@ -1,78 +1,84 @@
-/* Estilos Generales */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 20px;
-}
-
+/* Contenedor principal */
 .container {
-    max-width: 900px;
+    max-width: 800px;
     margin: 0 auto;
-    background-color: #fff;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-family: Arial, sans-serif;
 }
 
-h2, h3 {
+/* Título del catálogo */
+h2 {
     text-align: center;
     color: #333;
-}
-
-/* Barra de Búsqueda y Filtros */
-form#searchForm {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    align-items: center;
     margin-bottom: 20px;
 }
 
+/* Barra de búsqueda y filtros */
 .search-bar, .filters {
-    flex: 1;
-    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 15px;
 }
 
-label {
+.search-bar label, .filters label {
     font-weight: bold;
-    color: #555;
+    color: #333;
 }
 
-input[type="text"], input[type="number"], select {
-    width: 100%;
+.search-bar input[type="text"],
+.filters input[type="number"],
+.filters select {
     padding: 8px;
-    margin-top: 5px;
-    border-radius: 4px;
     border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-/* Botón de Búsqueda */
-button {
-    padding: 10px 15px;
-    background-color: #4CAF50;
-    color: #fff;
+/* Botón de búsqueda */
+button[type="button"] {
+    padding: 10px 20px;
+    margin-top: 10px;
+    background-color: #5cb85c;
+    color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    font-size: 16px;
 }
 
-button:hover {
-    background-color: #45a049;
+button[type="button"]:hover {
+    background-color: #4cae4c;
 }
 
-/* Resultados de Búsqueda */
-ul#searchResults {
+/* Resultados de búsqueda */
+#searchResults {
     list-style-type: none;
     padding: 0;
 }
 
-ul#searchResults li {
+#searchResults li {
     background-color: #f9f9f9;
-    margin-bottom: 10px;
     padding: 15px;
-    border-radius: 8px;
     border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+#searchResults h4 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+}
+
+#searchResults p {
+    margin: 5px 0;
+    color: #666;
+}
+
+#searchResults p strong {
+    color: #333;
 }
 
 /* Paginación */
@@ -81,22 +87,29 @@ ul#searchResults li {
     justify-content: center;
     align-items: center;
     margin-top: 20px;
-    gap: 10px;
 }
 
 .pagination button {
     padding: 8px 12px;
-    background-color: #4CAF50;
-    color: #fff;
+    margin: 0 5px;
+    background-color: #007bff;
+    color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
 }
 
-.pagination button:hover {
-    background-color: #45a049;
+.pagination button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
 }
 
-#pageInfo {
-    font-weight: bold;
+.pagination button:hover:not(:disabled) {
+    background-color: #0056b3;
+}
+
+.pagination span {
+    font-size: 16px;
+    color: #333;
+    margin: 0 10px;
 }

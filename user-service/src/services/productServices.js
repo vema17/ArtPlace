@@ -32,7 +32,3 @@ connectRabbitMQ()
     });
   })
   .catch((err) => console.error('Error connecting to RabbitMQ:', err));
-
-// Iniciar el servidor
-const PORT = process.env.USER_SERVICE_PORT || 5002;
-app.listen(PORT, () => console.log(`Microservicio de Usuario corriendo en ${PORT}`));

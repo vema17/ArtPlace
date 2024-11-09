@@ -1,44 +1,88 @@
 let currentPage = 1;
-const resultsPerPage = 10; // Número de resultados por página
+const resultsPerPage = 10; // Número de productos por página
 
-// Función para aplicar los filtros y mostrar los resultados
-function applyFilters() {
-    const query = document.getElementById('query').value;
-    const categoria = document.getElementById('categoria').value;
-    const precioMin = document.getElementById('precioMin').value;
-    const precioMax = document.getElementById('precioMax').value;
-    const artista = document.getElementById('artista').value;
-    const tecnica = document.getElementById('tecnica').value;
+// Función para cargar todos los productos al iniciar la página
+async function loadAllProducts() {
+    currentPage = 1;
+    try {
+        const response = await fetch(`/api/products?page=${currentPage}&limit=${resultsPerPage}`);
+        
+        if (!response || !response.ok) throw new Error(`Error de respuesta del servidor`);
 
-    // Simulación de resultados de búsqueda
-    const searchResults = [
-        { titulo: "Cuadro Abstracto", descripcion: "Un hermoso cuadro abstracto", precio: 500, categoria: "Abstracto", artista: "Artista Ejemplo", tecnica: "Óleo" },
-        // Agregar más ejemplos de cuadros aquí para probar la paginación
-    ];
+        const data = await response.json();
+        console.log("Datos recibidos:", data);
 
-    displayResults(searchResults);
-    updatePagination(searchResults.length);
+        if (data && data.products) {
+            displayResults(data.products);
+            updatePagination(data.totalProducts);
+        } else {
+            displayResults([]);
+        }
+    } catch (error) {
+        console.error("Error al cargar todos los productos:", error);
+        displayResults([]);
+    }
 }
 
-// Función para mostrar los resultados en la página actual
+
+// Función para aplicar filtros y obtener resultados
+async function applyFilters() {
+    const query = document.getElementById('query').value || '';
+    const categoria = document.getElementById('categoria').value || '';
+    const precioMin = document.getElementById('precioMin').value || '';
+    const precioMax = document.getElementById('precioMax').value || '';
+    const artista = document.getElementById('artista').value || '';
+    const tecnica = document.getElementById('tecnica').value || '';
+
+    try {
+        const response = await fetch(`/api/products?query=${encodeURIComponent(query)}&categoria=${encodeURIComponent(categoria)}&precioMin=${encodeURIComponent(precioMin)}&precioMax=${encodeURIComponent(precioMax)}&artista=${encodeURIComponent(artista)}&tecnica=${encodeURIComponent(tecnica)}&page=${currentPage}&limit=${resultsPerPage}`);
+
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+        const data = await response.json();
+        if (data && data.products) {
+            displayResults(data.products);
+            updatePagination(data.totalProducts);
+        } else {
+            displayResults([]);
+        }
+    } catch (error) {
+        console.error("Error al obtener los productos:", error);
+        displayResults([]);
+    }
+}
+
+// Función para mostrar los resultados en el DOM
 function displayResults(results) {
     const searchResultsContainer = document.getElementById('searchResults');
     searchResultsContainer.innerHTML = "";
 
-    // Calcula los resultados que se muestran en la página actual
-    const start = (currentPage - 1) * resultsPerPage;
-    const end = start + resultsPerPage;
-    const paginatedResults = results.slice(start, end);
+    if (results.length === 0) {
+        searchResultsContainer.innerHTML = "<li>No se encontraron productos.</li>";
+        return;
+    }
 
-    // Muestra los resultados en la lista
-    paginatedResults.forEach(result => {
+    results.forEach(result => {
         const li = document.createElement('li');
-        li.innerHTML = `<h4>${result.titulo}</h4><p>${result.descripcion}</p><p><strong>Precio:</strong> $${result.precio}</p>`;
+        li.innerHTML = `
+            <h4>${result.nombre_obra}</h4>
+            <p>${result.descripcion}</p>
+            <p><strong>Precio:</strong> $${result.precio}</p>
+            <p><strong>Artista:</strong> ${result.artista}</p>`;
         searchResultsContainer.appendChild(li);
     });
 }
 
-// Funciones de Paginación
+// Función para actualizar la información de paginación
+function updatePagination(totalResults) {
+    const totalPages = Math.ceil(totalResults / resultsPerPage);
+    document.getElementById("pageInfo").textContent = `Página ${currentPage} de ${totalPages}`;
+
+    document.querySelector(".pagination button:nth-child(1)").disabled = currentPage === 1;
+    document.querySelector(".pagination button:nth-child(3)").disabled = currentPage === totalPages;
+}
+
+// Funciones para manejar la paginación
 function nextPage() {
     currentPage++;
     applyFilters();
@@ -49,9 +93,4 @@ function previousPage() {
         currentPage--;
         applyFilters();
     }
-}
-
-function updatePagination(totalResults) {
-    const totalPages = Math.ceil(totalResults / resultsPerPage);
-    document.getElementById("pageInfo").textContent = `Página ${currentPage} de ${totalPages}`;
 }

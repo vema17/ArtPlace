@@ -16,7 +16,7 @@ connectMongoDB();
 app.use('/uploads', express.static('/app/uploads'));
 app.use('/api/products', productRoutes);
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'manager_products.html'));
+    res.sendFile(path.join(__dirname, 'public', 'search_products.html'));
   });
 
 // Conectar a RabbitMQ

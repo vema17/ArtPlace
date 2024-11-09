@@ -1,6 +1,6 @@
           
 // show collections;                   
-db = db.getSiblingDB('mis_productos');  
+db = db.getSiblingDB('productdb');  
 db.createCollection('productos', {
   validator: {
     $jsonSchema: {
