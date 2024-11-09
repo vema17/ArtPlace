@@ -26,10 +26,17 @@ async function createProduct(req, res) {
 // Obtener todos los productos
 const getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find();
-    res.status(200).json(products);
+      const { page = 1, limit = 10 } = req.query;
+      const skip = (page - 1) * limit;
+
+      // Encuentra productos y aplica paginación
+      const products = await Product.find().skip(parseInt(skip)).limit(parseInt(limit));
+      const totalProducts = await Product.countDocuments(); // Total para la paginación
+
+      res.json({ products, totalProducts });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+      console.error('Error al obtener productos:', error);
+      res.status(500).json({ message: 'Error al obtener productos' });
   }
 };
 
