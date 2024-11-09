@@ -4,6 +4,37 @@ const urlParams = new URLSearchParams(window.location.search);
 document.addEventListener("DOMContentLoaded", function() {
     const userId = localStorage.getItem('userId'); // Recuperar el ID del usuario de localStorage
 
+    // Revisar se existe perfil
+    fetch(`/api/users/${userId}/perfil`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`, // Autenticación si aplica
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            if (response.status === 404) {
+                // Si el perfil no se encuentra, desactiva el botón
+                const editarDireccionLink = document.getElementById('editarDireccionLink');
+                editarDireccionLink.classList.add('disabled');
+                editarDireccionLink.style.pointerEvents = 'none';
+                editarDireccionLink.style.opacity = '0.5';
+                console.warn('Perfil no encontrado');
+            }
+            return response.json().then(data => {
+                throw new Error(data.error || 'Error desconocido');
+            });
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Aquí puedes manejar la información del perfil sin mostrar alertas
+        console.log(`Perfil encontrado: ${data.nombre_usuario}`);
+    })
+    .catch(error => {
+        console.error(error.message); // Manejo de errores en la consola
+    });
+
     // Hacer la solicitud GET para obtener los datos del perfil
     fetch(`/api/users/${userId}`, {
         method: 'GET',
@@ -54,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     })
     .catch(error => {
-        alert(`Error al obtener la biografía: ${error.message}`);
+        console.error(error.message);
     });
 
     // Dirección
@@ -79,6 +110,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     })
     .catch(error => {
-        alert(`Error al obtener el Dirección: ${error.message}`);
+        // alert(`Error al obtener el Dirección: ${error.message}`);
     });
 });

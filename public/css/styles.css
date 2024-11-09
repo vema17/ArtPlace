@@ -12,6 +12,11 @@ body {
     color: #333;
   }
   
+  .disabled {
+    cursor: not-allowed;
+    color: grey;
+  }
+
   .card {
     background-color: #fff;
     border-radius: 10px;
