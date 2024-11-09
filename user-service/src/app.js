@@ -16,7 +16,7 @@ app.use('/uploads', express.static('/app/uploads'));
 
 // Ruta para servir el archivo HTML en la página principal
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'home.html'));
+  res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
 // Rutas protegidas 
