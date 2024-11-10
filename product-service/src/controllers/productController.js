@@ -1,13 +1,19 @@
 const Product = require('../models/productModel');
+const { getCurrentUserId } = require('../middleware/productConsumer');
 
 // Crear un nuevo producto
 async function createProduct(req, res) {
   try {
+      const userId = getCurrentUserId(); // Obtiene el ID del usuario actual
+
+      if (!userId) {
+          return res.status(401).json({ message: 'No se ha encontrado el ID del usuario. Por favor, inicia sesión.' });
+      }
+
       const { titulo, descripcion, artista, altura, anchura, precio, categoria, estilo, tecnica, imagen } = req.body;
-      const id_usuario = req.userId;
 
       const newProduct = new Product({
-          id_usuario,
+          id_usuario: userId,
           nombre_obra: titulo,
           descripcion,
           artista,
