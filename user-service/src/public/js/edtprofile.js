@@ -1,3 +1,38 @@
+document.addEventListener('DOMContentLoaded', () => {
+
+    const userId = localStorage.getItem('userId'); // Recuperar el ID del usuario de localStorage
+
+    fetch(`/api/users/${userId}/perfil`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`, // Si estás usando autenticación
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(data => {
+                throw new Error(data.error || 'Error desconocido');
+            });
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.nombre_usuario) { // Verifica si existe data.nombre_usuario
+            console.log(`Nombre del usuario: ${data.nombre_usuario}`); // Escribe el nombre en el log
+        }
+    })
+    .catch(error => {
+        const editarDireccionLink = document.getElementById('editarDireccionLink');
+        editarDireccionLink.classList.add('disabled'); // Clase para estilo
+        editarDireccionLink.style.pointerEvents = 'none'; // Para no poder clickear 
+        editarDireccionLink.style.opacity = '0.5'; 
+
+        console.error(error);
+        // alert(`Error: ${error.message}`);
+    });
+
+});
+
 document.getElementById('editarPerfilForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
