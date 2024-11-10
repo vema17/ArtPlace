@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/shoping_cart.css">
+</head>
+<body>
+    <!-- Encabezado -->
+    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="../user/home.html">
+            <img src="assets/ArtPlace.png" alt="Logo" width="150" height="auto">
+          </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link" href="../product_service/manager_product.html">Publicar</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Nosotros</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Contacto</a>
+              </li>
+            </ul>
+            <form class="d-flex ms-3">
+                <a href="search_products.html" class="btn btn-outline-light me-2">Buscar</a>
+              <a href="shoping_cart.html" class="nav-link"></a>
+                <i class="fas fa-shopping-cart"></i> <!-- Carrito de compras -->
+              </a>
+              <a href="../user/profile.html" class="d-flex align-items-center text-decoration-none">
+                <img src="assets/avt.png" alt="User" width="40" height="40" class="rounded-circle me-2">
+              </a>
+            </form>
+          </div>
+        </div>
+      </nav>
+
+    <!-- Contenido principal -->
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Carrito de Compras</h2>
+        <div class="row">
+            <!-- Lista de productos -->
+            <div class="col-lg-8">
+                <div class="card mb-3">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="../assets/example-product.jpg" class="img-fluid rounded-start" alt="Producto">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">Nombre del Producto</h5>
+                                <p class="card-text">Descripción breve del producto.</p>
+                                <p class="card-text"><strong>Precio:</strong> $100.00</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <input type="number" class="form-control w-25" min="1" value="1">
+                                    <button class="btn btn-danger btn-sm ms-2">Eliminar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Puedes duplicar el bloque anterior para más productos -->
+            </div>
+
+            <!-- Resumen del carrito -->
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Resumen de Compra</h5>
+                        <hr>
+                        <p class="card-text"><strong>Subtotal:</strong> $200.00</p>
+                        <p class="card-text"><strong>Envío:</strong> $20.00</p>
+                        <hr>
+                        <p class="card-text"><strong>Total:</strong> $220.00</p>
+                        <button class="btn btn-success w-100">Finalizar Compra</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-white text-center text-lg-start mt-5" style="background-color: rgba(0, 0, 0, 0.8);">
+        <div class="container p-4">
+            <div class="row">
+                <!-- Información -->
+                <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
+                    <img src="assets/ArtPlace.png" alt="ArtPlace Logo" style="max-width: 180px;">
+                    <p>
+                        Explora nuestra tienda de arte donde artistas de todo el mundo pueden comprar y vender sus creaciones.
+                    </p>
+                </div>
+                <!-- Enlaces útiles -->
+                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                    <h5>Enlaces útiles</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="../user/home.html" class="text-white">Inicio</a></li>
+                        <li><a href="../user/profile.html" class="text-white">Mi Perfil</a></li>
+                        <li><a href="manager_product.html" class="text-white">Publicar</a></li>
+                    </ul>
+                </div>
+                <!-- Redes sociales -->
+                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                    <h5>Síguenos</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white"><i class="fab fa-facebook-f"></i> Facebook</a></li>
+                        <li><a href="#" class="text-white"><i class="fab fa-twitter"></i> Twitter</a></li>
+                        <li><a href="#" class="text-white"><i class="fab fa-instagram"></i> Instagram</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.9);">
+            © 2024 ArtPlace. Todos los derechos reservados.
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
