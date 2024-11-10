@@ -99,7 +99,10 @@ const applyFilters = async () => {
   const anchuraMin = document.getElementById('anchuraMin').value || '';
   const anchuraMax = document.getElementById('anchuraMax').value || '';
 
-  let url = `/api/products/filtered?query=${encodeURIComponent(searchQuery)}&priceMin=${priceMin}&page=${currentPage}&limit=${resultsPerPage}`;
+  let url = `/api/products/filtered?query=${searchQuery ? encodeURIComponent(searchQuery) : ''}`;
+  if (priceMin) url += `&priceMin=${encodeURIComponent(priceMin)}`;
+  if (currentPage) url += `&page=${encodeURIComponent(currentPage)}`;
+  if (resultsPerPage) url += `&limit=${encodeURIComponent(resultsPerPage)}`;
   if (categoria) url += `&categoria=${encodeURIComponent(categoria)}`;
   if (tecnica) url += `&tecnica=${encodeURIComponent(tecnica)}`;
   if (estilo) url += `&estilo=${encodeURIComponent(estilo)}`;
@@ -107,6 +110,7 @@ const applyFilters = async () => {
   if (alturaMax) url += `&alturaMax=${encodeURIComponent(alturaMax)}`;
   if (anchuraMin) url += `&anchuraMin=${encodeURIComponent(anchuraMin)}`;
   if (anchuraMax) url += `&anchuraMax=${encodeURIComponent(anchuraMax)}`;
+  
 
   // Actualiza los parámetros de la URL incluyendo la página actual
   const urlParams = new URLSearchParams({
@@ -187,6 +191,7 @@ function updatePagination(totalResults) {
   document.getElementById("nextPage").disabled = currentPage === totalPages;
 }
 
+
 function prevPage() {
   if (currentPage > 1) {
     currentPage--;
@@ -201,4 +206,4 @@ function nextPage() {
 
 
 // Cargar productos iniciales
-window.onload = loadAllProducts;
+window.onload = applyFilters;
