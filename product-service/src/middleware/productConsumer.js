@@ -1,27 +1,23 @@
-// src/consumers/productConsumer.js
+// productConsumer.js
 const { consumeMessages } = require('../config/rabbitmqService');
 
-let currentUserId = null; // Variable para almacenar el ID del usuario
-
-// Función para manejar los mensajes de inicio de sesión
+// Función para manejar los mensajes recibidos
 function handleUserLogin(message) {
     if (message.action === 'user_login') {
-        currentUserId = message.userId;
-        console.log(`User ID ${message.userId} almacenado en el consumidor.`);
+        if (typeof window !== 'undefined') {
+            localStorage.setItem('userId', message.userId);
+            console.log(`User ID ${message.userId} almacenado en localStorage.`);
+        } else {
+            console.log(`User ID ${message.userId} recibido en el servidor.`);
+        }
     }
 }
 
-// Inicia el consumo de mensajes de la cola 'authToProduct'
+// Consumir mensajes de la cola 'authToProduct'
 async function startConsuming() {
-    try {
-        await consumeMessages('authToProduct', handleUserLogin);
-        console.log('Consumo iniciado en la cola authToProduct');
-    } catch (error) {
-        console.error('Error al iniciar el consumo de mensajes:', error);
-    }
+    await consumeMessages('authToProduct', handleUserLogin);
 }
 
 module.exports = {
     startConsuming,
-    getCurrentUserId: () => currentUserId, // Exporta el ID del usuario actual
 };
