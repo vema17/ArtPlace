@@ -69,6 +69,7 @@ const getFilteredProducts = async (req, res) => {
 
     // Cálculo de paginación
     const skip = (page - 1) * limit;
+
     const products = await Product.find(filters).skip(skip).limit(parseInt(limit));
     const totalResults = await Product.countDocuments(filters);
 
@@ -78,12 +79,12 @@ const getFilteredProducts = async (req, res) => {
     console.error("Error en getFilteredProducts:", error);
     res.status(500).json({ error: 'Error interno del servidor' });
   }
-};
+}; 
 
 // Obtener un producto por su ID
 const getProductById = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findOne(req.params.id);
     if (!product) {
       return res.status(404).json({ message: 'Producto no encontrado' });
     }
@@ -96,7 +97,7 @@ const getProductById = async (req, res) => {
 // Actualizar un producto
 const updateProduct = async (req, res) => {
   try {
-    const product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const product = await Product.findOneAndUpdate(req.params.id, req.body, { new: true });
     if (!product) {
       return res.status(404).json({ message: 'Producto no encontrado' });
     }
@@ -109,7 +110,7 @@ const updateProduct = async (req, res) => {
 // Eliminar un producto
 const deleteProduct = async (req, res) => {
   try {
-    const product = await Product.findByIdAndDelete(req.params.id);
+    const product = await Product.findOneAndDelete(req.params.id);
     if (!product) {
       return res.status(404).json({ message: 'Producto no encontrado' });
     }

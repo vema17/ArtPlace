@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Función para obtener los detalles del producto desde la API
     const fetchProductDetails = async (productId) => {
         try {
-            const response = await fetch(`/api/products/${productId}`);
+            const response = await fetch(`/api/products/get/${productId}`);
             if (!response.ok) {
                 throw new Error('Producto no encontrado');
             }

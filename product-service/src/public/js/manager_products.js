@@ -58,7 +58,7 @@ function deleteProduct(id) {
         console.log(`Producto con ID ${id} eliminado`);
         // Actualizar la lista local de productos
         // Realiza una petición a la API para eliminar el producto
-        fetch(`/api/products/${id}`, {
+        fetch(`/api/products/delete/${id}`, {
             method: 'DELETE',
         }).then(() => {
             loadProducts(); // Recargar la lista de productos
