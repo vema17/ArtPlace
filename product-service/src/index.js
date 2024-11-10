@@ -2,10 +2,12 @@ require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const connectMongoDB = require('./config/mongodb'); 
-const connectRabbitMQ = require('./config/rabbitmq');
+const { connectRabbitMQ } = require('./config/rabbitmqService');
+const { startConsuming } = require('./middleware/productConsumer');
 const productRoutes = require('./routes/productRoutes');
 
 const app = express();
+
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -17,15 +19,15 @@ connectMongoDB();
 app.use('/uploads', express.static('/app/uploads'));
 app.use('/api/products', productRoutes);
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'search_products.html'));
+    res.sendFile(path.join(__dirname, 'public', 'manager_products.html'));
   });
 
-// Conectar a RabbitMQ
-connectRabbitMQ()
-    .then(channel => {
-        app.locals.channel = channel;
-    })
-    .catch(err => console.error('Error connecting to RabbitMQ:', err));
+async function startApp() {
+  await connectRabbitMQ();
+  startConsuming();
+}
+
+startApp();
 
 // Iniciar el servidor
 const PORT = process.env.PORT || 5001;

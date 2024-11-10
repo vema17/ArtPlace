@@ -1,21 +1,29 @@
-const Product = require('../models/productModel'); 
+const Product = require('../models/productModel');
+const { getCurrentUserId } = require('../middleware/productConsumer');
 
 // Crear un nuevo producto
 async function createProduct(req, res) {
   try {
-      const { nombre_obra, artista, precio,  } = req.body;
+      const userId = getCurrentUserId(); // Obtiene el ID del usuario actual
 
-      // Crear el producto en MongoDB
-      const newProduct = new Product({ nombre_obra, artista, precio, ...otherFields });
+      if (!userId) {
+          return res.status(401).json({ message: 'No se ha encontrado el ID del usuario. Por favor, inicia sesión.' });
+      }
+
+      const { titulo, descripcion, artista, altura, anchura, precio, categoria, estilo, tecnica, imagen } = req.body;
+
+      const newProduct = new Product({
+          id_usuario: userId,
+          nombre_obra: titulo,
+          descripcion,
+          artista,
+          dimensiones: { altura, anchura },
+          precio,
+          etiquetas: [{ categoria, estilo, tecnica }],
+          imagen,
+      });
+
       await newProduct.save();
-
-      // Enviar un mensaje a RabbitMQ usando el canal desde app.locals
-      const channel = req.app.locals.channel;
-      const message = JSON.stringify({ action: 'product_created', product: newProduct });
-      
-      channel.publish('marketplace-exchange', 'productToUser', Buffer.from(message));
-      console.log(`Mensaje enviado a RabbitMQ: ${message}`);
-
       res.status(201).json({ message: 'Producto creado exitosamente', product: newProduct });
   } catch (error) {
       console.error('Error al crear producto:', error);
@@ -33,60 +41,44 @@ const getAllProducts = async (req, res) => {
   }
 };
 
+// Obtener productos filtrados
 const getFilteredProducts = async (req, res) => {
   try {
-    console.log("Consulta de filtros recibida:", req.query); // Verifica los parámetros recibidos
-
-    const { query, categoria, tecnica, estilo, priceMin, alturaMin, alturaMax, anchuraMin, anchuraMax } = req.query;
+    const { query, categoria, tecnica, estilo, priceMin, alturaMin, alturaMax, anchuraMin, anchuraMax, page = 1, limit = 10 } = req.query;
     const filters = {};
 
-    // Construcción de filtros con mensajes de depuración
-    if (query) {
-      filters.nombre_obra = { $regex: query, $options: 'i' };
-      console.log("Filtro de búsqueda aplicado:", filters.nombre_obra);
-    }
-    if (categoria) {
-      filters['etiquetas.categoria'] = categoria;
-      console.log("Filtro de categoría aplicado:", filters['etiquetas.categoria']);
-    }
-    if (tecnica) {
-      filters['etiquetas.tecnica'] = tecnica;
-      console.log("Filtro de técnica aplicado:", filters['etiquetas.tecnica']);
-    }
-    if (estilo) {
-      filters['etiquetas.estilo'] = estilo;
-      console.log("Filtro de estilo aplicado:", filters['etiquetas.estilo']);
-    }
-    if (priceMin) {
-      filters.precio = { $gte: parseFloat(priceMin) };
-      console.log("Filtro de precio aplicado:", filters.precio);
-    }
+    // Construcción de filtros basados en el modelo Product
+    if (query) filters.nombre_obra = { $regex: query, $options: 'i' }; // búsqueda de texto en el nombre de la obra
+    if (categoria) filters['etiquetas.categoria'] = categoria; // filtro por categoría en las etiquetas
+    if (tecnica) filters['etiquetas.tecnica'] = tecnica; // filtro por técnica en las etiquetas
+    if (estilo) filters['etiquetas.estilos'] = estilo; // filtro por estilo en las etiquetas
+    if (priceMin) filters.precio = { $gte: parseFloat(priceMin) }; // precio mínimo
 
+    // Filtrado por dimensiones: altura y anchura
     if (alturaMin || alturaMax) {
       filters['dimensiones.altura'] = {};
       if (alturaMin) filters['dimensiones.altura'].$gte = parseFloat(alturaMin);
       if (alturaMax) filters['dimensiones.altura'].$lte = parseFloat(alturaMax);
-      console.log("Filtro de altura aplicado:", filters['dimensiones.altura']);
     }
 
     if (anchuraMin || anchuraMax) {
       filters['dimensiones.anchura'] = {};
       if (anchuraMin) filters['dimensiones.anchura'].$gte = parseFloat(anchuraMin);
       if (anchuraMax) filters['dimensiones.anchura'].$lte = parseFloat(anchuraMax);
-      console.log("Filtro de anchura aplicado:", filters['dimensiones.anchura']);
     }
 
-    console.log("Filtros finales aplicados:", filters);
+    // Cálculo de paginación
+    const skip = (page - 1) * limit;
+    const products = await Product.find(filters).skip(skip).limit(parseInt(limit));
+    const totalResults = await Product.countDocuments(filters);
 
-    const products = await Product.find(filters);
-    res.status(200).json({ products });
+    // Respuesta con productos y total de resultados para la paginación
+    res.status(200).json({ products, totalResults });
   } catch (error) {
     console.error("Error en getFilteredProducts:", error);
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
-
-
 
 // Obtener un producto por su ID
 const getProductById = async (req, res) => {
@@ -130,7 +122,7 @@ const deleteProduct = async (req, res) => {
 module.exports = {
   createProduct,
   getAllProducts,
-  getFilteredProducts, 
+  getFilteredProducts,
   getProductById,
   updateProduct,
   deleteProduct

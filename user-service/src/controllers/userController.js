@@ -2,12 +2,13 @@ const bcrypt = require('bcrypt');
 const db = require('../config/db');
 const jwt = require('jsonwebtoken');
 const { uploadProfileImage } = require('../middleware/upload'); 
+const { sendMessage } = require('../config/rabbitmqService');
 
 // Iniciar sesión
-exports.loginUser = (req, res) => {
+exports.loginUser = async (req, res) => {
   const { email, contrasena } = req.body;
 
-  db.query('SELECT * FROM usuarios WHERE email = ?', [email], (err, results) => {
+  db.query('SELECT * FROM usuarios WHERE email = ?', [email], async (err, results) => {
     if (err || results.length === 0) {
       return res.status(404).json({ error: 'Usuario no encontrado' });
     }
@@ -21,15 +22,18 @@ exports.loginUser = (req, res) => {
 
     // Generar el token JWT
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-      expiresIn: 86400 // 24 horas
+      expiresIn: 86400, // 24 horas
     });
+
+    // Enviar el ID del usuario al microservicio de productos a través de RabbitMQ
+    await sendMessage('authToProduct', { action: 'user_login', userId: user.id });
 
     // Enviar el token como cookie
     res.cookie('token', token, {
-      httpOnly: true, // No accesible desde JavaScript del cliente
-      secure: process.env.NODE_ENV === 'production', // Solo se envía por HTTPS en producción
-      sameSite:'strict',
-      maxAge: 86400 * 1000 // 24 horas en milisegundos
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 86400 * 1000, // 24 horas en milisegundos
     });
 
     res.status(200).json({ auth: true, id: user.id, nombre: user.nombre, email: user.email });
@@ -40,6 +44,7 @@ exports.logoutUser = (req, res) => {
   res.clearCookie('token'); // Eliminar la cookie del token
   res.status(200).json({ message: 'Sesión cerrada correctamente' });
 };
+
 
 // Obtener todos los usuarios
 exports.getAllUsers = (req, res) => {
