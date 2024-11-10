@@ -88,6 +88,7 @@ window.onload = loadAllProducts; */
 let currentPage = 1;
 const resultsPerPage = 10;
 
+
 const applyFilters = async () => {
   const searchQuery = document.getElementById('searchQuery').value || '';
   const categoria = document.querySelector("input[name='categoria']:checked")?.value || '';
@@ -170,18 +171,29 @@ async function loadAllProducts() {
 
 const displayResults = (products) => {
   const container = document.getElementById('searchResults');
-  container.innerHTML = '';
+  container.innerHTML = '';  // Limpiar el contenedor antes de agregar nuevos productos
+  
   products.forEach(product => {
     const item = document.createElement('div');
+    item.classList.add('product-item');  // Puedes agregar una clase para estilos, si lo deseas
+
     item.innerHTML = `
       <img src="${product.imagen}" alt="${product.nombre_obra}" />
       <h4>${product.nombre_obra}</h4>
       <p>Artista: ${product.artista}</p>
       <p>Precio: $${product.precio}</p>
     `;
+    
+    // Agregar el listener de clic
+    item.addEventListener('click', () => {
+      // Redirigir a 'view_product.html' con el id del producto en la URL
+      window.location.href = `view_product.html?id=${product._id}`; 
+    });
+
     container.appendChild(item);
   });
 };
+
 
 function updatePagination(totalResults) {
   const totalPages = Math.ceil(totalResults / resultsPerPage);

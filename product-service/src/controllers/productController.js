@@ -84,7 +84,7 @@ const getFilteredProducts = async (req, res) => {
 // Obtener un producto por su ID
 const getProductById = async (req, res) => {
   try {
-    const product = await Product.findOne(req.params.id);
+    const product = await Product.findById(req.params.id);
     if (!product) {
       return res.status(404).json({ message: 'Producto no encontrado' });
     }
@@ -97,7 +97,7 @@ const getProductById = async (req, res) => {
 // Actualizar un producto
 const updateProduct = async (req, res) => {
   try {
-    const product = await Product.findOneAndUpdate(req.params.id, req.body, { new: true });
+    const product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!product) {
       return res.status(404).json({ message: 'Producto no encontrado' });
     }
@@ -110,7 +110,7 @@ const updateProduct = async (req, res) => {
 // Eliminar un producto
 const deleteProduct = async (req, res) => {
   try {
-    const product = await Product.findOneAndDelete(req.params.id);
+    const product = await Product.findByIdAndDelete(req.params.id);
     if (!product) {
       return res.status(404).json({ message: 'Producto no encontrado' });
     }

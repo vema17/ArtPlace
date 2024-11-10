@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // Obtener el ID del producto desde la URL (ejemplo: ?id=123)
     const urlParams = new URLSearchParams(window.location.search);
     const productId = urlParams.get("id");
-
     // Verificar si el ID del producto existe
     if (!productId) {
         alert("Producto no encontrado.");
@@ -29,10 +28,10 @@ document.addEventListener("DOMContentLoaded", () => {
         // Asignar los valores del producto al HTML
         document.getElementById('product-image').src = product.imagen;
         document.getElementById('product-name').textContent = product.nombre;
-        document.getElementById('product-category').textContent = product.categoria;
+        document.getElementById('product-status').textContent = product.estado;
         document.getElementById('product-description').textContent = product.descripcion;
         document.getElementById('product-price').textContent = product.precio;
-        document.getElementById('product-rating').textContent = product.puntuacion;
+        document.getElementById('product-date').textContent = product.fecha_publicacion;
 
         // Configurar el evento del botón de "Comprar"
         const buyButton = document.getElementById('buy-button');
