@@ -1,24 +1,48 @@
 // Obtener el ID del usuario de la URL
 const urlParams = new URLSearchParams(window.location.search);
+const userId = urlParams.get('id'); 
+
+// Redirige al login si no hay userId
+if (!userId) {
+    window.location.href = `login.html`;
+}
 
 document.addEventListener("DOMContentLoaded", function() {
-    const userId = localStorage.getItem('userId'); // Recuperar el ID del usuario de localStorage
+    console.log(`Id DE USUARIO: ${userId}`); // Log para confirmar ID
 
-    // Revisar se existe perfil
+    // Actualiza los enlaces con userId
+    const linksToUpdate = [
+        { id: 'homeLink', href: `home.html?id=${userId}` },
+        { id: 'perfilLink', href: `profile.html?id=${userId}` },
+        { id: 'crearPerfilLink', href: `createProfile.html?id=${userId}` },
+        { id: 'editarDireccionLink', href: `address.html?id=${userId}` },
+        { id: 'cambiarContrasenaLink', href: `password.html?id=${userId}` },
+        { id: 'catalogoLink', href: `home.html?id=${userId}` }
+    ];
+
+    linksToUpdate.forEach(linkInfo => {
+        const linkElement = document.getElementById(linkInfo.id);
+        if (linkElement) {
+            linkElement.href = linkInfo.href;
+        }
+    });
+
+    // Verifica si el perfil existe para habilitar/deshabilitar links
     fetch(`/api/users/${userId}/perfil`, {
         method: 'GET',
         headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`, // Autenticación si aplica
+            'Authorization': `Bearer ${localStorage.getItem('token')}`, // Si se usa autenticación
         }
     })
     .then(response => {
         if (!response.ok) {
             if (response.status === 404) {
-                // Si el perfil no se encuentra, desactiva el botón
                 const editarDireccionLink = document.getElementById('editarDireccionLink');
-                editarDireccionLink.classList.add('disabled');
-                editarDireccionLink.style.pointerEvents = 'none';
-                editarDireccionLink.style.opacity = '0.5';
+                if (editarDireccionLink) {
+                    editarDireccionLink.classList.add('disabled');
+                    editarDireccionLink.style.pointerEvents = 'none';
+                    editarDireccionLink.style.opacity = '0.5';
+                }
                 console.warn('Perfil no encontrado');
             }
             return response.json().then(data => {
@@ -28,18 +52,17 @@ document.addEventListener("DOMContentLoaded", function() {
         return response.json();
     })
     .then(data => {
-        // Aquí puedes manejar la información del perfil sin mostrar alertas
         console.log(`Perfil encontrado: ${data.nombre_usuario}`);
     })
     .catch(error => {
-        console.error(error.message); // Manejo de errores en la consola
+        console.error(error.message);
     });
 
-    // Hacer la solicitud GET para obtener los datos del perfil
+    // Obtener datos del perfil
     fetch(`/api/users/${userId}`, {
         method: 'GET',
         headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`, // Si estás usando autenticación
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
         }
     })
     .then(response => response.json())
@@ -49,22 +72,19 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         const nombreCompleto = `${data.nombre || '[Nombre]'} ${data.apellido || '[Apellido]'}`;
-
-        // Asignar los datos obtenidos a los elementos HTML
-        
         document.getElementById('usernameDisplay').textContent = nombreCompleto;
         document.getElementById('emailDisplay').textContent = data.email || '[Correo]';
         document.getElementById('userIdDisplay').textContent = data.id || '[ID]';
     })
     .catch(error => {
-        alert(`Error al obtener el perfil: ${error.message}`);
+        console.error(`Error al obtener el perfil: ${error.message}`);
     });
 
-    // Biografía
+    // Obtener biografía
     fetch(`/api/users/${userId}/perfil`, {
         method: 'GET',
         headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`, // Si estás usando autenticación
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
         }
     })
     .then(response => {
@@ -77,18 +97,15 @@ document.addEventListener("DOMContentLoaded", function() {
     })
     .then(data => {
         document.getElementById('bioDisplay').textContent = data.biografia || '[Biografía]';
-
-        // Actualizar la imagen de perfil si existe
         if (data.foto_perfil) {
             document.getElementById('profilePic').src = `/uploads/profile_${userId}.jpg`; 
-            
         }
     })
     .catch(error => {
         console.error(error.message);
     });
 
-    // Dirección
+    // Obtener dirección
     fetch(`/api/users/${userId}/direccion`, {
         method: 'GET',
         headers: {
@@ -107,9 +124,8 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById('postalCodeDisplay').textContent = data.codigo_postal || '[Código Postal]';
         document.getElementById('streetDisplay').textContent = data.calle || '[Calle]';
         document.getElementById('numberDisplay').textContent = data.numero || '[Número]';
-
     })
     .catch(error => {
-        // alert(`Error al obtener el Dirección: ${error.message}`);
+        console.error(`Error al obtener la Dirección: ${error.message}`);
     });
 });

@@ -1,9 +1,28 @@
 // Obtener el ID del usuario de la URL
 const urlParams = new URLSearchParams(window.location.search);
+const userId = urlParams.get('id'); 
 
 document.addEventListener("DOMContentLoaded", function() {
 
-    const userId = localStorage.getItem('userId'); // Recuperar el ID del usuario de localStorage
+    // const userId = localStorage.getItem('userId'); // Recuperar el ID del usuario de localStorage
+
+    // Array of link elements to modify
+    const linksToUpdate = [
+        { id: 'homeLink', href: `home.html?id=${userId}` },
+        { id: 'perfilLink', href: `profile.html?id=${userId}` },
+        { id: 'crearPerfilLink', href: `createProfile.html?id=${userId}` },
+        { id: 'editarDireccionLink', href: `address.html?id=${userId}` },
+        { id: 'cambiarContrasenaLink', href: `password.html?id=${userId}` },
+        { id: 'catalogoLink', href: `home.html?id=${userId}` }
+    ];
+
+    // Update each link's href with userId
+    linksToUpdate.forEach(linkInfo => {
+        const linkElement = document.getElementById(linkInfo.id);
+        if (linkElement) {
+            linkElement.href = linkInfo.href;
+        }
+    });
 
     // Hacer la solicitud GET para obtener los datos de la dirección
     fetch(`/api/users/${userId}/direccion`, {

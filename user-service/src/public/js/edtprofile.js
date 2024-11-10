@@ -1,6 +1,30 @@
+// Obtener el ID del usuario de la URL
+const urlParams = new URLSearchParams(window.location.search);
+const userId = urlParams.get('id'); 
+
 document.addEventListener('DOMContentLoaded', () => {
 
-    const userId = localStorage.getItem('userId'); // Recuperar el ID del usuario de localStorage
+     // const userId = localStorage.getItem('userId'); // Recuperar el ID del usuario de localStorage
+    console.log(`Id DE USUARIO: ${userId}`);
+
+    // Array of link elements to modify
+    const linksToUpdate = [
+        { id: 'homeLink', href: `home.html?id=${userId}` },
+        { id: 'perfilLink', href: `profile.html?id=${userId}` },
+        { id: 'crearPerfilLink', href: `createProfile.html?id=${userId}` },
+        { id: 'editarDireccionLink', href: `address.html?id=${userId}` },
+        { id: 'cambiarContrasenaLink', href: `password.html?id=${userId}` },
+        { id: 'catalogoLink', href: `home.html?id=${userId}` }
+    ];
+
+    // Update each link's href with userId
+    linksToUpdate.forEach(linkInfo => {
+        const linkElement = document.getElementById(linkInfo.id);
+        if (linkElement) {
+            linkElement.href = linkInfo.href;
+        }
+    });
+    
 
     fetch(`/api/users/${userId}/perfil`, {
         method: 'GET',
@@ -66,7 +90,7 @@ document.getElementById('editarPerfilForm').addEventListener('submit', function(
 
     // Obtener el ID del usuario desde la URL
     const urlParams = new URLSearchParams(window.location.search);
-    const userId = localStorage.getItem('userId'); // Recuperar el ID del usuario de localStorage
+    // const userId = localStorage.getItem('userId'); // Recuperar el ID del usuario de localStorage
 
     // Enviar datos al backend
     fetch(`/api/users/${userId}/perfil`, {
