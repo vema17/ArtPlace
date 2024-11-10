@@ -1,3 +1,37 @@
+document.addEventListener('DOMContentLoaded', () => {
+    const userId = localStorage.getItem('userId'); // Recuperar el ID del usuario de localStorage
+    
+    fetch(`/api/users/${userId}/perfil`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`, // Autenticación si aplica
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            if (response.status === 404) {
+                // Si el perfil no se encuentra, desactiva el botón
+                const editarDireccionLink = document.getElementById('editarDireccionLink');
+                editarDireccionLink.classList.add('disabled');
+                editarDireccionLink.style.pointerEvents = 'none';
+                editarDireccionLink.style.opacity = '0.5';
+                console.warn('Perfil no encontrado');
+            }
+            return response.json().then(data => {
+                throw new Error(data.error || 'Error desconocido');
+            });
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Aquí puedes manejar la información del perfil sin mostrar alertas
+        console.log(`Perfil encontrado: ${data.nombre_usuario}`);
+    })
+    .catch(error => {
+        console.error(error.message); // Manejo de errores en la consola
+    });
+});
+
 document.getElementById('editarPassword').addEventListener('submit', function(e) {
     e.preventDefault();
     
