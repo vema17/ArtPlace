@@ -1,176 +1,148 @@
-/* Contenedor principal */
-.container {
-    display: flex;
+/* Estilo general del cuerpo */
+body {
+    background-image: url('../assets/bgedt.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     font-family: Arial, sans-serif;
     color: #333;
 }
 
-/* Barra lateral de filtros */
-.sidebar {
-    width: 250px;
-    padding: 20px;
-    border-right: 1px solid #ddd;
-    background-color: #f9f9f9;
-}
-
-.sidebar h3 {
-    margin-bottom: 20px;
-    font-size: 18px;
-    font-weight: bold;
-}
-
-.filter-group {
-    margin-bottom: 20px;
-}
-
-.filter-group h4 {
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-/* Barra de búsqueda */
-#searchQuery {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
-    margin-top: 5px;
-    margin-bottom: 15px;
-}
-
-/* Estilo para los radio buttons */
-.filter-group label {
-    display: block;
-    font-size: 14px;
-    margin: 5px 0;
-    cursor: pointer;
-}
-
-.filter-group input[type="radio"],
-.filter-group input[type="checkbox"] {
-    margin-right: 8px;
-}
-
-/* Estilo para el campo de precio */
-.filter-group input[type="range"] {
-    width: 100%;
-    margin-top: 5px;
-}
-
-#precioMinVal {
-    font-weight: bold;
-    margin-left: 5px;
-}
-
-/* Tamaño de la pintura */
-.filter-group label {
-    font-size: 14px;
-    font-weight: bold;
-    margin-top: 10px;
-}
-
-.filter-group input[type="number"] {
-    width: 80px;
-    padding: 5px;
-    margin-top: 5px;
-    margin-right: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
-}
-
-/* Contenido principal */
-.main-content {
-    flex-grow: 1;
+/* Contenedor principal */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
     padding: 20px;
 }
 
-.options-bar {
-    margin-bottom: 20px;
-    background-color: #0d1bff;
-    color: #fff;
-    padding: 20px;
-    border-radius: 8px;
+/* Título principal */
+h2 {
+    font-weight: bold;
+    color: #333;
     text-align: center;
 }
 
-.options-bar h2 {
-    font-size: 24px;
-    margin-bottom: 5px;
-}
-
-.options-bar p {
-    font-size: 14px;
-    margin-bottom: 10px;
-}
-
-.save-search {
-    background-color: #333;
-    color: white;
-    padding: 8px 12px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-right: 10px;
-}
-
-.save-search:hover {
-    background-color: #555;
-}
-
-
-/* Cuadrícula de productos */
-.product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
-}
-
-.product-item {
+/* Barra de búsqueda y filtros */
+form#searchForm {
     background-color: #fff;
-    border: 1px solid #ddd;
     border-radius: 8px;
-    padding: 10px;
-    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
 }
 
-.product-item img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-    margin-bottom: 10px;
-}
-
-.product-item h4 {
-    font-size: 16px;
-    margin: 5px 0;
-}
-
-.product-item p {
-    font-size: 14px;
-    color: #666;
-    margin: 5px 0;
-}
-
-.product-item .view-button {
-    display: inline-block;
-    padding: 8px 12px;
-    margin-top: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-.product-item .view-button:hover {
-    background-color: #0056b3;
-}
-
-/* Negrita para las opciones de "Todos" en cada filtro */
-.filter-group label:first-of-type {
+form#searchForm .form-label {
     font-weight: bold;
+    color: #555;
 }
+
+form#searchForm input,
+form#searchForm select {
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+form#searchForm input:focus,
+form#searchForm select:focus {
+    outline: none;
+    border-color: #0d6efd;
+    box-shadow: 0 0 4px rgba(13, 110, 253, 0.5);
+}
+
+/* Botón de búsqueda */
+form#searchForm button {
+    background-color: #0d6efd;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+form#searchForm button:hover {
+    background-color: #0b5ed7;
+}
+
+/* Resultados de búsqueda */
+#searchResults {
+    list-style-type: none;
+    padding: 0;
+}
+
+#searchResults .list-group-item {
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#searchResults .list-group-item:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Paginación */
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.pagination button {
+    background-color: #6c757d;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.pagination button:hover {
+    background-color: #5a6268;
+}
+
+.pagination #pageInfo {
+    font-weight: bold;
+    color: #333;
+}
+.navbar {
+    width: 100%;
+    background-color: black; 
+  }
+
+  .navbar .nav-link {
+    color: white !important; 
+  }
+
+  .navbar .navbar-brand {
+    color: white !important;
+  }
+
+  .navbar .dropdown-menu {
+    right: 0;
+  }
+
+  
+  .navbar .fa-shopping-cart {
+    color: white; 
+    font-size: 1.5rem; 
+  }
+
+  .navbar .form-control {
+    background-color: #fff; 
+  }
+  
+   .d-flex.align-items-center img {
+    margin-left: 15px; 
+  }
+
+ 
+  .navbar .fa-shopping-cart {
+    margin-left: 15px; 
+    margin-top: 6px; 
+  }
