@@ -11,9 +11,11 @@
 <div class="container">
     <h2>Agregar Cuadro</h2>
     <form id="addProductForm">
+        <!-- Campo oculto para el ID del usuario -->
+        <input type="hidden" id="id_usuario" name="id_usuario" value="123"> <!-- Reemplazar con el valor real -->
 
-        <label for="nombre_obra">Título</label>
-        <input type="text" id="nombre_obra" name="nombre_obra" required>
+        <label for="titulo">Título</label>
+        <input type="text" id="titulo" name="titulo" required>
 
         <label for="descripcion">Descripción</label>
         <textarea id="descripcion" name="descripcion" rows="4" required></textarea>
@@ -55,8 +57,8 @@
         <!-- Agrega más categorías aquí si es necesario -->
         </select>
 
-        <label for="estilos">Estilo</label>
-        <select id="estilos" name="estilos" required>
+        <label for="estilo">Estilo</label>
+        <select id="estilo" name="estilo" required>
             <option value="Abstracto">Abstracto</option>
             <option value="Aborigen">Aborigen</option>
             <option value="Arte Marginal">Arte Marginal</option>
@@ -140,7 +142,7 @@
 
 
         <label for="imagen">Imagen</label>
-        <input type="file" id="productImageInput" name="productImageInput" accept="image/*" required>
+        <input type="file" id="imagen" name="imagen" accept="image/*" required>
 
         <button type="button" onclick="submitForm()">Agregar Cuadro</button>
         <div class="message" id="message"></div>
