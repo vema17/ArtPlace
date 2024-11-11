@@ -1,26 +1,49 @@
 const Product = require('../models/productModel');
-const { getCurrentUserId } = require('../middleware/productConsumer');
+const {getCurrentUserId } = require('../middleware/productConsumer');
+
 
 // Crear un nuevo producto
 async function createProduct(req, res) {
   try {
-      const userId = getCurrentUserId(); // Obtiene el ID del usuario actual
+      const userId = getCurrentUserId();
+      console.log("User ID en createProduct:", userId);
 
       if (!userId) {
-          return res.status(401).json({ message: 'No se ha encontrado el ID del usuario. Por favor, inicia sesión.' });
+          return res.status(401).json({ message: 'No autorizado. Por favor, inicia sesión.' });
       }
 
-      const { titulo, descripcion, artista, altura, anchura, precio, categoria, estilo, tecnica, imagen } = req.body;
+      // Asegúrate de tomar solo el primer valor de cada campo si vienen como arrays
+      const nombre_obra = Array.isArray(req.body.nombre_obra) ? req.body.nombre_obra[0] : req.body.nombre_obra;
+      const descripcion = Array.isArray(req.body.descripcion) ? req.body.descripcion[0] : req.body.descripcion;
+      const artista = Array.isArray(req.body.artista) ? req.body.artista[0] : req.body.artista;
+      const altura = Array.isArray(req.body.altura) ? req.body.altura[0] : req.body.altura;
+      const anchura = Array.isArray(req.body.anchura) ? req.body.anchura[0] : req.body.anchura;
+      const precio = Array.isArray(req.body.precio) ? req.body.precio[0] : req.body.precio;
+      const categoria = Array.isArray(req.body.categoria) ? req.body.categoria[0] : req.body.categoria;
+      const estilos = Array.isArray(req.body.estilos) ? req.body.estilos[0] : req.body.estilos;
+      const tecnica = Array.isArray(req.body.tecnica) ? req.body.tecnica[0] : req.body.tecnica;
+
+      if (!nombre_obra || !descripcion || !artista || !altura || !anchura || !precio || !categoria || !tecnica || !estilos) {
+          return res.status(400).json({ message: 'Faltan campos requeridos' });
+      }
+
+      if (!req.file) {
+          return res.status(400).json({ message: 'No se subió ninguna imagen.' });
+      }
+
+      const imagenPath = req.file.path;
 
       const newProduct = new Product({
           id_usuario: userId,
-          nombre_obra: titulo,
+          nombre_obra,
           descripcion,
           artista,
-          dimensiones: { altura, anchura },
-          precio,
-          etiquetas: [{ categoria, estilo, tecnica }],
-          imagen,
+          fecha_publicacion: Date.now(),
+          dimensiones: { altura: parseFloat(altura), anchura: parseFloat(anchura) },
+          precio: parseFloat(precio),
+          imagen: imagenPath,
+          etiquetas: [{ categoria, tecnica, estilos }],
+          estado: 'disponible'
       });
 
       await newProduct.save();
