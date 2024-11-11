@@ -60,6 +60,8 @@ document.addEventListener('DOMContentLoaded', () => {
 document.getElementById('editarPerfilForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
+    console.log(`Id DE USUARIO al crear: ${userId}`);
+
     const nombre_usuario = document.getElementById('nombre_usuario').value;
     const bio = document.getElementById('bio').value;
     const profileImageInput = document.getElementById('profileImageInput').files[0]; // Obtener el archivo
