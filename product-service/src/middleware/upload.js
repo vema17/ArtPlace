@@ -23,11 +23,16 @@ const storage = multer.diskStorage({
     cb(null, uploadPath); // Carpeta donde se guardarán las imágenes de los productos
   },
   filename: (req, file, cb) => {
-    const productId = req.params.id || req.body.productId; // El ID del producto viene de la solicitud
-    const ext = path.extname(file.originalname);
-    cb(null, `product_${productId}${ext}`);
+    // Sanitiza el nombre de la obra y del artista para evitar caracteres especiales en el nombre del archivo
+    const nombreObra = req.body.nombre_obra ? req.body.nombre_obra.replace(/[^a-z0-9]/gi, '_').toLowerCase() : 'obra';
+    const artista = req.body.artista ? req.body.artista.replace(/[^a-z0-9]/gi, '_').toLowerCase() : 'artista';
+    const timestamp = Date.now(); // Marca de tiempo para asegurar que el nombre sea único
+    const ext = path.extname(file.originalname); // Obtener la extensión original del archivo
+
+    // Crear el nombre del archivo combinando la obra, el artista y la fecha
+    const filename = `${nombreObra}-${artista}-${timestamp}${ext}`;
+    cb(null, filename); // Guardar con el nombre generado
   }
-  
 });
 
 // Inicializa el middleware
