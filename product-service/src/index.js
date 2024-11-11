@@ -19,8 +19,7 @@ app.use('/api/products', productRoutes);
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'search_products.html'));
   });
-
-connectAndConsume();
+startConsuming();
 
 // Iniciar el servidor
 const PORT = process.env.PORT || 5001;

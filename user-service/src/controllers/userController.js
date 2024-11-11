@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const db = require('../config/db');
 const jwt = require('jsonwebtoken');
 const { uploadProfileImage } = require('../middleware/upload'); 
-const { sendMessageToProduct } = require('./rabbitmqService');
+const { sendMessageToProduct } = require('../config/rabbitmqService');
 
 // Iniciar sesión
 exports.loginUser = async (req, res) => {
