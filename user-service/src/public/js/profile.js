@@ -98,7 +98,8 @@ document.addEventListener("DOMContentLoaded", function() {
     .then(data => {
         document.getElementById('bioDisplay').textContent = data.biografia || '[Biografía]';
         if (data.foto_perfil) {
-            document.getElementById('profilePic').src = `/uploads/profile_${userId}.jpg`; 
+            const ext = data.foto_perfil.split('.').pop();
+            document.getElementById('profilePic').src = `/uploads/users/profile_${userId}.${ext}`;
         }
     })
     .catch(error => {
