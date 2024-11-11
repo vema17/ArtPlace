@@ -6,117 +6,8 @@
   <title>Galería de Arte - ArtPlace</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
 
-  <style>
-       /* Estilos para el encabezado */
-       .navbar {
-      width: 100%;
-      background-color: black; /* Color de fondo negro */
-    }
-
-    .navbar .nav-link {
-      color: white !important; /* Letras en blanco */
-    }
-
-    .navbar .navbar-brand {
-      color: white !important; /* Color del logo en blanco */
-    }
-
-    .navbar .dropdown-menu {
-      right: 0;
-    }
-
-    /* Cambia el color de los iconos y el botón */
-    .navbar .fa-shopping-cart {
-      color: white; /* Color blanco para el icono del carrito */
-      font-size: 1.5rem; /* Ajusta el tamaño del icono */
-    }
-
-    .navbar .form-control {
-      background-color: #fff; /* Cambia el fondo de la barra de búsqueda si es necesario */
-    }
-     /* Espaciado entre elementos */
-     .d-flex.align-items-center img {
-      margin-left: 15px; /* Espacio entre la imagen de perfil y el buscador */
-    }
-
-    /* Centrar verticalmente el carrito */
-    .navbar .fa-shopping-cart {
-      margin-left: 15px; /* Espacio entre el carrito y el buscador */
-      margin-top: 6px; /* Baja el carrito un poco para que esté centrado */
-    }
-
-    /* Footer */
-    html {
-      position: relative;
-      min-height: 100%;
-    }
-
-    body {
-      margin-bottom: 0; /* Altura del footer */
-    }
-
-    .card-title {
-      font-size: 1.25rem;
-    }
-
-    .card {
-      margin-bottom: 30px;
-    }
-  /* Sección hero con fondo y centrado de contenido */
-  .hero {
-    background-image: url('assets/fondo.png'); /* Cambia esto por la ruta de tu imagen */
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    height: 100vh; /* Puedes ajustar la altura según lo necesites */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    color: white;
-    position: relative;
-  }
-
-  .hero h1 {
-    font-size: 3rem;
-    font-weight: bold;
-    margin-bottom: 20px;
-  }
-
-  .hero p {
-    font-size: 1.5rem;
-    margin-bottom: 30px;
-  }
-
-  .hero .btn {
-    background-color: #e91e63;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 25px;
-    font-size: 1.25rem;
-  }
-
-  /* Añadir una capa de color semitransparente si deseas un efecto de oscurecimiento sobre la imagen */
-  .hero::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Ajusta la opacidad según sea necesario */
-    z-index: 1;
-  }
-
-  /* Asegurarse de que el contenido esté por encima de la capa semitransparente */
-  .hero h1, .hero p, .hero .btn {
-    position: relative;
-    z-index: 2;
-  }
-
-  </style>
 </head>
 <body>
 
@@ -133,10 +24,7 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link" href="#">Publicar</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Comprar</a>
+            <a class="nav-link" href="../product_service/manager_product.html">Publicar</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Nosotros</a>
@@ -146,8 +34,8 @@
           </li>
         </ul>
         <form class="d-flex ms-3">
-          <input class="form-control me-2" type="search" placeholder="Buscar..." aria-label="Search">
-          <a href="#" class="nav-link"></a>
+          <a href="../product_service/search_products.html" class="btn btn-outline-light me-2">Buscar</a>
+          <a href="../product_service/shoping_cart.html" class="nav-link"></a>
             <i class="fas fa-shopping-cart"></i> <!-- Carrito de compras -->
           </a>
           <a href="profile.html" class="d-flex align-items-center text-decoration-none">
@@ -167,7 +55,88 @@
     </div> 
   </section>>
   <div class="content">
-    <h2 class="text-center mt-5">Obras Destacadas</h2><p></p>
+       <div class="container mt-5">
+      <div class="text-center mb-4">
+        <h2 class="text-primary">Categorías más populares</h2>
+        <p class="text-muted">Sea cual sea su gusto, estilo o estado de ánimo, encuentre obras de arte originales que le encanten en nuestras categorías más populares.</p>
+        <a href="all_categories.html" class="btn btn-link text-primary">Explorar todas las categorías</a>
+      </div>
+      <div class="row">
+        <!-- Categoría 1 -->
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+          <div class="card">
+            <img src="" class="card-img-top" alt="Abstracto">
+            <div class="card-body text-center">
+              <h6 class="card-title">Abstracto</h6>
+            </div>
+          </div>
+        </div>
+        <!-- Categoría 2 -->
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+          <div class="card">
+            <img src="" class="card-img-top" alt="Paisajismo">
+            <div class="card-body text-center">
+              <h6 class="card-title">Paisajismo</h6>
+            </div>
+          </div>
+        </div>
+        <!-- Categoría 3 -->
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+          <div class="card">
+            <img src="" class="card-img-top" alt="Retrato">
+            <div class="card-body text-center">
+              <h6 class="card-title">Retrato</h6>
+            </div>
+          </div>
+        </div>
+        <!-- Categoría 4 -->
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+          <div class="card">
+            <img src="" class="card-img-top" alt="Fotografía">
+            <div class="card-body text-center">
+              <h6 class="card-title">Fotografía</h6>
+            </div>
+          </div>
+        </div>
+        <!-- Categoría 5 -->
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+          <div class="card">
+            <img src="" class="card-img-top" alt="Escultura">
+            <div class="card-body text-center">
+              <h6 class="card-title">Escultura</h6>
+            </div>
+          </div>
+        </div>
+        <!-- Categoría 6 -->
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+          <div class="card">
+            <img src="" class="card-img-top" alt="Artistas Superventas">
+            <div class="card-body text-center">
+              <h6 class="card-title">Artistas Superventas</h6>
+            </div>
+          </div>
+        </div>
+        <!-- Categoría 7 -->
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+          <div class="card">
+            <img src="" class="card-img-top" alt="Artistas Famosos">
+            <div class="card-body text-center">
+              <h6 class="card-title">Artistas Famosos</h6>
+            </div>
+          </div>
+        </div>
+        <!-- Categoría 8 -->
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+          <div class="card">
+            <img src="" class="card-img-top" alt="En Venta">
+            <div class="card-body text-center">
+              <h6 class="card-title">En Venta</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
     <!-- Carousel wrapper -->
 <div id="carouselMultiItemExample" class="carousel slide carousel-dark text-center" data-bs-ride="carousel">
     <!-- Controls -->
@@ -193,8 +162,8 @@
                 <div class="card-body">
                   <h5 class="card-title">Cuadro Abstracto</h5>
                   <p class="card-text">Arte abstracto moderno para decorar tu hogar.</p>
-                  <a href="#!" class="btn btn-primary">Agregar al carrito</a>
-                  <a href="#!" class="btn btn-success">Comprar ahora</a>
+                  <a href="#" class="btn btn-primary">Agregar al carrito</a>
+                  <a href="../product_service/view_product.html" class="btn btn-success">Comprar ahora</a>
                 </div>
               </div>
             </div>
@@ -206,7 +175,7 @@
                   <h5 class="card-title">Pintura de Paisaje</h5>
                   <p class="card-text">Hermosos paisajes pintados a mano para tu oficina.</p>
                   <a href="#!" class="btn btn-primary">Agregar al carrito</a>
-                  <a href="#!" class="btn btn-success">Comprar ahora</a>
+                  <a href="../product_service/view_product.html" class="btn btn-success">Comprar ahora</a>
                 </div>
               </div>
             </div>
@@ -218,7 +187,7 @@
                   <h5 class="card-title">Retrato Artístico</h5>
                   <p class="card-text">Añade un toque artístico a tu espacio con este retrato único.</p>
                   <a href="#!" class="btn btn-primary">Agregar al carrito</a>
-                  <a href="#!" class="btn btn-success">Comprar ahora</a>
+                  <a href="../product_service/view_product.html" class="btn btn-success">Comprar ahora</a>
                 </div>
               </div>
             </div>
@@ -237,7 +206,7 @@
                   <h5 class="card-title">Arte Contemporáneo</h5>
                   <p class="card-text">Una pieza contemporánea única para añadir a tu colección.</p>
                   <a href="#!" class="btn btn-primary">Agregar al carrito</a>
-                  <a href="#!" class="btn btn-success">Comprar ahora</a>
+                  <a href="../product_service/view_product.html" class="btn btn-success">Comprar ahora</a>
                 </div>
               </div>
             </div>
@@ -249,7 +218,7 @@
                   <h5 class="card-title">Obra Figurativa</h5>
                   <p class="card-text">Expresa tus emociones a través del arte figurativo.</p>
                   <a href="#!" class="btn btn-primary">Agregar al carrito</a>
-                  <a href="#!" class="btn btn-success">Comprar ahora</a>
+                  <a href="../product_service/view_product.html" class="btn btn-success">Comprar ahora</a>
                 </div>
               </div>
             </div>
@@ -261,7 +230,7 @@
                   <h5 class="card-title">Cuadro Minimalista</h5>
                   <p class="card-text">Arte minimalista perfecto para decoraciones modernas.</p>
                   <a href="#!" class="btn btn-primary">Agregar al carrito</a>
-                  <a href="#!" class="btn btn-success">Comprar ahora</a>
+                  <a href=../product_service/view_product.html" class="btn btn-success">Comprar ahora</a>
                 </div>
               </div>
             </div>
@@ -280,7 +249,7 @@
                   <h5 class="card-title">Pintura Experimental</h5>
                   <p class="card-text">Explora nuevos estilos y técnicas con esta pintura experimental.</p>
                   <a href="#!" class="btn btn-primary">Agregar al carrito</a>
-                  <a href="#!" class="btn btn-success">Comprar ahora</a>
+                  <a href="../product_service/view_product.html" class="btn btn-success">Comprar ahora</a>
                 </div>
               </div>
             </div>
@@ -292,7 +261,7 @@
                   <h5 class="card-title">Acuarela Artística</h5>
                   <p class="card-text">Una delicada obra de arte en acuarela para tu hogar.</p>
                   <a href="#!" class="btn btn-primary">Agregar al carrito</a>
-                  <a href="#!" class="btn btn-success">Comprar ahora</a>
+                  <a href="../product_service/view_product.html" class="btn btn-success">Comprar ahora</a>
                 </div>
               </div>
             </div>
@@ -304,7 +273,7 @@
                   <h5 class="card-title">Escultura Modernista</h5>
                   <p class="card-text">Un elemento tridimensional perfecto para tu espacio.</p>
                   <a href="#!" class="btn btn-primary">Agregar al carrito</a>
-                  <a href="#!" class="btn btn-success">Comprar ahora</a>
+                  <a href="../product_service/view_product.html" class="btn btn-success">Comprar ahora</a>
                 </div>
               </div>
             </div>
@@ -328,7 +297,7 @@
               <h5 class="card-title">Cuadro Abstracto</h5>
               <p class="card-text">Arte abstracto moderno para decorar tu hogar.</p>
               <a href="#!" class="btn btn-primary">Agregar al carrito</a>
-              <a href="#!" class="btn btn-success">Comprar ahora</a>
+              <a href="../product_service/view_product.html" class="btn btn-success">Comprar ahora</a>
             </div>
           </div>
         </div>
@@ -340,7 +309,7 @@
               <h5 class="card-title">Pintura de Paisaje</h5>
               <p class="card-text">Hermosos paisajes pintados a mano para tu oficina.</p>
               <a href="#!" class="btn btn-primary">Agregar al carrito</a>
-              <a href="#!" class="btn btn-success">Comprar ahora</a>
+              <a href="../product_service/view_product.html" class="btn btn-success">Comprar ahora</a>
             </div>
           </div>
         </div>
@@ -352,7 +321,7 @@
               <h5 class="card-title">Retrato Artístico</h5>
               <p class="card-text">Añade un toque artístico a tu espacio con este retrato único.</p>
               <a href="#!" class="btn btn-primary">Agregar al carrito</a>
-              <a href="#!" class="btn btn-success">Comprar ahora</a>
+              <a href="../product_service/view_product.html" class="btn btn-success">Comprar ahora</a>
             </div>
           </div>
         </div>
@@ -378,10 +347,10 @@
           <h5 class="text-uppercase">Enlaces útiles</h5>
           <ul class="list-unstyled mb-0">
             <li>
-              <a href="#!" class="text-white">Inicio</a>
+              <a href="home.html" class="text-white">Inicio</a>
             </li>
             <li>
-              <a href="#!" class="text-white">Perfil</a>
+              <a href="profile.html" class="text-white">Perfil</a>
             </li>
             <li>
               <a href="#!" class="text-white">Contacto</a>
