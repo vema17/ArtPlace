@@ -2,10 +2,12 @@ require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const connectMongoDB = require('./config/mongodb'); 
-const productRoutes = require('./routes/productRoutes');
+const { connectRabbitMQ } = require('./config/rabbitmqService');
 const { startConsuming } = require('./middleware/productConsumer');
+const productRoutes = require('./routes/productRoutes');
 
 const app = express();
+
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -20,7 +22,12 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'search_products.html'));
   });
 
-connectAndConsume();
+async function startApp() {
+  await connectRabbitMQ();
+  startConsuming();
+}
+
+startApp();
 
 // Iniciar el servidor
 const PORT = process.env.PORT || 5001;

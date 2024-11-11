@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const db = require('../config/db');
 const jwt = require('jsonwebtoken');
 const { uploadProfileImage } = require('../middleware/upload'); 
-const { sendMessageToProduct } = require('./rabbitmqService');
+const { sendMessage } = require('../config/rabbitmqService');
 
 // Iniciar sesión
 exports.loginUser = async (req, res) => {
@@ -26,7 +26,7 @@ exports.loginUser = async (req, res) => {
     });
 
     // Enviar el ID del usuario al microservicio de productos a través de RabbitMQ
-    await sendMessageToProduct({ action: 'user_login', userId });
+    await sendMessage('authToProduct', { action: 'user_login', userId: user.id });
 
     // Enviar el token como cookie
     res.cookie('token', token, {
