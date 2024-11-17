@@ -13,7 +13,7 @@ async function connectRabbitMQ() {
     channel = await connection.createChannel();
     console.log('Conectado a RabbitMQ');
   } catch (error) {
-    console.error('Error al conectar a RabbitMQ:', error);
+    console.error('Error al conectar a RabbitMQ2:', error);
     setTimeout(connectRabbitMQ, 5000); 
   }
 }

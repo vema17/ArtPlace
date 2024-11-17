@@ -4,7 +4,7 @@ const { getCurrentUserId } = require('../middleware/productConsumer');
 // Crear un nuevo producto
 async function createProduct(req, res) {
   try {
-      const userId = 2;
+      const userId = getCurrentUserId();
       console.log("User ID en createProduct:", userId);
 
       if (!userId) {

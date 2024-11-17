@@ -25,7 +25,7 @@ async function assertQueue(queueName) {
   }
 
   try {
-    await channel.assertQueue(queueName, { durable: true });
+    await channel.assertQueue(queueName, { durable: false });
     console.log(`Cola asegurada: ${queueName}`);
   } catch (error) {
     console.error(`Error al asegurar la cola ${queueName}:`, error);
