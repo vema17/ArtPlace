@@ -26,7 +26,7 @@ async function startApp() {
   try {
     console.log('Conectando a RabbitMQ...');
     await connectRabbitMQ();
-    await assertQueue('authToProduct');
+    await assertQueue('UserToProduct');
     console.log('Conexión a RabbitMQ y cola authToProduct asegurada.');
   } catch (error) {
     console.error('Error al iniciar el servicio:', error);

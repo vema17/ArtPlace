@@ -1,9 +1,15 @@
 const amqp = require('amqplib/callback_api');
-let currentUserId = null; // Variable para almacenar el ID del usuario actual
 const RABBITMQ_URL = process.env.RABBITMQ_URL || 'amqp://localhost:5672';
-const QUEUE_NAME = 'authToProduct';
+const QUEUE_NAME = 'UserToProduct';
+
 let connection = null;
 let channel = null;
+
+let currentUser = {
+    id: null,
+    nombre: null,
+    token: null,
+}
 
 /**
  * Conecta a RabbitMQ y configura el consumidor.
@@ -83,9 +89,10 @@ function startConsuming() {
                 console.log('Mensaje recibido:', message);
 
                 // Manejar el mensaje
-                if (message.action === 'user_login' && message.userId) {
-                    currentUserId = message.userId; // Actualizar el ID del usuario actual
-                    console.log(`User ID ${message.userId} almacenado en el consumidor.`);
+                if (message.action === 'user_login' && message.userId && message.nombre && message.token) {
+                    currentUser.id = message.userId;
+                    currentUser.nombre = message.nombre;
+                    currentUser.token = message.token;
                 } else {
                     console.warn('Mensaje recibido pero no válido:', message);
                 }
@@ -102,11 +109,35 @@ function startConsuming() {
  * @returns {string|null} - El ID del usuario actual o `null` si no está definido.
  */
 function getCurrentUserId() {
-    if (!currentUserId) {
-        console.warn('No hay un User ID almacenado actualmente.');
-        return null;
+    if (!currentUser.id) {
+      console.warn('No hay un User ID almacenado actualmente.');
+      return null;
     }
-    return currentUserId;
+    return currentUser.id;
+  }
+
+/**
+ * Devuelve el token del usuario actual.
+ * @returns {string|null} - El token del usuario actual o `null` si no está definido.
+ */
+function getCurrentUserToken() {
+    if (!currentUser.token) {
+      console.warn('No hay un token almacenado actualmente.');
+      return null;
+    }
+    return currentUser.token;
+}
+  
+  /**
+   * Devuelve el nombre del usuario actual.
+   * @returns {string|null} - El nombre del usuario actual o `null` si no está definido.
+   */
+  function getCurrentUserName() {
+    if (!currentUser.nombre) {
+      console.warn('No hay un nombre de usuario almacenado actualmente.');
+      return null;
+    }
+    return currentUser.nombre;
 }
 
 // Iniciar conexión a RabbitMQ
@@ -114,4 +145,6 @@ connectToRabbitMQ();
 
 module.exports = {
     getCurrentUserId,
+    getCurrentUserToken,
+    getCurrentUserName,
 };
