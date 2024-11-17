@@ -25,18 +25,48 @@ exports.loginUser = async (req, res) => {
       expiresIn: 86400, // 24 horas
     });
 
-    // Enviar el ID del usuario al microservicio de productos a través de RabbitMQ
-    await sendMessage('authToProduct', { action: 'user_login', userId: user.id });
+    // Consultar el nombre del usuario desde la tabla perfil
+    db.query('SELECT nombre_usuario FROM perfil WHERE usuario_id = ?', [user.id], async (err, perfilResults) => {
+      let nombreUsuario = 'Usuario Anónimo'; // Nombre predeterminado
 
-    // Enviar el token como cookie
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 86400 * 1000, // 24 horas en milisegundos
+      if (err) {
+        console.error('Error al consultar el perfil del usuario:', err);
+      } else if (perfilResults.length > 0) {
+        nombreUsuario = perfilResults[0].nombre;
+      }
+
+      // Enviar el ID del usuario, el nombre y el token al microservicio de productos a través de RabbitMQ
+      const message = {
+        action: 'user_login',
+        userId: user.id,
+        nombre: nombreUsuario,
+        token,
+      };
+
+      try {
+        await sendMessage('UserToProduct', message);
+        console.log('Mensaje enviado al microservicio de productos:', message);
+      } catch (error) {
+        console.error('Error al enviar mensaje al microservicio de productos:', error);
+        return res.status(500).json({ error: 'Error al comunicarse con el microservicio de productos' });
+      }
+
+      // Enviar el token como cookie
+      res.cookie('token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 86400 * 1000, // 24 horas en milisegundos
+      });
+
+      res.status(200).json({
+        auth: true,
+        id: user.id,
+        nombre: nombreUsuario,
+        email: user.email,
+        token,
+      });
     });
-
-    res.status(200).json({ auth: true, id: user.id, nombre: user.nombre, email: user.email });
   });
 };
 

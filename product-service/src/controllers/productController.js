@@ -1,11 +1,11 @@
 const Product = require('../models/productModel');
-const { getCurrentUserId } = require('../middleware/productConsumer');
+const { getCurrentUserId, getCurrentUserName } = require('../consumers/productConsumer');
 
 // Crear un nuevo producto
 async function createProduct(req, res) {
   try {
-      const userId = 2;
-      console.log("User ID en createProduct:", userId);
+      const userId = getCurrentUserId();
+      const userName = getCurrentUserName();
 
       if (!userId) {
           return res.status(401).json({ message: 'No autorizado. Por favor, inicia sesión.' });
@@ -14,7 +14,6 @@ async function createProduct(req, res) {
       // Asegúrate de tomar solo el primer valor de cada campo si vienen como arrays
       const nombre_obra = Array.isArray(req.body.nombre_obra) ? req.body.nombre_obra[0] : req.body.nombre_obra;
       const descripcion = Array.isArray(req.body.descripcion) ? req.body.descripcion[0] : req.body.descripcion;
-      const artista = Array.isArray(req.body.artista) ? req.body.artista[0] : req.body.artista;
       const altura = Array.isArray(req.body.altura) ? req.body.altura[0] : req.body.altura;
       const anchura = Array.isArray(req.body.anchura) ? req.body.anchura[0] : req.body.anchura;
       const precio = Array.isArray(req.body.precio) ? req.body.precio[0] : req.body.precio;
@@ -22,7 +21,7 @@ async function createProduct(req, res) {
       const estilos = Array.isArray(req.body.estilos) ? req.body.estilos[0] : req.body.estilos;
       const tecnica = Array.isArray(req.body.tecnica) ? req.body.tecnica[0] : req.body.tecnica;
 
-      if (!nombre_obra || !descripcion || !artista || !altura || !anchura || !precio || !categoria || !tecnica || !estilos) {
+      if (!nombre_obra || !descripcion || !altura || !anchura || !precio || !categoria || !tecnica || !estilos) {
           return res.status(400).json({ message: 'Faltan campos requeridos' });
       }
 
@@ -36,7 +35,7 @@ async function createProduct(req, res) {
           id_usuario: userId,
           nombre_obra,
           descripcion,
-          artista,
+          artista: userName,
           fecha_publicacion: Date.now(),
           dimensiones: { altura: parseFloat(altura), anchura: parseFloat(anchura) },
           precio: parseFloat(precio),
