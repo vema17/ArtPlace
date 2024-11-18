@@ -91,14 +91,15 @@ const resultsPerPage = 10;
 
 const applyFilters = async () => {
   const searchQuery = document.getElementById('searchQuery').value || '';
-  const categoria = document.querySelector("input[name='categoria']:checked")?.value || '';
-  const tecnica = document.querySelector("input[name='tecnica']:checked")?.value || '';
-  const estilo = document.querySelector("input[name='estilo']:checked")?.value || '';
+  const categoria = document.getElementById("categoria").value || '';
+  const estilo = document.getElementById("estilo").value || '';
+  const tecnica = document.getElementById("tecnica").value || '';
   const priceMin = document.getElementById('precioMin').value || 0;
   const alturaMin = document.getElementById('alturaMin').value || '';
   const alturaMax = document.getElementById('alturaMax').value || '';
   const anchuraMin = document.getElementById('anchuraMin').value || '';
   const anchuraMax = document.getElementById('anchuraMax').value || '';
+  const orderBy = document.getElementById('orderBy').value || '';
 
   let url = `/api/products/filtered?query=${searchQuery ? encodeURIComponent(searchQuery) : ''}`;
   if (priceMin) url += `&priceMin=${encodeURIComponent(priceMin)}`;
@@ -111,9 +112,9 @@ const applyFilters = async () => {
   if (alturaMax) url += `&alturaMax=${encodeURIComponent(alturaMax)}`;
   if (anchuraMin) url += `&anchuraMin=${encodeURIComponent(anchuraMin)}`;
   if (anchuraMax) url += `&anchuraMax=${encodeURIComponent(anchuraMax)}`;
-  
+  if (orderBy) url += `&orderBy=${encodeURIComponent(orderBy)}`;
 
-  // Actualiza los parámetros de la URL incluyendo la página actual
+  // Actualiza los parámetros de la URL
   const urlParams = new URLSearchParams({
     query: searchQuery,
     categoria,
@@ -124,9 +125,10 @@ const applyFilters = async () => {
     alturaMax,
     anchuraMin,
     anchuraMax,
+    orderBy,
     page: currentPage
   });
-  history.pushState(null, '', `?${urlParams.toString()}`); // Cambia la URL sin recargar la página
+  history.pushState(null, '', `?${urlParams.toString()}`);
 
   try {
     const response = await fetch(url);
@@ -138,6 +140,7 @@ const applyFilters = async () => {
     console.error("Error al aplicar filtros:", error);
   }
 };
+
 
 async function loadAllProducts() {
   const urlParams = new URLSearchParams(window.location.search);

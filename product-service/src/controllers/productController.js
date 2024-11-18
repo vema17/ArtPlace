@@ -65,7 +65,7 @@ const getAllProducts = async (req, res) => {
 // Obtener productos filtrados
 const getFilteredProducts = async (req, res) => {
   try {
-    const { query, categoria, tecnica, estilo, priceMin, alturaMin, alturaMax, anchuraMin, anchuraMax, page = 1, limit = 10 } = req.query;
+    const { query, categoria, tecnica, estilo, priceMin, alturaMin, alturaMax, anchuraMin, anchuraMax, orderBy, page = 1, limit = 10 } = req.query;
     const filters = {};
 
     // Construcción de filtros basados en el modelo Product
@@ -88,10 +88,20 @@ const getFilteredProducts = async (req, res) => {
       if (anchuraMax) filters['dimensiones.anchura'].$lte = parseFloat(anchuraMax);
     }
 
-    // Cálculo de paginación
-    const skip = (page - 1) * limit;
+    const sort = {};
+    if (orderBy === 'asc') sort.precio = 1;  // Orden ascendente
+    if (orderBy === 'desc') sort.precio = -1;  // Orden descendente
 
-    const products = await Product.find(filters).skip(skip).limit(parseInt(limit));
+    // Cálculo de paginación
+    // const skip = (page - 1) * limit;
+    const options = {
+      skip: (page - 1) * limit,
+      limit: parseInt(limit),
+      sort,
+    };
+
+    // const products = await Product.find(filters).skip(skip).limit(parseInt(limit));
+    const products = await Product.find(filters, null, options);
     const totalResults = await Product.countDocuments(filters);
 
     // Respuesta con productos y total de resultados para la paginación
