@@ -1,119 +1,79 @@
-/* create_product.css */
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-}
-
-body {
+/* Navbar - estilo básico */
+.navbar {
+    width: 100%;
+    background-color: black; /* Fondo negro */
+    position: fixed; 
+    top: 0; 
+    z-index: 1000; /* Asegura que esté por encima del contenido */
+    margin: 0; 
+    padding: 10px 20px; /* Espaciado interior para que no toque los bordes */
     display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-color: #f2f2f2;
+    justify-content: space-between; /* Alineación horizontal de los elementos */
+    align-items: center; /* Alineación vertical al centro */
+    height: 60px; /* Ajuste de altura de la barra */
 }
 
-.container {
+/* Logo de la barra de navegación */
+.navbar .navbar-brand {
+    color: white !important;
+    font-size: 24px; /* Tamaño del texto del logotipo */
+}
+
+/* Enlaces de navegación */
+.navbar .nav-link {
+    color: white !important;
+    font-size: 16px; /* Tamaño de fuente de los enlaces */
+    margin-right: 15px; /* Espaciado entre los enlaces */
+    text-decoration: none; /* Eliminar subrayado */
+}
+
+.navbar .nav-link:hover {
+    color: #ddd; /* Cambio de color al pasar el ratón */
+}
+
+/* Menú desplegable */
+.navbar .dropdown-menu {
+    right: 0;
+}
+
+/* Icono de carrito de compras */
+.navbar .fa-shopping-cart {
+    color: white;
+    font-size: 1.5rem;
+    margin-left: 15px;
+    margin-top: 6px;
+}
+
+/* Barra de búsqueda */
+.navbar .form-control {
     background-color: #fff;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    width: 200px;
+    padding: 5px;
+}
+
+/* Imagen del logo o de la app (si es necesario) */
+.d-flex.align-items-center img {
+    margin-left: 15px;
+    height: 40px; /* Tamaño de la imagen en la barra de navegación */
+}
+
+/* Estilo de la barra de navegación cuando el contenido está por debajo */
+body {
+    margin-top: 80px; /* Espacio superior para que la barra no cubra el contenido */
+    background-color: white;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+
+/* Diseño del contenedor principal */
+.container {
+    background: rgba(255, 255, 255, 0.9); /* Fondo semitransparente */
+    padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 30px;
-    width: 100%;
-    max-width: 500px;
-    text-align: center;
-}
-
-h2 {
-    color: #333;
-    font-size: 24px;
-    margin-bottom: 20px;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-}
-
-label {
-    color: #555;
-    font-weight: bold;
-    margin: 15px 0 5px;
-    text-align: left;
-}
-
-input[type="text"],
-input[type="number"],
-textarea,
-select {
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-    width: 100%;
-}
-
-textarea {
-    resize: none;
-}
-
-input[type="file"] {
-    margin-top: 10px;
-    font-size: 14px;
-}
-
-button {
-    background-color: #4CAF50;
-    border: none;
-    color: white;
-    padding: 12px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-top: 15px;
-}
-
-button:hover {
-    background-color: #45a049;
-}
-
-.message {
-    margin-top: 15px;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-.message.red {
-    color: red;
-}
-
-.message.green {
-    color: green;
-}
-
-input::placeholder {
-    color: #999;
-}
-
-select {
-    cursor: pointer;
-}
-
-input:focus,
-textarea:focus,
-select:focus {
-    outline: none;
-    border-color: #4CAF50;
-    box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
-}
-
-@media (max-width: 500px) {
-    .container {
-        padding: 20px;
-    }
 }

@@ -45,43 +45,59 @@
 
     /* Estilos para el encabezado */
     .navbar {
-      margin-left: 260px;
-    }
+    width: calc(100% - 250px); /* Reduce el ancho en función del ancho de la sidebar */
+    margin-left: 250px; /* Mueve la barra de navegación hacia la derecha */
+    background-color: black; /* Color de fondo negro */
+    position: fixed; /* Fija la barra en la parte superior */
+    top: 0;
+    left: 0; /* Asegura que comience en el borde izquierdo */
+    z-index: 1000; /* Asegúrate de que esté por encima de la sidebar */
+    display: flex; /* Usa flexbox para el contenido interno */
+    align-items: center; /* Centrado vertical */
+}
 
-    .navbar .nav-link {
-      color: #333;
-    }
+.navbar .nav-link {
+    color: white !important; /* Letras en blanco */
+}
 
-    .navbar .dropdown-menu {
-      right: 0;
-    }
-     /* Cambia el color de los iconos y el botón */
-     .navbar .fa-shopping-cart {
-      color: rgb(0, 0, 0); /* Color blanco para el icono del carrito */
-      font-size: 1.5rem; /* Ajusta el tamaño del icono */
-    }
-    .navbar .form-control {
-      background-color: #fff; /* Cambia el fondo de la barra de búsqueda si es necesario */
-    }
-     /* Espaciado entre elementos */
-     .d-flex.align-items-center img {
-      margin-left: 15px; /* Espacio entre la imagen de perfil y el buscador */
-    }
+.navbar .navbar-brand {
+    color: white !important; /* Color del logo en blanco */
+}
 
-    /* Centrar verticalmente el carrito */
-    .navbar .fa-shopping-cart {
-      margin-left: 15px; /* Espacio entre el carrito y el buscador */
-      margin-top: 6px; /* Baja el carrito un poco para que esté centrado */
-    }
+.navbar .dropdown-menu {
+    right: 0;
+}
 
-    html {
-      position: relative;
-      min-height: 100%;
-    }
+.navbar .fa-shopping-cart {
+    color: white; 
+    font-size: 1.5rem; 
+}
 
-    body {
-      margin-bottom: 60px; /* Altura del footer */
-    }
+.navbar .form-control {
+    background-color: #fff; 
+}
+
+/* Espaciado entre elementos */
+.d-flex.align-items-center img {
+    margin-left: 15px; 
+}
+
+/* Centrar verticalmente el carrito */
+.navbar .fa-shopping-cart {
+    margin-left: 15px; 
+    margin-top: 6px; 
+}
+    
+        html {
+          position: relative;
+          min-height: 100%;
+        }
+    
+        body {
+            margin: 0; /* Quita cualquier margen externo del body */
+            padding-top: 45px; /* Altura del footer */
+        }
+    
 
     footer {
       position: absolute;
@@ -174,18 +190,19 @@
   <!-- Contenido principal -->
   <div class="content">
     <!-- Barra de navegación superior -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
       <div class="container-fluid">
+        <!-- Agregar logo aquí -->
+        <a class="navbar-brand" href="home.html">
+          
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Publicar</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Comprar</a>
+              <a class="nav-link" href="../product_service/manager_product.html">Publicar</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">Nosotros</a>
@@ -194,18 +211,19 @@
               <a class="nav-link" href="#">Contacto</a>
             </li>
           </ul>
-          <form class="d-flex">
-            <input class="form-control me-2" type="search" placeholder="Buscar..." aria-label="Search">
-            <a href="#" class="nav-link"></a>
-            <i class="fas fa-shopping-cart"></i> <!-- Carrito de compras -->
-          </a>
-            <a href="#" class="d-flex align-items-center text-decoration-none">
-              <img src="assets/avt.png" alt="User" width="32" height="32" class="rounded-circle me-2">
+          <form class="d-flex ms-3">
+            <a href="../product_service/search_products.html" class="btn btn-outline-light me-2">Buscar</a>
+            <a href="../product_service/shoping_cart.html" class="nav-link"></a>
+              <i class="fas fa-shopping-cart"></i> <!-- Carrito de compras -->
+            </a>
+            <a href="profile.html" class="d-flex align-items-center text-decoration-none">
+              <img src="assets/avt.png" alt="User" width="40" height="40" class="rounded-circle me-2">
             </a>
           </form>
         </div>
       </div>
     </nav>
+
 
     <!-- Contenido -->
     <div class="container mt-4">
