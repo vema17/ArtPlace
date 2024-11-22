@@ -9,7 +9,7 @@ services:
       - ./uploads/users:/app/uploads/users
       - ./user-service:/usr/src/app
     depends_on:
-      - mysql
+      - user-mysql
       - rabbitmq
     env_file:
       - .env
@@ -33,14 +33,43 @@ services:
     networks:
       - my-network
 
-  mysql:
+  payment-service:
+    build:
+      context: ./payment-service
+      dockerfile: Dockerfile
+    ports:
+      - '5002:5002'
+    depends_on:
+      - payment-mysql
+      - rabbitmq
+    env_file:
+      - .env
+    networks:
+      - my-network
+
+  user-mysql:
     image: mysql:8
     ports:
       - '3306:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: users_database
     volumes:
+      - user-mysql-data:/var/lib/mysql
       - ./user-service/init.sql:/docker-entrypoint-initdb.d/init.sql
-    env_file:
-      - .env
+    networks:
+      - my-network
+
+  payment-mysql:
+    image: mysql:8
+    ports:
+      - '3307:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: payment_service
+    volumes:
+      - payment-mysql-data:/var/lib/mysql
+      - ./payment-service/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - my-network
 
@@ -59,15 +88,16 @@ services:
   rabbitmq:
     image: rabbitmq:3-management
     ports:
-      - "5672:5672"       # Puerto para conexiones de aplicaciones
-      - "15672:15672"     # Puerto para el panel de administración
+      - "5672:5672"
+      - "15672:15672"
     networks:
       - my-network
     env_file:
       - .env
 
 volumes:
-  mysql-data:
+  user-mysql-data:
+  payment-mysql-data:
   mongodb-data:
   uploads:
 
