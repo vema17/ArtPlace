@@ -47,7 +47,7 @@ if (createAccountForm) {
         const country = document.getElementById('pais').value;
 
         // Datos de contactos
-        const contacts = document.getElementById('contactos').value.split(',').map(phone => phone.trim());
+        const contact = document.getElementById('contacto').value.trim();
 
         // Enviar los datos al backend
         fetch('/api/users/register', {
@@ -65,7 +65,7 @@ if (createAccountForm) {
                 state,
                 postalCode,
                 country,
-                contactos: contacts
+                contacto: contact
             })
         })
         .then(response => {
