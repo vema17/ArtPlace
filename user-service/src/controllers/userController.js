@@ -464,4 +464,71 @@ exports.changePassword = (req, res) => {
   });
 };
 
+exports.createUserNew = (req, res) => {
+  const {
+    nombre,
+    apellido,
+    email,
+    contrasena,
+    nombre_usuario,
+    street,
+    streetNumber,
+    city,
+    state,
+    postalCode,
+    country,
+    contacts
+  } = req.body;
+
+  const saltRounds = 10;
+
+  // Hashear la contraseña antes de guardarla
+  bcrypt.hash(contrasena, saltRounds, (err, hashedPassword) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error al hashear la contraseña' });
+    }
+
+    // Insertar el nuevo usuario en la base de datos
+    db.query(
+      'INSERT INTO usuarios (nombre, apellido, email, contrasena) VALUES (?, ?, ?, ?)',
+      [nombre, apellido, email, hashedPassword],
+      (err, userResult) => {
+        if (err) {
+          console.error('Error al crear usuario en la base de datos:', err);
+          return res.status(500).json({ error: 'Error al crear usuario' });
+        }
+
+        const userId = userResult.insertId;
+
+        // Crear perfil del usuario
+        db.query(
+          `INSERT INTO perfil (id_usuario, nombre_usuario)
+           VALUES (?, ?)`,
+          [userId, nombre_usuario],
+          (err) => {
+            if (err) {
+              console.error('Error al crear perfil:', err);
+              return res.status(500).json({ error: 'Error al crear el perfil' });
+            }
+
+            // Crear dirección del usuario
+            db.query(
+              `INSERT INTO direccion_de_usuario (id_usuario, calle, numero, ciudad, estado, codigo_postal, pais)
+               VALUES (?, ?, ?, ?, ?, ?, ?)`,
+              [userId, street, streetNumber, city, state, postalCode, country],
+              (err) => {
+                if (err) {
+                  console.error('Error al crear dirección:', err);
+                  return res.status(500).json({ error: 'Error al crear la dirección' });
+                }
+                insertContacts(contacts, userId, res);
+              }
+            );
+          }
+        );
+      }
+    );
+  });
+};
+
 
