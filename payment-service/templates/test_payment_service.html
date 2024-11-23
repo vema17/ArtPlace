@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Microservicio de Pago</title>
+    <link rel="stylesheet" href="/static/css/test_payment_service.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Test Microservicio de Pago</h1>
+
+    <h2>Crear Transacción</h2>
+    <form id="createTransactionForm">
+        <label for="buyerId">Buyer ID:</label>
+        <input type="number" id="buyerId" name="buyerId" required>
+
+        <label for="sellerId">Seller ID:</label>
+        <input type="number" id="sellerId" name="sellerId" required>
+
+        <label for="productId">Product ID:</label>
+        <input type="number" id="productId" name="productId" required>
+
+        <label for="amount">Total Amount:</label>
+        <input type="number" step="0.01" id="amount" name="amount" required>
+
+        <button type="button" onclick="createTransaction()">Crear Transacción</button>
+    </form>
+
+    <h2>Obtener Transacciones</h2>
+    <form id="getTransactionsForm">
+        <label for="sellerIdForTransactions">Seller ID:</label>
+        <input type="number" id="sellerIdForTransactions" name="sellerIdForTransactions" required>
+
+        <button type="button" onclick="getTransactions()">Obtener Transacciones</button>
+    </form>
+
+    <div class="result" id="result"></div>
+</div>
+
+<script src="static/js/test_payment_service.js"></script>
+</body>
+</html>
