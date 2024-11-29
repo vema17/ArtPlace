@@ -4,7 +4,8 @@ const userController = require('../controllers/userController');
 const { verifyToken } = require('../middleware/auth');
 const upload = require('../middleware/upload');
 
-router.post('/register', userController.createUser);
+//router.post('/register', userController.createUser);
+router.post('/register', userController.createUserNew);
 router.post('/login', userController.loginUser);
 
 // Rutas para el usuario

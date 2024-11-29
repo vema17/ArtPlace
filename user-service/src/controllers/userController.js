@@ -257,34 +257,28 @@ exports.createUserProfile = (req, res) => {
 };
 
 // Función para insertar contactos
-function insertContacts(contacts, userId, res) {
-  if (Array.isArray(contacts) && contacts.length > 0) {
-    let contactsCount = 0;
-    contacts.forEach(phone => {
+function insertContact(phone, userId, res) {
+  if (phone) {
       db.query(
-        `INSERT INTO Contactos (Telefono, ID_usuario)
-         VALUES (?, ?)`,
-        [phone, userId],
-        (error, result) => {
-          if (error) {
-            console.error('Error al insertar contactos:', error);
-            return res.status(500).json({ message: 'Error al insertar contactos' });
-          }
+          `INSERT INTO Contactos (Telefono, ID_usuario)
+           VALUES (?, ?)`,
+          [phone, userId],
+          (error, result) => {
+              if (error) {
+                  console.error('Error al insertar contacto:', error);
+                  return res.status(500).json({ message: 'Error al insertar el contacto' });
+              }
 
-          // Incrementar el contador y verificar si todos los contactos fueron procesados
-          contactsCount++;
-          if (contactsCount === contacts.length) {
-            // Todos los contactos fueron insertados
-            return res.status(201).json({ message: 'Perfil creado con éxito' });
+              // Confirmar éxito si se inserta correctamente
+              return res.status(201).json({ message: 'Perfil creado con éxito' });
           }
-        }
       );
-    });
   } else {
-    // Si no hay contactos, devolver éxito
-    return res.status(201).json({ message: 'Perfil creado con éxito' });
+      // Si no hay teléfono, devolver éxito
+      return res.status(201).json({ message: 'Perfil creado con éxito' });
   }
 }
+
 
 
 
@@ -461,6 +455,73 @@ exports.changePassword = (req, res) => {
           }
           res.status(200).json({ message: 'Contraseña actualizada con éxito' });
       });
+  });
+};
+
+exports.createUserNew = (req, res) => {
+  const {
+    nombre,
+    apellido,
+    email,
+    contrasena,
+    nombre_usuario,
+    street,
+    streetNumber,
+    city,
+    state,
+    postalCode,
+    country,
+    contacto
+  } = req.body;
+
+  const saltRounds = 10;
+
+  // Hashear la contraseña antes de guardarla
+  bcrypt.hash(contrasena, saltRounds, (err, hashedPassword) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error al hashear la contraseña' });
+    }
+
+    // Insertar el nuevo usuario en la base de datos
+    db.query(
+      'INSERT INTO usuarios (nombre, apellido, email, contrasena) VALUES (?, ?, ?, ?)',
+      [nombre, apellido, email, hashedPassword],
+      (err, userResult) => {
+        if (err) {
+          console.error('Error al crear usuario en la base de datos:', err);
+          return res.status(500).json({ error: 'Error al crear usuario' });
+        }
+
+        const userId = userResult.insertId;
+
+        // Crear perfil del usuario
+        db.query(
+          `INSERT INTO perfil (id_usuario, nombre_usuario)
+           VALUES (?, ?)`,
+          [userId, nombre_usuario],
+          (err) => {
+            if (err) {
+              console.error('Error al crear perfil:', err);
+              return res.status(500).json({ error: 'Error al crear el perfil' });
+            }
+
+            // Crear dirección del usuario
+            db.query(
+              `INSERT INTO direccion_de_usuario (id_usuario, calle, numero, ciudad, estado, codigo_postal, pais)
+               VALUES (?, ?, ?, ?, ?, ?, ?)`,
+              [userId, street, streetNumber, city, state, postalCode, country],
+              (err) => {
+                if (err) {
+                  console.error('Error al crear dirección:', err);
+                  return res.status(500).json({ error: 'Error al crear la dirección' });
+                }
+                insertContact(contacto, userId, res);
+              }
+            );
+          }
+        );
+      }
+    );
   });
 };
 
