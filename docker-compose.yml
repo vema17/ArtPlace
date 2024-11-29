@@ -36,7 +36,7 @@ services:
   payment-service:
     build:
       context: ./payment-service
-      dockerfile: Dockerfile
+      dockerfile: dockerfile
     ports:
       - '5002:5002'
     depends_on:
@@ -46,6 +46,29 @@ services:
       - .env
     networks:
       - my-network
+  
+  rating-service:
+    build: 
+      context: ./rating-service
+      dockerfile: dockerfile
+    ports:
+      - "3002:3002"
+    env_file:
+      - .env
+    depends_on:
+      - rating-mysql
+      - rabbitmq
+
+  rating-mysql:
+    image: mysql:8
+    ports:
+      - "3308:3308"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: rating-service
+    volumes:
+      - rating-mysql-data:/var/lib/mysql
+      - ./rating-service/init.sql:/docker-entrypoint-initdb.d/init.sql
 
   user-mysql:
     image: mysql:8
@@ -53,7 +76,7 @@ services:
       - '3306:3306'
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: users_database
+      MYSQL_DATABASE: user_service
     volumes:
       - user-mysql-data:/var/lib/mysql
       - ./user-service/init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -98,6 +121,7 @@ services:
 volumes:
   user-mysql-data:
   payment-mysql-data:
+  rating-mysql-data:
   mongodb-data:
   uploads:
 
