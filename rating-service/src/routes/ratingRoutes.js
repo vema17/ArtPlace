@@ -6,5 +6,7 @@ router.get('/all', ratingController.getAllComments);
 router.post('/agregar', ratingController.postComment);
 router.put('/update/:id', ratingController.updateComment);
 router.delete('/delete/:id', ratingController.deleteComment);
+router.get('/comments/:id', ratingController.getCommentsByProductId);
+
 
 module.exports = router;
