@@ -5,7 +5,8 @@
     "main": "app.js",
     "scripts": {
       "start": "node src/app.js",
-      "dev": "nodemon src/app.js"
+      "dev": "nodemon src/app.js",
+      "start-with-wait": "wait-on tcp:rating-mysql:3306 && npm start"
     },
     "dependencies": {
       "amqplib": "^0.10.4",
