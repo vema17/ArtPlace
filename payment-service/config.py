@@ -6,5 +6,7 @@ class Config:
     PAYPAL_MODE = os.getenv('PAYPAL_MODE', 'sandbox')  # Cambia a 'live' en producción
     PAYPAL_CLIENT_ID = os.getenv('PAYPAL_CLIENT_ID', 'your-client-id')
     PAYPAL_CLIENT_SECRET = os.getenv('PAYPAL_CLIENT_SECRET', 'your-client-secret')
+    RABBITMQ_URL = "amqp://guest:guest@rabbitmq:5672" 
+    RABBITMQ_QUEUE = "my_queue" 
 
 config = Config()

@@ -3,7 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from routes.payment_routes import payment_bp
 from config import Config
 import paypalrestsdk
-from rabbitmqServices import rabbitmq_service 
+from rabbitmqServices import RabbitMQ
+
 
 db = SQLAlchemy()
 
@@ -13,6 +14,17 @@ def create_app():
 
     # Inicializar extensiones
     db.init_app(app)
+    
+    # Configuración de RabbitMQ
+    RABBITMQ_URL = "amqp://guest:guest@rabbitmq:5672"
+    QUEUE_NAME = "my_queue"
+
+    # Crear una instancia de RabbitMQ
+    rabbitmq = RabbitMQ(RABBITMQ_URL, QUEUE_NAME)
+    
+    rabbitmq.connect()
+    rabbitmq.send_message({"message": "Hello, RabbitMQ!"})
+    print("Mensaje enviado con éxito.")
 
     # Configurar PayPal dentro del contexto de la aplicación
     with app.app_context():
@@ -21,10 +33,6 @@ def create_app():
             "client_id": app.config['PAYPAL_CLIENT_ID'],
             "client_secret": app.config['PAYPAL_CLIENT_SECRET'],
         })
-    
-    # Configurar RabbitMQ
-    rabbitmq_service.connect()
-    rabbitmq_service.assert_queue('payment_queue')  # Aseguramos la cola de pagos
 
     # Registrar Blueprints
     app.register_blueprint(payment_bp, url_prefix='/api/payments')

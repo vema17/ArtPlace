@@ -128,6 +128,7 @@ const getProductById = async (req, res) => {
   }
 };
 
+
 // Actualizar un producto
 const updateProduct = async (req, res) => {
   try {
