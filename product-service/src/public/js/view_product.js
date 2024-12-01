@@ -36,8 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Configurar el evento del botón de "Comprar"
         const buyButton = document.getElementById('buy-button');
         buyButton.addEventListener('click', () => {
-            // Mostrar una alerta cuando se haga clic en el botón de "Comprar"
-            alert("Función sin implementar");
+            window.location.href = "http://localhost:5002/";
         });
     };
 

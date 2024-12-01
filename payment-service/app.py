@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from routes.payment_routes import payment_bp
 from config import Config
 import paypalrestsdk
+from rabbitmqServices import rabbitmq_service 
 
 db = SQLAlchemy()
 
@@ -20,6 +21,10 @@ def create_app():
             "client_id": app.config['PAYPAL_CLIENT_ID'],
             "client_secret": app.config['PAYPAL_CLIENT_SECRET'],
         })
+    
+    # Configurar RabbitMQ
+    rabbitmq_service.connect()
+    rabbitmq_service.assert_queue('payment_queue')  # Aseguramos la cola de pagos
 
     # Registrar Blueprints
     app.register_blueprint(payment_bp, url_prefix='/api/payments')
