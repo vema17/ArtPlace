@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nosotros</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Estilos personalizados */
+        body {
+    background-color: #e694df79; /* Color de fondo para toda la página */
+      }
+        .hero {
+            background: url('assets/hero-bg.jpg') no-repeat center center/cover;
+            color: rgb(0, 0, 0);
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+            height: 50vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .history img {
+            border-radius: 8px;
+            object-fit: cover;
+            max-height: 200px;
+        }
+
+        .history-card {
+            border: none;
+            background-color: #f8f9fa;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .mission-bg {
+            background: linear-gradient(to right, #ffffff, #abbfd4);
+        }
+
+        .mission-icons {
+            font-size: 2.5rem;
+        }
+
+        .navbar {
+            background-color: black; /* Color de fondo negro */
+        }
+
+        .navbar .nav-link {
+            color: white !important; /* Letras en blanco */
+        }
+
+        .navbar .navbar-brand {
+            color: white !important; /* Color del logo en blanco */
+        }
+
+        .navbar .fa-shopping-cart {
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .navbar .form-control {
+            background-color: white;
+        }
+
+        .d-flex.align-items-center img {
+            margin-left: 15px;
+        }
+
+        .navbar .fa-shopping-cart {
+            margin-left: 15px;
+            margin-top: 6px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Barra de navegación principal -->
+    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="../user/home.html">
+                <img src="assets/ArtPlace.png" alt="Logo" width="150" height="auto">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="manager_products.html">Publicar</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="about.html">Nosotros</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contacto</a></li>
+                </ul>
+                <form class="d-flex ms-3">
+                    <a href="search_products.html" class="btn btn-outline-light me-2">Buscar</a>
+                    <a href="shoping_cart.html" class="nav-link"><i class="fas fa-shopping-cart"></i></a>
+                    <a href="../user/profile.html" class="d-flex align-items-center text-decoration-none">
+                        <img src="assets/avt.png" alt="User" width="40" height="40" class="rounded-circle ms-2">
+                    </a>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+<section class="hero">
+    <div class="container text-center">
+        <!-- Título principal con nuevo estilo -->
+        <h1 style="font-family: 'Playfair Display', serif; font-size: 4rem; font-weight: 700;">
+            Bienvenido a ArtPlace
+        </h1>
+        <!-- Frase complementaria -->
+        <p style="font-size: 1.5rem; font-style: italic; margin-bottom: 2rem; color: rgba(0, 0, 0, 0.9);">
+            "El arte no reproduce lo visible, lo vuelve visible."
+        </p>
+        <!-- Imagen decorativa -->
+        <img src="assets/hero.png" alt="Arte abstracto" class="img-fluid" style="max-width: 250px;">
+    </div>
+</section>
+    <section class="mb-5">
+        <p class="lead text-center">
+            En <strong>ArtPlace</strong>, nuestra misión es empoderar a artistas emergentes y crear un espacio donde el arte sea accesible para todos.
+        </p>
+    </section>
+
+    <!-- Contenido principal -->
+    <div class="container my-5">
+        <!-- Historia y evolución -->
+        <section class="history mb-5">
+            <h2 class="text-center mb-4">Nuestra Historia</h2>
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="card history-card">
+                        <img src="assets/p2.jpg" alt="Primeros pasos" class="img-fluid">
+                        <div class="card-body">
+                            <h5 class="card-title">Los primeros pasos</h5>
+                            <p class="card-text">ArtPlace nació en 2020 con la visión de conectar artistas emergentes con amantes del arte.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card history-card">
+                        <img src="assets/foto1.jpg" alt="Crecimiento" class="img-fluid">
+                        <div class="card-body">
+                            <h5 class="card-title">Crecimiento y expansión</h5>
+                            <p class="card-text">Hoy en día, ArtPlace es un referente en el mundo del arte, conectando artistas y compradores de todo el mundo.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Misión y Valores -->
+        <section class="mission-bg py-5">
+            <h2 class="text-center mb-4">Nuestra Misión y Valores</h2>
+            <div class="row text-center">
+                <div class="col-md-4">
+                    <i class="fas fa-bullseye text-primary mission-icons"></i>
+                    <h5 class="mt-3">Misión</h5>
+                    <p>Hacer que el arte sea accesible para todos, mientras apoyamos a artistas emergentes.</p>
+                </div>
+                <div class="col-md-4">
+                    <i class="fas fa-heart text-danger mission-icons"></i>
+                    <h5 class="mt-3">Pasión</h5>
+                    <p>Nos mueve el amor por el arte y el compromiso con nuestra comunidad.</p>
+                </div>
+                <div class="col-md-4">
+                    <i class="fas fa-globe text-success mission-icons"></i>
+                    <h5 class="mt-3">Impacto Global</h5>
+                    <p>Crear una conexión mundial que celebre la creatividad y la diversidad artística.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-3">
+        <p>&copy; 2024 ArtPlace. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
