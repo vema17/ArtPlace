@@ -3,6 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from routes.payment_routes import payment_bp
 from config import Config
 import paypalrestsdk
+from rabbitmqServices import RabbitMQ
+
 
 db = SQLAlchemy()
 
@@ -12,6 +14,17 @@ def create_app():
 
     # Inicializar extensiones
     db.init_app(app)
+    
+    # Configuración de RabbitMQ
+    RABBITMQ_URL = "amqp://guest:guest@rabbitmq:5672"
+    QUEUE_NAME = "my_queue"
+
+    # Crear una instancia de RabbitMQ
+    rabbitmq = RabbitMQ(RABBITMQ_URL, QUEUE_NAME)
+    
+    rabbitmq.connect()
+    rabbitmq.send_message({"message": "Hello, RabbitMQ!"})
+    print("Mensaje enviado con éxito.")
 
     # Configurar PayPal dentro del contexto de la aplicación
     with app.app_context():

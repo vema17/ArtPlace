@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const buyButton = document.getElementById('buy-button');
         buyButton.addEventListener('click', () => {
-            alert("Función sin implementar");
+            window.location.href = "http://localhost:5002/";
         });
     };
 

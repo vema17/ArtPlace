@@ -1,4 +1,14 @@
 services:
+  rabbitmq:
+      image: rabbitmq:3-management
+      ports:
+        - "5672:5672"
+        - "15672:15672"
+      networks:
+        - my-network
+      env_file:
+        - .env
+        
   user-service:
     build: 
       context: ./user-service
@@ -113,15 +123,7 @@ services:
     networks:
       - my-network
   
-  rabbitmq:
-    image: rabbitmq:3-management
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    networks:
-      - my-network
-    env_file:
-      - .env
+  
 
 volumes:
   user-mysql-data:
