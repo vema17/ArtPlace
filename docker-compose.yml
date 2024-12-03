@@ -1,4 +1,11 @@
 services:
+  home:
+    build:
+      context: ./home
+      dockerfile: dockerfile
+    ports:
+      - "3000:3000"
+
   rabbitmq:
       image: rabbitmq:3-management
       ports:
