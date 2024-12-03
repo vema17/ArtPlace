@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Estilos personalizados */
+        body {
+    background-color: #e694df79; /* Color de fondo para toda la página */
+      }
+
+        .hero {
+            background: url('assets/contact-hero-bg.jpg') no-repeat center center/cover;
+            color: rgb(0, 0, 0);
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+            height: 50vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            font-style: italic;
+            margin-bottom: 2rem;
+            color: rgba(0, 0, 0, 0.9);
+        }
+
+        .form-container {
+            background-color: #abbfd4;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar {
+            background-color: black;
+        }
+
+        .navbar .nav-link {
+            color: white !important;
+        }
+
+        .navbar .navbar-brand {
+            color: white !important;
+        }
+
+        .navbar .fa-shopping-cart {
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .navbar .form-control {
+            background-color: white;
+        }
+
+        .d-flex.align-items-center img {
+            margin-left: 15px;
+        }
+
+        .navbar .fa-shopping-cart {
+            margin-left: 15px;
+            margin-top: 6px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Barra de navegación principal -->
+    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="home.html">
+                <img src="assets/ArtPlace.png" alt="Logo" width="150" height="auto">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="manager_products.html">Publicar</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">Nosotros</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="contact.html">Contacto</a></li>
+                </ul>
+                <form class="d-flex ms-3">
+                    <a href="search_products.html" class="btn btn-outline-light me-2">Buscar</a>
+                    <a href="search_products.html" class="nav-link"><i class="fas fa-shopping-cart"></i></a>
+                    <a href="profile.html" class="d-flex align-items-center text-decoration-none">
+                        <img src="assets/avt.png" alt="User" width="40" height="40" class="rounded-circle ms-2">
+                    </a>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    
+    <!-- Hero Section -->
+    <section class="hero mb-0">
+        <h1>Contáctanos</h1>
+        <p>"Estamos aquí para resolver tus dudas y escuchar tus comentarios."</p>
+        <img src="assets/hero.png" alt="Arte abstracto" class="img-fluid" style="max-width: 250px;">
+    </section>
+
+    <!-- Formulario de Contacto -->
+    <div class="container mt-1">
+        
+        <h2 class="text-center mb-4">Envíanos un Mensaje</h2>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="form-container">
+                    <form>
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Nombre</label>
+                            <input type="text" id="nombre" class="form-control shadow-sm" placeholder="Escribe tu nombre" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="correo" class="form-label">Correo Electrónico</label>
+                            <input type="email" id="correo" class="form-control shadow-sm" placeholder="nombre@ejemplo.com" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="mensaje" class="form-label">Mensaje</label>
+                            <textarea id="mensaje" class="form-control shadow-sm" rows="5" placeholder="Escribe tu mensaje aquí" required></textarea>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary w-100 shadow-sm">Enviar Mensaje</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Información de Contacto -->
+    <div class="container my-5">
+        <h2 class="text-center mb-4">Detalles de Contacto</h2>
+        <div class="row text-center">
+            <div class="col-md-4">
+                <i class="fas fa-phone-alt fa-2x text-primary"></i>
+                <h5 class="mt-3">Teléfono</h5>
+                <p>+1 234 567 890</p>
+            </div>
+            <div class="col-md-4">
+                <i class="fas fa-envelope fa-2x text-danger"></i>
+                <h5 class="mt-3">Correo Electrónico</h5>
+                <p>info@artplace.com</p>
+            </div>
+            <div class="col-md-4">
+                <i class="fas fa-map-marker-alt fa-2x text-success"></i>
+                <h5 class="mt-3">Ubicación</h5>
+                <p>Calle Arte #123, Ciudad Creativa</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-3">
+        <p>&copy; 2024 ArtPlace. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/rutas.js"></script>
+</body>
+</html>
