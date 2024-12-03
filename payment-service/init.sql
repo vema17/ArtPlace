@@ -1,0 +1,37 @@
+CREATE DATABASE IF NOT EXISTS payment_service;
+
+USE payment_service;
+
+-- Tabla de transacciones
+CREATE TABLE transactions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    buyer_id INT NOT NULL,
+    seller_id INT NOT NULL,
+    product_id INT NOT NULL,
+    total_amount DECIMAL(10, 2) NOT NULL,
+    paypal_status ENUM('PENDING', 'COMPLETED', 'FAILED') DEFAULT 'PENDING',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (seller_id) REFERENCES sellers(id) ON DELETE SET NULL
+);
+
+-- Tabla de vendedores
+CREATE TABLE sellers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    paypal_email VARCHAR(100) NOT NULL,
+    balance DECIMAL(10, 2) DEFAULT 0.00,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+);
+
+CREATE TABLE payouts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    seller_id INT NOT NULL,
+    amount DECIMAL(10, 2) NOT NULL,
+    payout_batch_id VARCHAR(255) NOT NULL,
+    payout_status ENUM('PENDING', 'COMPLETED', 'FAILED') DEFAULT 'PENDING',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (seller_id) REFERENCES sellers(id) ON DELETE CASCADE
+);

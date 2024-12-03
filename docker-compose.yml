@@ -1,4 +1,14 @@
 services:
+  rabbitmq:
+      image: rabbitmq:3-management
+      ports:
+        - "5672:5672"
+        - "15672:15672"
+      networks:
+        - my-network
+      env_file:
+        - .env
+        
   user-service:
     build: 
       context: ./user-service
@@ -9,7 +19,7 @@ services:
       - ./uploads/users:/app/uploads/users
       - ./user-service:/usr/src/app
     depends_on:
-      - mysql
+      - user-mysql
       - rabbitmq
     env_file:
       - .env
@@ -33,14 +43,71 @@ services:
     networks:
       - my-network
 
-  mysql:
+  payment-service:
+    build:
+      context: ./payment-service
+      dockerfile: dockerfile
+    ports:
+      - '5002:5002'
+    depends_on:
+      - payment-mysql
+      - rabbitmq
+    env_file:
+      - .env
+    networks:
+      - my-network
+  
+  rating-service:
+    build: 
+      context: ./rating-service
+      dockerfile: dockerfile
+    ports:
+      - "3002:3002"
+    volumes:
+      - ./rating-service:/usr/src/app
+    env_file:
+      - .env
+    depends_on:
+      - rating-mysql
+    networks:
+      - my-network
+
+  rating-mysql:
+    image: mysql:8
+    ports:
+      - "3308:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: rating_service
+    volumes:
+      - rating-mysql-data:/var/lib/mysql
+      - ./rating-service/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - my-network
+
+  user-mysql:
     image: mysql:8
     ports:
       - '3306:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: user_service
     volumes:
+      - user-mysql-data:/var/lib/mysql
       - ./user-service/init.sql:/docker-entrypoint-initdb.d/init.sql
-    env_file:
-      - .env
+    networks:
+      - my-network
+
+  payment-mysql:
+    image: mysql:8
+    ports:
+      - '3307:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: payment_service
+    volumes:
+      - payment-mysql-data:/var/lib/mysql
+      - ./payment-service/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - my-network
 
@@ -56,18 +123,12 @@ services:
     networks:
       - my-network
   
-  rabbitmq:
-    image: rabbitmq:3-management
-    ports:
-      - "5672:5672"       # Puerto para conexiones de aplicaciones
-      - "15672:15672"     # Puerto para el panel de administración
-    networks:
-      - my-network
-    env_file:
-      - .env
+  
 
 volumes:
-  mysql-data:
+  user-mysql-data:
+  payment-mysql-data:
+  rating-mysql-data:
   mongodb-data:
   uploads:
 

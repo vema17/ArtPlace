@@ -55,37 +55,134 @@
                 <h4>Buscar</h4>
                 <input type="text" id="searchQuery" name="searchQuery" placeholder="Buscar por título o descripción" oninput="applyFilters()">
             </div>
-    
+
+            <!-- Ordenación -->
+            <div class="filter-group">
+              <h4>Ordenar por</h4>
+              <select id="orderBy" onchange="applyFilters()">
+                <option value="">Seleccionar</option>
+                <option value="asc">Precio: Menor a Mayor</option>
+                <option value="desc">Precio: Mayor a Menor</option>
+              </select>
+            </div>
+            
             <!-- Categoría -->
             <div class="filter-group">
-                <h4>Categoría</h4>
-                <label><input type="radio" name="categoria" value="" checked onchange="applyFilters()"> Todas las Categorías</label>
-                <label><input type="radio" name="categoria" value="Abstraccion" onchange="applyFilters()"> Abstracción</label>
-                <label><input type="radio" name="categoria" value="Paisajismo" onchange="applyFilters()"> Paisajismo</label>
-                <label><input type="radio" name="categoria" value="Naturaleza" onchange="applyFilters()"> Naturaleza</label>
-                <label><input type="radio" name="categoria" value="Retrato" onchange="applyFilters()"> Retrato</label>
+              <label for="categoria">Categoría</label>
+              <select id="categoria" name="categoria" onchange="applyFilters()" required>
+                <option value="">Seleccionar</option>
+                <option value="Abstraccion">Abstracción</option>
+                <option value="Paisajismo">Paisajismo</option>
+                <option value="Naturaleza">Naturaleza</option>
+                <option value="Retrato">Retrato</option>
+                <option value="Cultura Pop">Cultura Pop</option>
+                <option value="Animales">Animales</option>
+                <option value="Autoretrato">Autorretrato</option>
+                <option value="Bodegón">Bodegón</option>
+                <option value="Conceptual">Conceptual</option>
+                <option value="Desnudo">Desnudo</option>
+                <option value="Era Digital">Era Digital</option>
+                <option value="Escena De Género">Escena de Género</option>
+                <option value="Fantasía">Fantasía</option>
+                <option value="Fashion">Fashion</option>
+                <option value="Historia y Politica">Historia y Política</option>
+                <option value="Marina">Marina</option>
+                <option value="Provocativo">Provocativo</option>
+                <option value="Religión">Religión</option>
+                <option value="Street Art">Street Art</option>
+                <option value="Urbano">Urbano</option>
+                <option value="Vanitas">Vanitas</option>
+              </select>
             </div>
-
-            <!-- Técnica -->
+            
             <div class="filter-group">
-                <h4>Técnica</h4>
-                <label><input type="radio" name="tecnica" value="" checked onchange="applyFilters()"> Todas las Técnicas</label>
-                <label><input type="radio" name="tecnica" value="Oleo" onchange="applyFilters()"> Óleo</label>
-                <label><input type="radio" name="tecnica" value="Acrilico" onchange="applyFilters()"> Acrílico</label>
-                <label><input type="radio" name="tecnica" value="Acuarela" onchange="applyFilters()"> Acuarela</label>
-                <label><input type="radio" name="tecnica" value="Carboncillo" onchange="applyFilters()"> Carboncillo</label>
+              <label for="estilo">Estilo</label>
+              <select id="estilo" name="estilo" onchange="applyFilters()" required>
+                <option value="">Seleccionar</option>
+                <option value="Abstracto">Abstracto</option>
+                <option value="Aborigen">Aborigen</option>
+                <option value="Arte Marginal">Arte Marginal</option>
+                <option value="Cubismo">Cubismo</option>
+                <option value="Clasico">Clásico</option>
+                <option value="Expressionismo">Expresionismo</option>
+                <option value="Fauvismo">Fauvismo</option>
+                <option value="Figurativo">Figurativo</option>
+                <option value="Futurista">Futurista</option>
+                <option value="Geométrico">Geométrico</option>
+                <option value="Historietas">Historietas</option>
+                <option value="Impresionismo">Impresionismo</option>
+                <option value="Metafísico">Metafísico</option>
+                <option value="Minimalismo">Minimalismo</option>
+                <option value="Naif">Naif</option>
+                <option value="Oriental">Oriental</option>
+                <option value="Pop Art">Pop Art</option>
+                <option value="Primitivismo">Primitivismo</option>
+                <option value="Realismo">Realismo</option>
+                <option value="Semiabstracto">Semiabstracto</option>
+                <option value="Simbólico">Simbólico</option>
+                <option value="Otro">Otro</option>
+              </select>
             </div>
-
-            <!-- Estilo -->
+            
             <div class="filter-group">
-                <h4>Estilo</h4>
-                <label><input type="radio" name="estilo" value="" checked onchange="applyFilters()"> Todos los Estilos</label>
-                <label><input type="radio" name="estilo" value="Abstracto" onchange="applyFilters()"> Abstracto</label>
-                <label><input type="radio" name="estilo" value="Figurativo" onchange="applyFilters()"> Figurativo</label>
-                <label><input type="radio" name="estilo" value="Realismo" onchange="applyFilters()"> Realismo</label>
-                <label><input type="radio" name="estilo" value="Surrealismo" onchange="applyFilters()"> Surrealismo</label>
+              <label for="tecnica">Técnica</label>
+              <select id="tecnica" name="tecnica" onchange="applyFilters()" required>
+                <option value="">Seleccionar</option>
+                <option value="Acrilico">Acrílico</option>
+                <option value="Acuarela">Acuarela</option>
+                <option value="Algodón">Algodón</option>
+                <option value="Alquitrán">Alquitrán</option>
+                <option value="Arena">Arena</option>
+                <option value="Bordado">Bordado</option>
+                <option value="Carbón">Carbón</option>
+                <option value="Cemento">Cemento</option>
+                <option value="Cera">Cera</option>
+                <option value="Cerámica">Cerámica</option>
+                <option value="Cinta">Cinta</option>
+                <option value="Collage">Collage</option>
+                <option value="Dorados">Dorados</option>
+                <option value="Esmalte">Esmalte</option>
+                <option value="Fieltro">Fieltro</option>
+                <option value="Gouache/Aguada">Gouache/Aguada</option>
+                <option value="Grabado">Grabado</option>
+                <option value="Graffiti">Graffiti</option>
+                <option value="Grafito">Grafito</option>
+                <option value="Hoja de Plata">Hoja de Plata</option>
+                <option value="Laca">Laca</option>
+                <option value="Ladrillos">Ladrillos</option>
+                <option value="Lana">Lana</option>
+                <option value="Lápiz">Lápiz</option>
+                <option value="Lápiz de Color">Lápiz de Color</option>
+                <option value="Látex">Látex</option>
+                <option value="Litografía">Litografía</option>
+                <option value="Material Orgánico">Material Orgánico</option>
+                <option value="Objetos">Objetos</option>
+                <option value="Objetos Recuperados">Objetos Recuperados</option>
+                <option value="Pan de Oro">Pan de Oro</option>
+                <option value="Pantalla">Pantalla</option>
+                <option value="Pastel">Pastel</option>
+                <option value="Pastel al Óleo">Pastel al Óleo</option>
+                <option value="Perlas">Perlas</option>
+                <option value="Piel">Piel</option>
+                <option value="Pigmento">Pigmento</option>
+                <option value="Pintura en Relieve">Pintura en Relieve</option>
+                <option value="Pirofusión">Pirofusión</option>
+                <option value="Pluma">Pluma</option>
+                <option value="Polvo de Mármol">Polvo de Mármol</option>
+                <option value="Resina">Resina</option>
+                <option value="Resina Epoxi">Resina Epoxi</option>
+                <option value="Serigrafía">Serigrafía</option>
+                <option value="Témpera">Témpera</option>
+                <option value="Tierra">Tierra</option>
+                <option value="Tinta China">Tinta China</option>
+                <option value="Tinte">Tinte</option>
+                <option value="Tiza">Tiza</option>
+                <option value="Vinilo">Vinilo</option>
+                <option value="Yeso">Yeso</option>
+                <option value="Zinc">Zinc</option>
+              </select>
             </div>
-
+            
             <!-- Precio -->
             <div class="filter-group">
                 <h4>Precio</h4>
@@ -112,7 +209,6 @@
             <div class="options-bar">
                 <h2>Pinturas Originales A La Venta</h2>
                 <p>Compra una pintura en venta de talentos internacionales de todo el mundo. Elija entre una variedad de estilos...</p>
-                <button class="save-search" onclick="loadAllProducts()">Guardar búsqueda</button>
             </div>
     
             <!-- Cuadrícula de productos -->

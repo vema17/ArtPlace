@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS mi_base_de_datos;
-USE mi_base_de_datos;
+CREATE DATABASE IF NOT EXISTS user_service;
+USE user_service;
 
 CREATE TABLE IF NOT EXISTS usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,

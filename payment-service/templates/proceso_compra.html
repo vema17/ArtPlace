@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proceso de Compra</title>
+    <link rel="stylesheet" href="static/css/proceso_compra.css">
+    <script src="https://www.paypal.com/sdk/js?client-id=AWyy_sZvb6DBRcHiohrbL8h8QwuDVez2uX797NvSsMOejW4FA5jW_RD68uL1ndK2rO3yanj3KZOjVncd&currency=USD"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Progreso -->
+        <div class="progress">
+            <span id="stepIndicator">INFORMACIÓN > ENVÍO > PAGO</span>
+        </div>
+
+        <!-- Paso 1: Información del contacto -->
+        <div id="step1" class="step">
+            <h2>Paso 1/3: Su información de contacto</h2>
+            <form>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Ingrese su correo electrónico" required>
+
+                <label for="firstName">Nombre</label>
+                <input type="text" id="firstName" name="firstName" placeholder="Ingrese su nombre" required>
+
+                <label for="lastName">Apellido</label>
+                <input type="text" id="lastName" name="lastName" placeholder="Ingrese su apellido" required>
+
+                <label for="phone">Número de teléfono</label>
+                <input type="tel" id="phone" name="phone" placeholder="Ingrese su número de teléfono" required>
+
+                <button type="button" class="btn-primary" onclick="nextStep(2)">Validar</button>
+            </form>
+        </div>
+
+        <!-- Paso 2: Envío -->
+        <div id="step2" class="step hidden">
+            <h2>Paso 2/3: Direcciones de entrega y facturación</h2>
+            <form>
+                <label for="receiverName">Nombre del receptor</label>
+                <input type="text" id="receiverName" name="receiverName" placeholder="Ingrese el nombre completo" required>
+
+                <label for="address">Dirección</label>
+                <input type="text" id="address" name="address" placeholder="Ingrese la dirección" required>
+                <input type="text" id="addressLine2" name="addressLine2" placeholder="Línea 2 (opcional)">
+
+                <label for="city">Ciudad</label>
+                <input type="text" id="city" name="city" placeholder="Ingrese la ciudad" required>
+
+                <label for="state">Estado/Región</label>
+                <input type="text" id="state" name="state" placeholder="Ingrese el estado o región" required>
+
+                <label for="postalCode">Código postal</label>
+                <input type="text" id="postalCode" name="postalCode" placeholder="Ingrese el código postal" required>
+
+                <label for="country">País</label>
+                <select id="country" name="country" required>
+                    <option value="">Selecciona un país</option>
+                    <!-- Las opciones se llenarán dinámicamente -->
+                </select>
+
+                <button type="button" class="btn-primary" onclick="nextStep(3)">Validar</button>
+            </form>
+        </div>
+
+        <!-- Paso 3: Pago -->
+        <div id="step3" class="step hidden">
+            <h2>Paso 3/3: Pago</h2>
+            <form>
+                <label>Opciones de pago</label>
+                <div id="paypal-button-container"></div>
+
+                <div id="summary">
+                    <h3>Resumen del pedido</h3>
+                    <div id="order-item" class="order-item">
+                        <!-- Datos del producto se cargarán aquí dinámicamente -->
+                    </div>
+                    <div id="price-summary" class="price-summary">
+                        <!-- Resumen del precio se cargará aquí dinámicamente -->
+                    </div>
+                </div>
+
+                <button type="button" class="btn-primary">Proceder al pago</button>
+            </form>
+        </div>
+    </div>
+    <script src="static/js/proceso_compra.js"></script>
+</body>
+</html>

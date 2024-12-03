@@ -2,9 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const connectMongoDB = require('./config/mongodb'); 
-const { connectRabbitMQ } = require('./config/rabbitmqService');
-const { startConsuming } = require('./middleware/productConsumer');
 const productRoutes = require('./routes/productRoutes');
+const { connectRabbitMQ, assertQueue} = require('./config/rabbitmqService');
 
 const app = express();
 
@@ -23,12 +22,18 @@ app.get('/', (req, res) => {
   });
 
 async function startApp() {
-  await connectRabbitMQ();
-  startConsuming();
+  try {
+    console.log('Conectando a RabbitMQ...');
+    await connectRabbitMQ();
+    await assertQueue('ProductToPayment');
+    console.log('Conexión a RabbitMQ y cola ProductToPayment asegurada.');
+  } catch (error) {
+    console.error('Error al iniciar el servicio:', error);
+  }
 }
-
-startApp();
-
 // Iniciar el servidor
 const PORT = process.env.PORT || 5001;
-app.listen(PORT, () => console.log(`Servicio de productos corriendo en ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Servicio de usuario corriendo en http://localhost:${PORT}`);
+  startApp();
+});

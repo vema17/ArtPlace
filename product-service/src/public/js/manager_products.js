@@ -1,6 +1,20 @@
 // Función para mostrar el nombre del usuario
-function loadUser() {
-    document.getElementById('username').textContent = 'Nombre del Usuario'; // Reemplazar con el nombre real del usuario
+async function loadUser() {
+    try {
+        // Solicitar el nombre del usuario desde el consumidor
+        const response = await fetch('api/products/current-user'); // Endpoint que expone getCurrentUserName
+        if (!response.ok) {
+            throw new Error(`Error ${response.status}: ${response.statusText}`);
+        }
+
+        const { nombre } = await response.json();
+
+        // Actualiza el nombre del usuario en la página
+        document.getElementById('username').textContent = nombre || 'Usuario';
+    } catch (error) {
+        console.error('Error al cargar el usuario:', error);
+        document.getElementById('username').textContent = 'Usuario'; // Nombre predeterminado
+    }
 }
 
 // Función para cargar la lista de productos desde la API
@@ -9,25 +23,35 @@ async function loadProducts() {
     productList.innerHTML = ''; // Limpiar la lista
 
     try {
-        // Realiza una petición a la API para obtener los productos
-        const response = await fetch('/api/products');
-        const products = await response.json();
+        // Realiza una petición a la API para obtener los productos del usuario autenticado
+        const response = await fetch('/api/products/my-products');
+        
+        if (!response.ok) {
+            throw new Error(`Error ${response.status}: ${response.statusText}`);
+        }
+
+        const { products } = await response.json();
+
+        if (products.length === 0) {
+            productList.innerHTML = '<li>No tienes productos cargados.</li>';
+            return;
+        }
 
         products.forEach(product => {
             const productItem = document.createElement('li');
             productItem.classList.add('product-item');
 
             productItem.innerHTML = `
-                <div class="product-info" onclick="viewProduct(${product.id})">
-                    <img src="${product.imagen}" alt="${product.nombre}" class="product-image">
+                <div class="product-info" onclick="viewProduct('${product._id}')">
+                    <img src="${product.imagen}" alt="${product.nombre_obra}" class="product-image">
                     <div>
-                        <div class="product-name">${product.nombre}</div>
+                        <div class="product-name">${product.nombre_obra}</div>
                         <div class="product-description">${product.descripcion}</div>
                     </div>
                 </div>
                 <div class="product-actions">
-                    <button onclick="editProduct(${product.id})">Editar</button>
-                    <button class="delete" onclick="deleteProduct(${product.id})">Eliminar</button>
+                    <button onclick="editProduct('${product._id}')">Editar</button>
+                    <button class="delete" onclick="deleteProduct('${product._id}')">Eliminar</button>
                 </div>
             `;
 
@@ -35,6 +59,7 @@ async function loadProducts() {
         });
     } catch (error) {
         console.error("Error al cargar los productos:", error);
+        productList.innerHTML = '<li>Error al cargar los productos. Intenta nuevamente más tarde.</li>';
     }
 }
 
