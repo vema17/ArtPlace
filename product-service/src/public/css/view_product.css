@@ -1,0 +1,152 @@
+body {
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h2 {
+    font-weight: bold;
+    color: #333;
+}
+
+.product-details {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.product-image img {
+    max-width: 400px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.product-info {
+    max-width: 500px;
+}
+
+.product-info h3 {
+    color: #333;
+}
+
+.product-info p {
+    color: #555;
+}
+
+.product-info strong {
+    color: #000;
+}
+
+#buy-button {
+    background-color: #0d6efd;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#buy-button:hover {
+    background-color: #0b5ed7;
+}
+
+.message {
+    font-size: 16px;
+    color: #333;
+    text-align: center;
+}
+.navbar {
+    width: 100%;
+    background-color: black; 
+  }
+
+  .navbar .nav-link {
+    color: white !important; 
+  }
+
+  .navbar .navbar-brand {
+    color: white !important;
+  }
+
+  .navbar .dropdown-menu {
+    right: 0;
+  }
+
+  
+  .navbar .fa-shopping-cart {
+    color: white; 
+    font-size: 1.5rem; 
+  }
+
+  .navbar .form-control {
+    background-color: #fff; 
+  }
+  
+   .d-flex.align-items-center img {
+    margin-left: 15px; 
+  }
+
+ 
+  .navbar .fa-shopping-cart {
+    margin-left: 15px; 
+    margin-top: 6px; 
+  }
+
+/* Mantén los estilos generales del formulario y las estrellas */
+.rating i {
+  font-size: 1.5rem;
+  color: #ccc;
+  cursor: pointer;
+}
+
+.rating i.selected,
+.rating i:hover,
+.rating i:hover ~ i {
+    color: #f5c518;
+}
+
+/* Estilo para las estrellas cuando se pasa el mouse sobre ellas */
+.rating i:hover,
+.rating i:hover ~ i {
+    color: #f5c518;
+}
+
+.rating i.selected ~ i {
+    color: #f5c518; /* Cambia el color de las estrellas seleccionadas */
+}
+
+/* Estilos adaptados a la nueva estructura de radio buttons */
+.clasificacion {
+  direction: rtl;
+  unicode-bidi: bidi-override;
+  text-align: left;
+}
+
+.clasificacion input[type="radio"] {
+  display: none;
+}
+
+.clasificacion label {
+  font-size: 30px;
+  color: #ccc;
+  cursor: pointer;
+}
+
+.clasificacion label:hover,
+.clasificacion label:hover ~ label {
+  color: orange;
+}
+
+.clasificacion input[type="radio"]:checked ~ label {
+  color: orange;
+}
+

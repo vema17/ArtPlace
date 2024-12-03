@@ -1,25 +1,136 @@
-version: '3'
 services:
-  app:
-    build: .
+  rabbitmq:
+      image: rabbitmq:3-management
+      ports:
+        - "5672:5672"
+        - "15672:15672"
+      networks:
+        - my-network
+      env_file:
+        - .env
+        
+  user-service:
+    build: 
+      context: ./user-service
+      dockerfile: dockerfile
     ports:
       - '5000:5000'
     volumes:
-      - ./uploads:/app/uploads 
-      - .:/usr/src/app
+      - ./uploads/users:/app/uploads/users
+      - ./user-service:/usr/src/app
     depends_on:
-      - db
+      - user-mysql
+      - rabbitmq
     env_file:
       - .env
+    networks:
+      - my-network
 
-  db:
+  product-service:
+    build: 
+      context: ./product-service
+      dockerfile: dockerfile
+    ports:
+      - '5001:5001'
+    volumes:
+      - ./uploads/products:/app/uploads/products
+      - ./product-service:/usr/src/app
+    depends_on:
+      - mongodb
+      - rabbitmq
+    env_file:
+      - .env
+    networks:
+      - my-network
+
+  payment-service:
+    build:
+      context: ./payment-service
+      dockerfile: dockerfile
+    ports:
+      - '5002:5002'
+    depends_on:
+      - payment-mysql
+      - rabbitmq
+    env_file:
+      - .env
+    networks:
+      - my-network
+  
+  rating-service:
+    build: 
+      context: ./rating-service
+      dockerfile: dockerfile
+    ports:
+      - "3002:3002"
+    volumes:
+      - ./rating-service:/usr/src/app
+    env_file:
+      - .env
+    depends_on:
+      - rating-mysql
+    networks:
+      - my-network
+
+  rating-mysql:
+    image: mysql:8
+    ports:
+      - "3308:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: rating_service
+    volumes:
+      - rating-mysql-data:/var/lib/mysql
+      - ./rating-service/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - my-network
+
+  user-mysql:
     image: mysql:8
     ports:
       - '3306:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: user_service
     volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - user-mysql-data:/var/lib/mysql
+      - ./user-service/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - my-network
+
+  payment-mysql:
+    image: mysql:8
+    ports:
+      - '3307:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: payment_service
+    volumes:
+      - payment-mysql-data:/var/lib/mysql
+      - ./payment-service/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - my-network
+
+  mongodb:  
+    image: mongo
+    ports:
+      - '27017:27017'
+    command: mongod --quiet  
+    volumes:
+      - ./product-service/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
     env_file:
       - .env
+    networks:
+      - my-network
+  
+  
 
 volumes:
-  db-data:
+  user-mysql-data:
+  payment-mysql-data:
+  rating-mysql-data:
+  mongodb-data:
+  uploads:
+
+networks:
+  my-network:

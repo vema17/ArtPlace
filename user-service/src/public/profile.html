@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil de Usuario</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  
+    <style>
+    
+        /* Estilos para la barra lateral */
+        .sidebar {
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px; /* Ancho fijo */
+    background-image: url('assets/BG.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: rgba(95, 120, 172, 0.39); /* Fondo semitransparente */
+    padding-top: 20px;
+}
+    
+        .sidebar .nav-link {
+          font-size: 1.1rem;
+          color: #333;
+        }
+    
+        .sidebar .nav-link.active {
+          background-color: #0d6efd;
+          color: white;
+        }
+    
+        .sidebar .nav-link:hover {
+          background-color: #e9ecef;
+        }
+    
+        /* Espacio para el contenido principal */
+        .content {
+          margin-left: 260px;
+          padding: 20px;
+        }
+    
+        .navbar {
+    width: calc(100% - 250px); /* Reduce el ancho en función del ancho de la sidebar */
+    margin-left: 250px; /* Mueve la barra de navegación hacia la derecha */
+    background-color: black; /* Color de fondo negro */
+    position: fixed; /* Fija la barra en la parte superior */
+    top: 0;
+    left: 0; /* Asegura que comience en el borde izquierdo */
+    z-index: 1000; /* Asegúrate de que esté por encima de la sidebar */
+    display: flex; /* Usa flexbox para el contenido interno */
+    align-items: center; /* Centrado vertical */
+}
+
+.navbar .nav-link {
+    color: white !important; /* Letras en blanco */
+}
+
+.navbar .navbar-brand {
+    color: white !important; /* Color del logo en blanco */
+}
+
+.navbar .dropdown-menu {
+    right: 0;
+}
+
+.navbar .fa-shopping-cart {
+    color: white; 
+    font-size: 1.5rem; 
+}
+
+.navbar .form-control {
+    background-color: #fff; 
+}
+
+/* Espaciado entre elementos */
+.d-flex.align-items-center img {
+    margin-left: 15px; 
+}
+
+/* Centrar verticalmente el carrito */
+.navbar .fa-shopping-cart {
+    margin-left: 15px; 
+    margin-top: 6px; 
+}
+    
+        html {
+          position: relative;
+          min-height: 100%;
+        }
+    
+        body {
+            margin: 0; /* Quita cualquier margen externo del body */
+            padding-top: 45px; /* Altura del footer */
+        }
+    
+        footer {
+          position: absolute;
+          bottom: 0;
+          width: 100%;
+          height: 60px; /* Altura del footer */
+          background-color: #f8f9fa; /* Color de fondo claro */
+        }
+    
+        .profile-section {
+          background-color: white;
+          padding: 20px;
+          border-radius: 10px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    
+        .profile-section h3 {
+          margin-bottom: 20px;
+        }
+    
+        .profile-section img {
+          width: 120px;
+          height: 120px;
+          border-radius: 50%;
+        }
+    
+        .edit-icon {
+          font-size: 1.5rem;
+          color: #0d6efd;
+          cursor: pointer;
+        }
+    
+        .personal-info {
+          list-style: none;
+          padding: 0;
+        }
+    
+        .personal-info li {
+          margin-bottom: 10px;
+        }
+        
+        .file-input {
+          display: none;
+        }
+       
+    </style>
+</head>
+<body>
+
+    <!--Lizeth-->
+    <!-- Barra lateral -->
+    <div class="sidebar d-flex flex-column p-3">
+        <a class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none" id="homeLink">
+            <img src="assets/ArtPlace.png" alt="Logo" class="bi pe-none me-2" width="200">
+        </a>
+        <hr>
+        <ul class="nav nav-pills flex-column mb-auto"> 
+            <li class="nav-item" id="perfilItem"> <!--Perfil-->
+                <a class="nav-link text-dark" id="perfilLink">
+                    <i class="fas fa-users me-2" id="perfilIcon"></i> Perfil
+                </a>
+            </li>
+            <li id="crearPerfilItem"> <!--Editar perfil-->
+                <a class="nav-link text-dark" id="crearPerfilLink">
+                    <i class="fas fa-chart-bar me-2" id="crearPerfilIcon"></i> Crear Perfil
+                </a>
+            </li>
+            <li id="editarDireccionItem"> <!--Editar Dirección-->
+                <a class="nav-link text-dark" id="editarDireccionLink">
+                    <i class="fas fa-box me-2" id="editarDireccionIcon"></i> Editar Dirección
+                </a>
+            </li>
+            <li id="cambiarContrasenaItem"> <!--Cambiar contraseña-->
+                <a class="nav-link text-dark" id="cambiarContrasenaLink">
+                    <i class="fas fa-cubes me-2" id="cambiarContrasenaIcon"></i> Cambiar Contraseña
+                </a>
+            </li>
+            <li id="catalogoItem"> <!--Home-->
+                <a class="nav-link text-dark" id="catalogoLink">
+                    <i class="fas fa-home me-2" id="catalogoIcon"></i> Catálogo
+                </a>
+            </li>
+        </ul>
+        <hr>
+        <div class="dropdown">
+            <a href="#" class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="assets/avt.png" alt="User" width="32" height="32" class="rounded-circle me-2">
+                <strong>Usuario</strong>
+            </a>
+            <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser1">
+                <li><a class="dropdown-item" href="#">Perfil</a></li>
+                <li><a class="dropdown-item" href="#">Ajustes</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="index.html">Cerrar sesión</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="content">
+        <!-- Barra de navegación superior -->
+        <nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
+            <div class="container-fluid">
+              <!-- Agregar logo aquí -->
+              <a class="navbar-brand" href="home.html">
+                
+              </a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../product_service/manager_product.html">Publicar</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">Nosotros</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">Contacto</a>
+                  </li>
+                </ul>
+                <form class="d-flex ms-3">
+                  <a href="../product_service/search_products.html" class="btn btn-outline-light me-2">Buscar</a>
+                  <a href="../product_service/shoping_cart.html" class="nav-link"></a>
+                    <i class="fas fa-shopping-cart"></i> <!-- Carrito de compras -->
+                  </a>
+                  <a href="profile.html" class="d-flex align-items-center text-decoration-none">
+                    <img src="assets/avt.png" alt="User" width="40" height="40" class="rounded-circle me-2">
+                  </a>
+                </form>
+              </div>
+            </div>
+          </nav>
+
+        <!-- Contenido -->
+        <div class="container mt-4">
+            <div class="profile-section">
+                <h3>Información del Usuario</h3>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="position-relative">
+                        <img src="assets/avt.png" alt="Foto de perfil" id="profilePic">
+                        
+                    </div>
+                    <a href="createProfile.html" class="btn btn-primary">Crear Perfil</a>
+                </div>
+                <hr>
+                <h5>Datos personales</h5>
+                <ul class="personal-info">
+                    <li><strong>Nombre:</strong> <span id="usernameDisplay">[Nombre]</span></li>
+                    <li><strong>Correo Electrónico:</strong> <span id="emailDisplay">[Correo]</span></li>
+                    <li><strong>UserID:</strong> <span id="userIdDisplay">[ID]</span></li>
+                    <li><strong>Biografía:</strong> <span id="bioDisplay">[Biografía]</span></li>
+                </ul>
+                <hr>
+                <h5>Dirección</h5>
+                <ul class="personal-info">
+                    <li><strong>País:</strong> <span id="countryDisplay">[País]</span></li>
+                    <li><strong>Estado:</strong> <span id="stateDisplay">[Estado]</span></li>
+                    <li><strong>Ciudad:</strong> <span id="cityDisplay">[Ciudad]</span></li>
+                    <li><strong>Código Postal:</strong> <span id="postalCodeDisplay">[Código Postal]</span></li>
+                    <li><strong>Calle:</strong> <span id="streetDisplay">[Calle]</span></li>
+                    <li><strong>Número:</strong> <span id="numberDisplay">[Número]</span></li>
+                </ul>
+            </div>
+        </div>
+  </div>
+
+<!-- Muchachos
+    <div class="container">
+        <h2 class="mt-5" id="welcomeMessage">Bienvenido, <span id="usernameDisplay">[Nombre]</span></h2>
+        <img src="" name="profileImage" id="profileImage">
+        <h3>Opciones:</h3>
+        <button class="btn btn-warning" id="editProfile" data-toggle="modal" data-target="#editProfileModal">Editar Perfil</button>
+        <button class="btn btn-info" id="changeAddress" data-toggle="modal" data-target="#changeAddressModal">Cambiar Dirección</button>
+        <button class="btn btn-danger" id="changePassword" data-toggle="modal" data-target="#changePasswordModal">Cambiar Contraseña</button>
+         Botón para crear perfil 
+        <button class="btn btn-success" id="createProfileBtn">Crear Perfil</button>
+    </div>
+-->
+    <!-- Modal para Editar Perfil 
+    <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editProfileLabel">Editar Perfil</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editProfileForm">
+                        <div class="form-group">
+                            <label for="username">Nombre de Usuario</label>
+                            <input type="text" class="form-control" id="username" placeholder="Ingresa tu nombre de usuario">
+                        </div>
+                        <div class="form-group">
+                            <label for="bio">Biografía</label>
+                            <textarea class="form-control" id="bio" rows="3" placeholder="Escribe algo sobre ti"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="profileImage">Cambiar Foto de Perfil</label>
+                            <input type="file" class="form-control-file" id="profileImageInput" name="profileImage">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+-->
+    <!-- Modal para Cambiar Dirección 
+    <div class="modal fade" id="changeAddressModal" tabindex="-1" aria-labelledby="changeAddressLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="changeAddressLabel">Cambiar Dirección</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="changeAddressForm">
+                        <div class="form-group">
+                            <label for="street">Calle</label>
+                            <input type="text" class="form-control" id="street" placeholder="Ingresa tu calle">
+                        </div>
+                        <div class="form-group">
+                            <label for="streetNumber">Número</label>
+                            <input type="text" class="form-control" id="streetNumber" placeholder="Ingresa el número de calle">
+                        </div>
+                        <div class="form-group">
+                            <label for="city">Ciudad</label>
+                            <input type="text" class="form-control" id="city" placeholder="Ingresa tu ciudad">
+                        </div>
+                        <div class="form-group">
+                            <label for="state">Estado</label>
+                            <input type="text" class="form-control" id="state" placeholder="Ingresa tu estado">
+                        </div>
+                        <div class="form-group">
+                            <label for="postalCode">Código Postal</label>
+                            <input type="text" class="form-control" id="postalCode" placeholder="Ingresa tu código postal">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+-->
+    <!-- Modal para Cambiar Contraseña 
+    <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="changePasswordLabel">Cambiar Contraseña</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="changePasswordForm">
+                        <div class="form-group">
+                            <label for="currentPassword">Contraseña Actual</label>
+                            <input type="password" class="form-control" id="currentPassword" placeholder="Ingresa tu contraseña actual">
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword">Nueva Contraseña</label>
+                            <input type="password" class="form-control" id="newPassword" placeholder="Ingresa tu nueva contraseña">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Cambiar Contraseña</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+-->
+    <script src="js/profile.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
