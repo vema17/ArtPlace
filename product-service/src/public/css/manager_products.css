@@ -1,13 +1,11 @@
 /* Fondo de la página */
 body {
-  background-image: url('../assets/bgedt.png');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  font-family: Arial, sans-serif;
-  color: #333;
-  margin: 0;
-  padding: 0;
+    background-color: white;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    font-family: Arial, sans-serif;
+    color: #333;
 }
 
 /* Contenedor principal */

@@ -4,144 +4,173 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agregar Cuadro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/create_product.css">
 </head>
 <body>
+ <!-- Barra de navegación superior -->
+<nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="../user/home.html">
+        <img src="assets/ArtPlace.png" alt="Logo" width="150" height="auto">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="manager_products.html">Publicar</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../user/about.html">Nosotros</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../user/contact.html">Contacto</a>
+          </li>
+        </ul>
+        <form class="d-flex ms-3">
+          <a href="search_products.html" class="btn btn-outline-light me-2">Buscar</a>
+          <a href="shoping_cart.html" class="nav-link"></a>
+            <i class="fas fa-shopping-cart"></i>
+          </a>
+          <a href="../user/profile.html" class="d-flex align-items-center text-decoration-none">
+            <img src="assets/avt.png" alt="User" width="40" height="40" class="rounded-circle me-2">
+          </a>
+        </form>
+      </div>
+    </div>
+  </nav>
 
-<div class="container">
-    <h2>Agregar Cuadro</h2>
-    <form id="addProductForm">
-        <label for="nombre_obra">Título</label>
-        <input type="text" id="nombre_obra" name="nombre_obra" required>
+  <div class="container my-5">
+    <h2 class="text-center mb-4">Agregar Cuadro</h2>
+    <form id="addProductForm" class="bg-light p-4 rounded shadow-sm" style="max-width: 800px; margin: 0 auto;">
+        <!-- Título -->
+        <div class="mb-3">
+            <label for="nombre_obra" class="form-label">Título</label>
+            <input type="text" id="nombre_obra" name="nombre_obra" class="form-control shadow-sm" required>
+        </div>
 
-        <label for="descripcion">Descripción</label>
-        <textarea id="descripcion" name="descripcion" rows="4" required></textarea>
+        <!-- Descripción -->
+        <div class="mb-3">
+            <label for="descripcion" class="form-label">Descripción</label>
+            <textarea id="descripcion" name="descripcion" class="form-control shadow-sm" rows="4" required></textarea>
+        </div>
 
-        <label for="dimensiones">Dimensiones</label>
-        <input type="number" id="altura" name="altura" placeholder="Altura (cm)" required>
-        <input type="number" id="anchura" name="anchura" placeholder="Anchura (cm)" required>
+        <!-- Artista -->
+        <div class="mb-3">
+            <label for="artista" class="form-label">Artista</label>
+            <input type="text" id="artista" name="artista" class="form-control shadow-sm" required>
+        </div>
 
-        <label for="precio">Precio</label>
-        <input type="number" id="precio" name="precio" step="0.01" required>
+        <!-- Dimensiones -->
+        <div class="mb-3 row">
+            <div class="col-md-6">
+                <label for="altura" class="form-label">Altura (cm)</label>
+                <input type="number" id="altura" name="altura" class="form-control shadow-sm" required>
+            </div>
+            <div class="col-md-6">
+                <label for="anchura" class="form-label">Anchura (cm)</label>
+                <input type="number" id="anchura" name="anchura" class="form-control shadow-sm" required>
+            </div>
+        </div>
 
-        <label for="categoria">Categoría</label>
-        <select id="categoria" name="categoria" required>
-            <option value="Abstraccion">Abstraccion</option>
-            <option value="Paisajismo">Paisajismo</option>
-            <option value="Naturaleza">Naturaleza</option>
-            <option value="Retrato">Retrato</option>
-            <option value="Cultura Pop">Cultura POP</option>
-            <option value="Animales">Animales</option>
-            <option value="Autoretrato">Autoretrato</option>
-            <option value="Naturaleza">Naturaleza</option>
-            <option value="Bodegón">Bodegón</option>
-            <option value="Conceptual">Conceptual</option>
-            <option value="Desnudo">Desnudo</option>
-            <option value="Era Digital">Era Digital</option>
-            <option value="Escena De Género">Escena De Género</option>
-            <option value="Fantasía">Fantasia</option>
-            <option value="Fanshion">Fashion</option>
-            <option value="Historia y Politica">Historia Y Politica</option>
-            <option value="Marina">Marina</option>
-            <option value="Provocativo">Provocativo</option>
-            <option value="Religíon">Religion</option>
-            <option value="Street Art">Street Art</option>
-            <option value="Urbano">Urbano</option>
-            <option value="Vanitas">Vanitas</option>
-        <!-- Agrega más categorías aquí si es necesario -->
-        </select>
+        <!-- Precio -->
+        <div class="mb-3">
+            <label for="precio" class="form-label">Precio</label>
+            <input type="number" id="precio" name="precio" class="form-control shadow-sm" step="0.01" required>
+        </div>
 
-        <label for="estilos">Estilo</label>
-        <select id="estilos" name="estilos" required>
-            <option value="Abstracto">Abstracto</option>
-            <option value="Aborigen">Aborigen</option>
-            <option value="Arte Marginal">Arte Marginal</option>
-            <option value="Cubismo">Cubismo</option>
-            <option value="Clasico">Clasico</option>
-            <option value="Expressionismo">Expressionismo</option>
-            <option value="Fauvismo">Fauvismo</option>
-            <option value="Figurativo">Figurativo</option>
-            <option value="Futurista">Futurista</option>
-            <option value="Geométrico">Geometrico</option>
-            <option value="Historietas">Historietas</option>
-            <option value="Impresionismo">Impresionismo</option>
-            <option value="Metafísico">Metafisico</option>
-            <option value="Minimalismo">Minimalismo</option>
-            <option value="Naif">Naif</option>
-            <option value="Oriental">Oriental</option>
-            <option value="Otro">Otro</option>        
-            <option value="Pop Art">Pop Art</option>
-            <option value="Primitivismo">Primitivismo</option>
-            <option value="Realismo">Realismo</option>        
-            <option value="Semiabstracto">Semiabstracto</option>
-            <option value="Simbólico">Simbolico</option>
-            <option value="Minimalismo">Minimalismo</option>                    
-        </select>
-        
-        <label for="tecnica">Técnica</label>
-        <select id="tecnica" name="tecnica" required>
-            <option value="Acrilico">Acrilico</option>
-            <option value="Acuarela">Acuarela</option>
-            <option value="Algodon">Algodon</option>
-            <option value="Alquitran">Alquitran</option>
-            <option value="Arena">Arena</option>
-            <option value="Bordado">Bordado</option>
-            <option value="Carbón">Carbon</option>
-            <option value="Cemento">Cemento</option>
-            <option value="Cera">Cera</option>
-            <option value="Cerámica">Ceramica</option>    
-            <option value="Cinta">Cinta</option>
-            <option value="Collage">Collage</option>
-            <option value="Dorados">Dorados</option>
-            <option value="Esmalte">Esmalte</option>
-            <option value="Fieltro">Fieltro</option>   
-            <option value="Gouache/aguada">Gouache/Aguada</option>
-            <option value="Grabado">Grabado</option>
-            <option value="Graffiti">Graffiti</option>
-            <option value="Grafito">Grafito</option>
-            <option value="Hoja de plata">Hoja de Plata</option>  
-            <option value="Laca">Laca</option>
-            <option value="Ladrillos">Ladrillos</option>
-            <option value="Lana">Lana</option>
-            <option value="Lápiz">Lápiz</option>
-            <option value="Lápiz de color">Lápiz de color</option>    
-            <option value="Látex">Latex</option>
-            <option value="Litrografia">Litografia</option>
-            <option value="Material Organico">Material Organico</option>
-            <option value="Objetos">Objetos</option>
-            <option value="Objetos recuperados">Objetos Recuperados</option>        
-            <option value="Pan de Oro">Pan de Oro</option>
-            <option value="Pantalla">Pantalla</option>
-            <option value="Pastel">Pastel</option>
-            <option value="Pastel al óleo">Pastel al óleo</option>
-            <option value="Perlas">Perlas</option>           
-            <option value="Piel">Piel</option>
-            <option value="Pigmento">Pigmento</option>
-            <option value="Pintura en Relieve">Pintura en Relieve</option>
-            <option value="Pirofusión">Pirofusión</option>
-            <option value="Pluma">Pluma</option>             
-            <option value="Polvo de mármol">Polvo de mármol</option>
-            <option value="Resina">Resina</option>
-            <option value="Resina epoxi">Resina epoxi</option>
-            <option value="Serigrafia">Serigrafia</option>
-            <option value="Tempera">Tempera</option>       
-            <option value="Tierra">Tierra</option>
-            <option value="Tinta China">Tinta China</option>
-            <option value="Tinte">Tinte</option>
-            <option value="Tiza">Tiza</option>
-            <option value="Vinilo">Vinilo</option>     
-            <option value="Yeso">Yeso</option>
-            <option value="Zinc">Zinc</option>             
-        </select>        
+        <!-- Categoría -->
+        <div class="mb-3">
+            <label for="categoria" class="form-label">Categoría</label>
+            <select id="categoria" name="categoria" class="form-select shadow-sm" required>
+                <option value="Abstraccion">Abstracción</option>
+                <option value="Paisajismo">Paisajismo</option>
+                <option value="Naturaleza">Naturaleza</option>
+                <option value="Retrato">Retrato</option>
+                <option value="Cultura Pop">Cultura POP</option>
+                <option value="Animales">Animales</option>
+                <option value="Autoretrato">Autorretrato</option>
+                <option value="Bodegón">Bodegón</option>
+                <option value="Conceptual">Conceptual</option>
+                <option value="Desnudo">Desnudo</option>
+                <option value="Era Digital">Era Digital</option>
+                <option value="Escena De Género">Escena De Género</option>
+                <option value="Fantasía">Fantasía</option>
+                <option value="Fashion">Fashion</option>
+                <option value="Historia y Politica">Historia y Política</option>
+                <option value="Marina">Marina</option>
+                <option value="Provocativo">Provocativo</option>
+                <option value="Religión">Religión</option>
+                <option value="Street Art">Street Art</option>
+                <option value="Urbano">Urbano</option>
+                <option value="Vanitas">Vanitas</option>
+            </select>
+        </div>
 
+        <!-- Estilo -->
+        <div class="mb-3">
+            <label for="estilos" class="form-label">Estilo</label>
+            <select id="estilos" name="estilos" class="form-select shadow-sm" required>
+                <option value="Abstracto">Abstracto</option>
+                <option value="Aborigen">Aborigen</option>
+                <option value="Arte Marginal">Arte Marginal</option>
+                <option value="Cubismo">Cubismo</option>
+                <option value="Clasico">Clásico</option>
+                <option value="Expressionismo">Expresionismo</option>
+                <option value="Fauvismo">Fauvismo</option>
+                <option value="Figurativo">Figurativo</option>
+                <option value="Futurista">Futurista</option>
+                <option value="Geométrico">Geométrico</option>
+                <option value="Historietas">Historietas</option>
+                <option value="Impresionismo">Impresionismo</option>
+                <option value="Metafísico">Metafísico</option>
+                <option value="Minimalismo">Minimalismo</option>
+                <option value="Naif">Naif</option>
+                <option value="Pop Art">Pop Art</option>
+                <option value="Realismo">Realismo</option>
+                <option value="Semiabstracto">Semiabstracto</option>
+                <option value="Simbólico">Simbolico</option>
+            </select>
+        </div>
 
-        <label for="imagen">Imagen</label>
-        <input type="file" id="productImageInput" name="productImageInput" accept="image/*" required>
+        <!-- Técnica -->
+        <div class="mb-3">
+            <label for="tecnica" class="form-label">Técnica</label>
+            <select id="tecnica" name="tecnica" class="form-select shadow-sm" required>
+                <option value="Acrilico">Acrílico</option>
+                <option value="Acuarela">Acuarela</option>
+                <option value="Algodon">Algodón</option>
+                <option value="Bordado">Bordado</option>
+                <option value="Carbon">Carbón</option>
+                <option value="Cemento">Cemento</option>
+                <option value="Cera">Cera</option>
+                <option value="Cerámica">Cerámica</option>
+                <option value="Collage">Collage</option>
+                <option value="Dorados">Dorados</option>
+                <option value="Esmalte">Esmalte</option>
+                <option value="Fieltro">Fieltro</option>
+                <option value="Gouache">Gouache</option>
+                <option value="Graffiti">Graffiti</option>
+                <option value="Resina epoxi">Resina epoxi</option>
+            </select>
+        </div>
 
-        <button type="button" onclick="submitForm()">Agregar Cuadro</button>
-        <div class="message" id="message"></div>
+        <!-- Imagen -->
+        <div class="mb-3">
+            <label for="imagen" class="form-label">Imagen</label>
+            <input type="file" id="productImageInput" name="productImageInput" class="form-control shadow-sm" accept="image/*" required>
+        </div>
+
+        <!-- Botón de Enviar -->
+        <button type="button" class="btn btn-primary w-100 shadow-sm hover-shadow-lg" onclick="submitForm()">Agregar Cuadro</button>
+        <div class="message mt-3" id="message"></div>
     </form>
 </div>
+
+
         <script src="js/create_product.js"></script>
 </body>
 </html>
