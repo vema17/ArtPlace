@@ -1,13 +1,14 @@
 const Product = require('../models/productModel');
-const { getCurrentUserId, getCurrentUserName } = require('../consumers/productConsumer');
+const { getCurrentUserId, getCurrentUserName, getCurrentUserToken} = require('../consumers/productConsumer');
 
 // Crear un nuevo producto
 async function createProduct(req, res) {
   try {
       const userId = getCurrentUserId();
       const userName = getCurrentUserName();
+      const userToken = getCurrentUserToken();
 
-      if (!userId) {
+      if (!userToken) {
           return res.status(401).json({ message: 'No autorizado. Por favor, inicia sesión.' });
       }
 
