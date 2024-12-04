@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const linksToUpdate = [
         { id: 'homeLink', href: `home.html?id=${userId}` },
         { id: 'perfilLink', href: `profile.html?id=${userId}` },
-        { id: 'crearPerfilLink', href: `createProfile.html?id=${userId}` },
         { id: 'editarDireccionLink', href: `address.html?id=${userId}` },
         { id: 'cambiarContrasenaLink', href: `password.html?id=${userId}` },
         { id: 'catalogoLink', href: `home.html?id=${userId}` }
